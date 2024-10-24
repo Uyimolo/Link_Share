@@ -8,7 +8,7 @@ export default function DashboardLayout({
   return (
     <section>
       <DashboardHeader />
-      <div className='p-4 rounded-xl'>{children}</div>
+      <div className='px-4 rounded-xl'>{children}</div>
     </section>
   );
 }

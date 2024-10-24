@@ -11,6 +11,7 @@ const Home = () => {
   useEffect(() => {
     // If the user is already logged in, redirect to dashboard
     if (user) {
+      console.log(user)
       router.replace('/dashboard');
     }
   }, [user, router]);

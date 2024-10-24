@@ -8,6 +8,7 @@ import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import Button from '@/components/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
@@ -69,6 +70,7 @@ const Login = () => {
     mode: 'onChange',
   });
 
+  const router = useRouter();
   const { login, loading } = useAuthContext();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -79,6 +81,7 @@ const Login = () => {
 
     try {
       await login(email, password);
+      router.push('/dashboard');
       reset();
     } catch (error) {
       console.error('Error signing in with email and password:', error);

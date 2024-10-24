@@ -33,7 +33,7 @@ const DashboardHeader = () => {
   ];
 
   return (
-    <div className='flex justify-between p-6 bg-white'>
+    <div className='flex justify-between p-6 mb-6 bg-white md:m-4 md:rounded-xl'>
       <>
         <Logo className='md:hidden' />
         <Logo showFullLogo className='hidden md:block' />

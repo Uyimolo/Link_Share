@@ -1,6 +1,7 @@
 import Paragraph from '@/components/text/Paragraph';
 import { useState, useRef, useEffect } from 'react';
 import { IconType } from 'react-icons';
+import { FaCaretDown } from 'react-icons/fa';
 
 interface Option {
   value: string;
@@ -11,15 +12,30 @@ interface Option {
 interface CustomSelectProps {
   options: Option[];
   onSelect: (title: string) => void; // Callback to send selected option to parent
+  defaultValue: string;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ options, onSelect }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({
+  options,
+  onSelect,
+  defaultValue,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
   const [focusedOptionIndex, setFocusedOptionIndex] = useState<number | null>(
     null
   );
   const [error, setError] = useState<string | null>(null);
+
+  const getIndexOfDefaultValue = () => {
+    const index = options.findIndex((option) => option.value === defaultValue);
+    setSelectedOption(options[index]);
+  };
+
+  useEffect(() => {
+    getIndexOfDefaultValue();
+  }, []);
+
   const selectBoxRef = useRef<HTMLDivElement>(null);
 
   const Icon = selectedOption ? selectedOption.icon : options[0].icon;
@@ -103,14 +119,20 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, onSelect }) => {
         aria-label='Custom select'
         tabIndex={0}>
         {selectedOption ? (
-          <div className='flex items-center w-full'>
-            <Icon className='text-blue'/> {/* Selected option's icon */}
-            <Paragraph className='ml-2 text-blue'>{selectedOption.label}</Paragraph>
+          <div className='flex items-center w-full relative'>
+            <Icon className='text-gray' /> {/* Selected option's icon */}
+            <Paragraph className='ml-2 text-gray'>
+              {selectedOption.label}
+            </Paragraph>
+            <FaCaretDown className='text-blue absolute top-1/2 -translate-y-1/2 right-0' />
           </div>
         ) : (
-          'Select an option'
+          <div className='relative w-full'>
+            <Paragraph>Select a platform</Paragraph>
+            <FaCaretDown className='text-gray absolute top-1/2 -translate-y-1/2 right-0' />
+          </div>
         )}
-        {error && <p className='text-red-500 text-sm mt-1'>{error}</p>}
+        {/* {error && <p className='text-red-500 text-sm mt-1'>{error}</p>} */}
       </div>
 
       {/* Dropdown */}
