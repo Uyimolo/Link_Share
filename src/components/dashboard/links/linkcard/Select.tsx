@@ -146,7 +146,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             return (
               <li
                 key={option.value}
-                className={`py-2 cursor-pointer border-b border-lighterGray hover:bg-gray-100 flex items-center ${
+                className={`py-2 cursor-pointer border-b text-gray border-lighterGray hover:bg-gray-100 flex items-center ${
                   focusedOptionIndex === index ? 'bg-gray-100' : ''
                 }`}
                 role='option'

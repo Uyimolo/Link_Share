@@ -23,14 +23,14 @@ const FormGroup = ({ register, formField, error }: FormGroup) => {
   const Icon = formField.icon;
   return (
     <div className='w-full flex flex-col space-y-2'>
-      <label className={cn('text-xs', error && 'text-red')} htmlFor={name}>
+      <label className={cn('text-xs text-gray', error && 'text-red')} htmlFor={name}>
         {label}
       </label>
 
       <div className='relative'>
         <input
           className={cn(
-            'pl-8 w-full pr-4 py-3 hover:border-blue text-sm xl:text-base text-gray border border-lighterGray rounded-lg placeholder:text-sm xl:placeholder:text-base placeholder:text-gray',
+            'pl-10 w-full pr-4 py-3 hover:border-blue text-sm xl:text-base text-gray border border-lighterGray rounded-lg placeholder:text-sm xl:placeholder:text-base placeholder:text-gray',
             error && 'border-red'
           )}
           type={type}
