@@ -4,6 +4,7 @@ import { UseFormRegister } from 'react-hook-form';
 import { IconType } from 'react-icons';
 
 type FormGroup = {
+  // eslint-disable-next-line
   register: ReturnType<UseFormRegister<any>>;
   formField: {
     label: string;

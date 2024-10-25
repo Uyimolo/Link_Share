@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const useConfirmPageLeave = (shouldConfirm: boolean) => {
@@ -27,7 +27,7 @@ const useConfirmPageLeave = (shouldConfirm: boolean) => {
 
   useEffect(() => {
     // Handle the route change interception
-    const handleRouteChange = (url: string) => {
+    const handleRouteChange = () => {
       if (shouldConfirm) {
         const userConfirmed = window.confirm(
           'You have unsaved changes. Are you sure you want to leave this page?'
@@ -44,13 +44,13 @@ const useConfirmPageLeave = (shouldConfirm: boolean) => {
 
     // Intercept `push`
     router.push = (...args) => {
-      handleRouteChange(args[0]);
+      handleRouteChange();
       return originalPush(...args);
     };
 
     // Intercept `replace`
     router.replace = (...args) => {
-      handleRouteChange(args[0]);
+      handleRouteChange();
       return originalReplace(...args);
     };
 

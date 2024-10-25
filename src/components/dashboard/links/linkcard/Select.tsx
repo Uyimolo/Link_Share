@@ -7,6 +7,7 @@ interface Option {
   value: string;
   label: string;
   icon: IconType;
+  color?: string;
 }
 
 interface CustomSelectProps {
@@ -138,7 +139,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       {/* Dropdown */}
       {isOpen && (
         <ul
-          className='absolute px-4 z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-[40vh] overflow-y-scroll'
+          className='absolute px-4 scrollbar-thin z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-[40vh] overflow-y-scroll'
           role='listbox'>
           {options.map((option, index) => {
             const Icon = option.icon;

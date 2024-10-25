@@ -1,27 +1,27 @@
 'use client';
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuthContext } from '@/context/AuthContext';
 import Button from '@/components/Button';
+import Loading from '@/components/Loading';
+import { useAuthContext } from '@/context/AuthContext';
+import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
 
 const Home = () => {
-  const router = useRouter();
-  const { user } = useAuthContext();
+  const { loading } = useAuthContext();
+  useProtectedRoute(false);
 
-  useEffect(() => {
-    // If the user is already logged in, redirect to dashboard
-    if (user) {
-      console.log(user)
-      router.replace('/dashboard');
-    }
-  }, [user, router]);
+  if (loading) {
+    return (
+      <div className='h-screen w-full grid place-content-center'>
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div>
       <h1>Welcome to the App</h1>
       <p>Discover the features of our app!</p>
-      <Button onClick={() => router.push('/register')}>Get Started</Button>
-      <Button onClick={() => router.push('/login')}>Log In</Button>
+      <Button>Get Started</Button>
+      <Button>Log In</Button>
     </div>
   );
 };

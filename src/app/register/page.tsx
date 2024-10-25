@@ -12,6 +12,7 @@ import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
 import { useState } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
+import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
 
 // Form data type definition based on validation schema
 type RegisterFormData = {
@@ -72,6 +73,8 @@ const registerFormFields: Array<{
 ];
 
 const Register = () => {
+  useProtectedRoute(false);
+
   const {
     register,
     handleSubmit,
@@ -88,11 +91,10 @@ const Register = () => {
   const onSubmit = async (data: RegisterFormData) => {
     const { email, password } = data;
 
-    setErrorMessage(''); 
+    setErrorMessage('');
 
     try {
-      const userCredential = await registerNewUser(email, password);
-      console.log('User created:', userCredential);
+      await registerNewUser(email, password);
       reset();
     } catch (error) {
       console.error('Error creating user:', error);

@@ -1,11 +1,10 @@
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { FaLink } from 'react-icons/fa';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import FormGroup from '@/components/forms/FormGroup';
 import Paragraph from '@/components/text/Paragraph';
-import { IconType } from 'react-icons';
 import { LinkCardProps } from '@/types/types';
 import CustomSelect from './Select';
 import { options } from '@/data/options';
@@ -31,13 +30,13 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
   const {
     register,
     handleSubmit,
-    setValue, // To programmatically set the value of the form field
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
     defaultValues: {
-      link: link.url || '', // Set default value from the link prop
+      link: link.url || '',
     },
   });
 
@@ -45,16 +44,32 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
 
   useEffect(() => {
     // Set the initial value for the link input when the component mounts
-    setValue('link', link.url || ''); // This updates the input value with the value from the props
+    setValue('link', link.url || '');
   }, [link, setValue]);
 
+  // Submit form with updated data whenever the platform title or link URL changes
   const onSubmit = (data: LinkCardInputData) => {
     const updatedLink = {
       id: link.id,
       url: data.link,
-      title: title,
+      title: title, // Keep the title from the current state
     };
+    alert(`updating link ${link.id}`);
+
     updateLink(updatedLink);
+  };
+
+  const handleTitleChange = (selectedTitle: string) => {
+    setTitle(selectedTitle);
+
+    if (!errors.link) {
+      const updatedLink = {
+        id: link.id,
+        url: link.url,
+        title: selectedTitle,
+      };
+      updateLink(updatedLink);
+    }
   };
 
   return (
@@ -73,7 +88,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
           <CustomSelect
             defaultValue={link.title}
             options={options}
-            onSelect={setTitle}
+            onSelect={handleTitleChange} // Handle title change separately
           />
         </div>
         {/* text input */}

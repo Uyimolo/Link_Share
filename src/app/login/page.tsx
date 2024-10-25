@@ -13,6 +13,7 @@ import { useState } from 'react';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
 import { useAuthContext } from '@/context/AuthContext';
+import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
 
 // Form data type definition based on validation schema
 type LoginFormData = {
@@ -60,6 +61,8 @@ const loginFormFields: Array<{
 ];
 
 const Login = () => {
+  useProtectedRoute(false);
+
   const {
     register,
     handleSubmit,
@@ -118,7 +121,7 @@ const Login = () => {
             {loading ? 'Logging in...' : 'Login'}
           </Button>
           <Paragraph className='text-sm text-gray text-center'>
-            Don't have an account?{' '}
+            {` Don't have an account?`}{' '}
             <Link className='text-blue' href='/register'>
               Create account
             </Link>
