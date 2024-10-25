@@ -54,8 +54,6 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       url: data.link,
       title: title, // Keep the title from the current state
     };
-    alert(`updating link ${link.id}`);
-
     updateLink(updatedLink);
   };
 
@@ -76,7 +74,9 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     <div className='bg-lightestGray p-5 rounded-xl space-y-4'>
       <div className='flex justify-between'>
         <Paragraph className='font-semibold'>{`Link #${index + 1}`}</Paragraph>
-        <Paragraph className='cursor-pointer' onClick={() => deleteLink(link)}>
+        <Paragraph
+          className='cursor-pointer hover:text-blue'
+          onClick={() => deleteLink(link)}>
           Remove
         </Paragraph>
       </div>
@@ -88,12 +88,12 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
           <CustomSelect
             defaultValue={link.title}
             options={options}
-            onSelect={handleTitleChange} // Handle title change separately
+            onSelect={handleTitleChange}
           />
         </div>
         {/* text input */}
         <FormGroup
-          register={register('link', { onChange: handleSubmit(onSubmit) })} // Submits when the link input changes
+          register={register('link', { onChange: handleSubmit(onSubmit) })}
           formField={linkCardFormFields}
           error={errors.link?.message}
         />

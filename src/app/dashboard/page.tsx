@@ -10,6 +10,7 @@ import Loading from '@/components/Loading';
 import LinkCard from '@/components/dashboard/links/linkcard/LinkCard';
 import { useLinks } from '@/custom-hooks/useLinks';
 import { useAuthContext } from '@/context/AuthContext';
+import { toast } from 'sonner';
 
 const Dashboard = () => {
   const { links, setLinks, linksFromDb, saveLinks } = useLinks();
@@ -38,7 +39,8 @@ const Dashboard = () => {
     if (filteredLinks.length === links.length) {
       saveLinks(filteredLinks);
     } else {
-      alert('Please fill all fields or remove incomplete links');
+      // alert('Please fill all fields or remove incomplete links');
+      toast.warning('Please fill in all fields or remove incomplete links');
     }
   };
 
