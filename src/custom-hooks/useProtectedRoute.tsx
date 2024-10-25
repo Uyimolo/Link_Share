@@ -12,7 +12,7 @@ const useProtectedRoute = (authMode: boolean) => {
       const authStatus = user;
 
       if (authMode && !authStatus && pathname.toString() !== '/register') {
-        router.push('login');
+        router.push('/login');
       }
 
       if (!authMode && authStatus) {

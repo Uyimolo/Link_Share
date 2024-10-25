@@ -5,7 +5,7 @@ const MockupPreview = () => {
   const { links } = useLinks();
 
   return (
-    <div className='aspect-[9/18] max-h-[700px] bg-gradient-to-tr from-black to-black/70 sticky top-20 h-[80vh] p-2  border rounded-[50px] border-gray mx-auto shadow-xl shadow-black/70'>
+    <div className='aspect-[9/18] max-h-[700px] bg-gradient-to-tr from-black to-black/70 sticky top-20 h-[80vh] p-1 rounded-[30px] mx-auto shadow-xl shadow-black/70'>
       {/* bezels */}
       <>
         <div className='absolute  shadow-lg shadow-black -right-1 rounded-r-md bg-black h-8 w-1 top-20'></div>
@@ -15,7 +15,7 @@ const MockupPreview = () => {
       </>
 
       {/* Mockup screen */}
-      <div className='border rounded-[40px] overflow-hidden bg-gradient-to-tr to-white/10 from-black border-gray p-3 h-full space-y-4'>
+      <div className='border rounded-[25px] overflow-hidden bg-white border-gray p-3 h-full space-y-4'>
         {/* camera notch */}
         <div className='w-4 bg-gray border-black aspect-square rounded-full border mx-auto'></div>
 

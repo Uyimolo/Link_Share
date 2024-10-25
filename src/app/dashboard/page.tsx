@@ -67,7 +67,7 @@ const Dashboard = () => {
             Add/edit/remove links below and then share with the world!
           </Paragraph>
 
-          <Button variant='secondary' onClick={handleAddNewLink}>
+          <Button variant='secondary' className='sticky top-6 z-10' onClick={handleAddNewLink}>
             + Add new link
           </Button>
 
