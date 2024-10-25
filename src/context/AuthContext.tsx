@@ -12,6 +12,7 @@ import {
   useState,
 } from 'react';
 import { auth } from '../../config/firebase';
+import { toast } from 'sonner';
 
 type AuthContextType = {
   user: User | null;
@@ -56,8 +57,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       setUser(auth.currentUser);
+      toast.success('Account created successfully');
     } catch (error) {
       console.error('Registration error', error);
+      toast.error('Failed to create account');
     } finally {
       setLoading(false);
     }
@@ -68,8 +71,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       setUser(auth.currentUser);
+      toast.success('Logged in successfully');
     } catch (error) {
       console.error('Signin error', error);
+      toast.error('Sign in failed. Please try again');
     } finally {
       setLoading(false);
     }
@@ -80,8 +85,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       await auth.signOut();
       setUser(null);
+      toast.success('Logged out successfully');
     } catch (error) {
       console.error('Error while logging out', error);
+      toast.error('Failed to log out');
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 import Paragraph from '@/components/text/Paragraph';
 import { useState, useRef, useEffect } from 'react';
 import { IconType } from 'react-icons';
-import { FaCaretDown } from 'react-icons/fa';
+import { RxCaretDown } from 'react-icons/rx';
 
 interface Option {
   value: string;
@@ -113,7 +113,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       aria-haspopup='listbox'>
       {/* Select Box */}
       <div
-        className={`px-4 py-3 rounded-lg border border-lighterGray bg-white  ${
+        className={`px-4 py-3 rounded-lg hover:border-blue border border-lighterGray bg-white  ${
           error ? 'border-red-500' : ''
         } cursor-pointer flex items-center`}
         onClick={handleToggleDropdown}
@@ -125,12 +125,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
             <Paragraph className='ml-2 text-gray'>
               {selectedOption.label}
             </Paragraph>
-            <FaCaretDown className='text-blue absolute top-1/2 -translate-y-1/2 right-0' />
+            <RxCaretDown className='text-blue absolute top-1/2 -translate-y-1/2 -right-2' />
           </div>
         ) : (
           <div className='relative w-full'>
             <Paragraph>Select a platform</Paragraph>
-            <FaCaretDown className='text-gray absolute top-1/2 -translate-y-1/2 right-0' />
+            <RxCaretDown className='text-gray absolute top-1/2 -translate-y-1/2 -right-2' />
           </div>
         )}
         {/* {error && <p className='text-red-500 text-sm mt-1'>{error}</p>} */}

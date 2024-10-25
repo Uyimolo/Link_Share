@@ -2,6 +2,7 @@
 import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
 import { LinkType } from '@/types/types';
 import { db } from '../../config/firebase';
+import { toast } from 'sonner';
 
 // Fetch user's links from Firestore
 export const getUserLinks = (
@@ -41,10 +42,10 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
         updatedAt: serverTimestamp(),
       },
       { merge: true }
-      );
-      alert('links saved')
+    );
     console.log('Links saved successfully');
   } catch (error) {
     console.error('Error saving links:', error);
+    toast.error('Error saving links');
   }
 };

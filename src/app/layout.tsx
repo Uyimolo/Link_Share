@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Instrument_Sans } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'Link Share',
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <AuthProvider>
+        <Toaster position='top-center' />
         <body
           className={` ${instrument_Sans.className} antialiased bg-lightestGray`}>
           {children}

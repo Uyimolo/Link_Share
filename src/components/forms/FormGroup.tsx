@@ -2,6 +2,7 @@ import cn from '@/utilities/cn';
 import React from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { IconType } from 'react-icons';
+import Paragraph from '../text/Paragraph';
 
 type FormGroup = {
   // eslint-disable-next-line
@@ -29,7 +30,7 @@ const FormGroup = ({ register, formField, error }: FormGroup) => {
       <div className='relative'>
         <input
           className={cn(
-            'pl-8 w-full pr-4 py-3 border border-lighterGray rounded-lg placeholder:text-base placeholder:text-gray',
+            'pl-8 w-full pr-4 py-3 hover:border-blue text-sm xl:text-base text-gray border border-lighterGray rounded-lg placeholder:text-sm xl:placeholder:text-base placeholder:text-gray',
             error && 'border-red'
           )}
           type={type}
@@ -40,13 +41,13 @@ const FormGroup = ({ register, formField, error }: FormGroup) => {
         <Icon className='text-gray absolute top-1/2 -translate-y-1/2 left-4 text-xs' />
 
         {error && (
-          <p className='text-xs text-red text-right  w-full md:w-fit absolute md:top-1/2 -bottom-5 md:bottom-0 md:-translate-y-1/2 md:right-4'>
+          <Paragraph
+            variant='small'
+            className='text-red text-right w-full md:w-fit absolute md:top-1/2 -bottom-5 md:bottom-0 md:-translate-y-1/2 md:right-4'>
             {error}
-          </p>
+          </Paragraph>
         )}
       </div>
-
-      <p></p>
     </div>
   );
 };
