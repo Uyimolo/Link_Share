@@ -13,15 +13,26 @@ import { useAuthContext } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useRef } from 'react';
 
+/**
+ * Component: [Dashboard]
+ * Description: [This component handles all links related processes (addition, updating, deleting and saving to db)]
+ */
+
 const Dashboard = () => {
+  
   const { links, setLinks, linksFromDb, saveLinks } = useLinks();
   const { user } = useAuthContext();
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Ask for user confirmation before reloading or leaving page if there are unsaved changes.
+  useConfirmPageLeave(links !== linksFromDb);
 
   const handleAddNewLink = () => {
     const uniqueId = `${Math.floor(Date.now() + Math.random() * 10000)}`;
     const newLink = { id: uniqueId, url: '', title: '' };
     setLinks([...links, newLink]);
+
+    // scroll down to the new link added
     setTimeout(() => {
       if (containerRef.current) {
         console.log('its working', containerRef.current.scrollHeight);
@@ -30,7 +41,7 @@ const Dashboard = () => {
           behavior: 'smooth',
         });
       }
-    }, 500);
+    }, 100);
   };
 
   const handleLinkUpdate = (updatedLink: LinkType) => {
@@ -46,16 +57,13 @@ const Dashboard = () => {
   };
 
   const handleSaveLinks = () => {
-    const filteredLinks = links.filter((link) => link.url && link.title);
-    if (filteredLinks.length === links.length) {
-      saveLinks(filteredLinks);
+    const validLinks = links.filter((link) => link.url && link.title);
+    if (validLinks.length === links.length) {
+      saveLinks(validLinks);
     } else {
-      // alert('Please fill all fields or remove incomplete links');
       toast.warning('Please fill in all fields or remove incomplete links');
     }
   };
-
-  useConfirmPageLeave(links !== linksFromDb);
 
   if (!user) {
     return (
@@ -88,6 +96,7 @@ const Dashboard = () => {
             </Button>
           </div>
 
+          {/* links */}
           {links.length > 0 ? (
             <div className='space-y-6'>
               {links.map((link, index) => (
@@ -104,6 +113,8 @@ const Dashboard = () => {
             <Intro />
           )}
         </div>
+
+        {/* save button */}
         <div className='p-6 mt-1 flex bg-white w-full sticky bottom-0 rounded-b-xl md:px-10'>
           <Button className='md:w-fit mr-0 ml-auto' onClick={handleSaveLinks}>
             Save

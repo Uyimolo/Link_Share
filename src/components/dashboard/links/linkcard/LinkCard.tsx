@@ -54,12 +54,16 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     },
   });
 
+  // State for title field, allowing platform selection via CustomSelect component
   const [title, setTitle] = useState(link.title || '');
 
+  // Update URL input field whenever `link` prop changes (sync with external data) making the input a controlled input
   useEffect(() => {
     setValue('link', link.url || '');
   }, [link, setValue]);
 
+  // Submits the updated URL and title to parent component on form submission
+  // Used to save changes in the URL and title fields to parent state in the dashboard
   const onSubmit = (data: LinkCardInputData) => {
     const updatedLink = {
       id: link.id,
@@ -69,6 +73,8 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     updateLink(updatedLink);
   };
 
+  // Updates title (platform) state and syncs changes with parent component
+  // if link input has no validation error, keeping platform selection current
   const handleTitleChange = (selectedTitle: string) => {
     setTitle(selectedTitle);
 
@@ -84,8 +90,10 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
 
   return (
     <div className='bg-lightestGray p-5 rounded-xl space-y-4'>
+      {/* Header: displays link index and delete option */}
       <div className='flex justify-between'>
         <Paragraph className='font-semibold'>{`Link #${index + 1}`}</Paragraph>
+
         <Paragraph
           className='cursor-pointer hover:text-blue'
           onClick={() => deleteLink(link)}>
@@ -94,6 +102,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       </div>
 
       <div className='space-y-4'>
+        {/* Platform Selection: uses CustomSelect for title field */}
         <div className='space-y-2'>
           <Paragraph variant='small'>Platform</Paragraph>
           <CustomSelect
@@ -102,6 +111,8 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             onSelect={handleTitleChange}
           />
         </div>
+
+        {/* URL Input: with validation error messaging */}
         <FormGroup
           register={register('link', { onChange: handleSubmit(onSubmit) })}
           formField={linkCardFormFields}

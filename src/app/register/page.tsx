@@ -13,6 +13,7 @@ import Paragraph from '@/components/text/Paragraph';
 import { useState } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
+import { useRouter } from 'next/navigation';
 
 // Form data type definition based on validation schema
 type RegisterFormData = {
@@ -37,15 +38,17 @@ const validationSchema = yup.object({
     .required('Confirm password is required'),
 });
 
-// Form fields definition
-const registerFormFields: Array<{
+type FormFieldsType = {
   label: string;
   name: keyof RegisterFormData;
   type: string;
   required: boolean;
   placeholder: string;
   icon: IconType;
-}> = [
+}[];
+
+// Form fields definition
+const registerFormFields: FormFieldsType = [
   {
     label: 'Email address',
     name: 'email',
@@ -74,6 +77,7 @@ const registerFormFields: Array<{
 
 const Register = () => {
   useProtectedRoute(false);
+  const router = useRouter();
 
   const {
     register,
@@ -85,7 +89,7 @@ const Register = () => {
     mode: 'onChange',
   });
 
-  const { register: registerNewUser, loading } = useAuthContext();
+  const { registerNewUser, loading } = useAuthContext();
   const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (data: RegisterFormData) => {
@@ -98,20 +102,25 @@ const Register = () => {
       reset();
     } catch (error) {
       console.error('Error creating user:', error);
-      setErrorMessage('Error creating user. Please try again.'); // Update state with error message
+      setErrorMessage('Error creating user. Please try again.');
     }
   };
 
   return (
-    <div className='p-6 min-h-screen bg-white md:bg-transparent grid md:place-content-center'>
+    <div className='p-6 min-h-screen bg-white md:bg-transparent grid md:py-20'>
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-16'>
-        <Logo showFullLogo className='md:mx-auto w-fit ' />
+        <Logo
+          showFullLogo
+          className='md:mx-auto w-fit'
+          onClick={() => router.push('/')}
+        />
 
         <div className='space-y-8 md:p-10 md:w-[476px] md:mx-auto bg-white'>
           <div className='space-y-2'>
             <Heading variant='h1'>Create account</Heading>
             <Paragraph className='text-base'>{`Let's get you started sharing your links!`}</Paragraph>
           </div>
+
           {/* form fields */}
           <div className='space-y-2'>
             {registerFormFields.map((field, index) => (
@@ -123,18 +132,22 @@ const Register = () => {
               />
             ))}
           </div>
+
           <Paragraph variant='small'>
             Password must contain at least 8 characters
           </Paragraph>
-          {/* Error Message */}
+
+          {/* Error Messages */}
           {errorMessage && (
             <Paragraph variant='small' className='text-red-500'>
               {errorMessage}
             </Paragraph>
-          )}{' '}
+          )}
+
           <Button type='submit' variant='primary' disabled={loading}>
             {loading ? 'Creating account...' : 'Create new account'}
           </Button>
+
           <Paragraph className='text-center'>
             Already have an account?{' '}
             <Link className='text-blue' href='/login'>

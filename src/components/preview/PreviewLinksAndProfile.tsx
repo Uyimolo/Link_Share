@@ -14,7 +14,7 @@ const PreviewLinksAndProfile = () => {
   const { loading } = useAuthContext();
   const { links } = useLinks();
   const { firstName, lastName, profilePicture, email } = profileInfo;
-  const name = `${firstName} ${lastName}`;
+  const fullName = `${firstName} ${lastName}`;
 
   if (loading) {
     return (
@@ -42,11 +42,11 @@ const PreviewLinksAndProfile = () => {
         {/* name and email */}
         <div className='space-y-4'>
           {/*  */}
-          {name ? (
+          {fullName ? (
             <Heading
               variant='h1'
               className='text-center lg:text-2xl  capitalize'>
-              {name}
+              {fullName}
             </Heading>
           ) : (
             <div className='rounded w-full h-3 bg-lighterGray'></div>

@@ -4,7 +4,7 @@ import { LinkType } from '@/types/types';
 import { getUserLinks, saveUserLinks } from '../services/firestoreService';
 import { toast } from 'sonner';
 
- const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
+const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
   if (arr1.length !== arr2.length) return false;
 
   return arr1.every((link1, index) => {
@@ -24,31 +24,33 @@ export const useLinks = () => {
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
-    // Compare the links state with the links from the database to update `isDirty`
+    // Compare offline links state to links saved database to update isDirty state
     const validLinks = links.filter((link) => link.title && link.url);
     setIsDirty(!areLinksEqual(validLinks, linksFromDb));
   }, [links, linksFromDb]);
 
+  // monitor and fetch changes in the links document and update links and fetchedLinks accordingly
   useEffect(() => {
     if (user) {
       const unsubscribe = getUserLinks(user.uid, (fetchedLinks) => {
         setLinks(fetchedLinks);
         setLinksFromDb(fetchedLinks);
-        setIsDirty(false);
       });
 
-      // Cleanup Firestore listener on unmount
       return () => unsubscribe();
     }
   }, [user]);
 
   const saveLinks = async (updatedLinks: LinkType[]) => {
     if (user) {
+      // (isDirty) means there are unsaved changes
       if (isDirty) {
         try {
           await saveUserLinks(user.uid, updatedLinks);
           toast.success('Links saved successfully');
           setLinksFromDb(updatedLinks);
+
+          // once links from db and the offline links are the same isDirty should be updated to false
           setIsDirty(false);
         } catch (error) {
           console.error('Error saving links:', error);

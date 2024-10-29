@@ -8,7 +8,7 @@ import { LinkType, ProfileDetails } from '@/types/types';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
-import PublicPreviewHeader from '@/components/preview/PublicPreviewHeader';
+import PreviewHeader from '@/components/preview/PreviewHeader';
 
 interface PublicProfileData {
   profileInfo: ProfileDetails;
@@ -43,7 +43,6 @@ const UserProfileAndLinks = () => {
     fetchProfileAndLinks();
   }, [hashedUID]);
 
-  // const { profilePicture, email, links } = profileData || {};
   const { profileInfo, links } = profileData || {};
   const { profilePicture, email, firstName, lastName } = profileInfo || {};
   const name = `${firstName ?? ''} ${lastName ?? ''}`;
@@ -51,7 +50,7 @@ const UserProfileAndLinks = () => {
   if (!profileData) {
     return (
       <div className='h-screen max-w-[1900px] mx-auto w-full grid place-content-center'>
-        <PublicPreviewHeader />
+        <PreviewHeader />
         <Loading />
       </div>
     );
@@ -60,7 +59,7 @@ const UserProfileAndLinks = () => {
   return (
     <div className='p-4 space-y-16 md:pb-80 md:bg-transparent bg-white'>
       {/* Top section */}
-      <PublicPreviewHeader />
+      <PreviewHeader />
 
       {/* Bottom section */}
       <div className='space-y-8 relative md:translate-y-20 md:min-h-[500px] md:p-12 md:shadow-2xl md:bg-white md:rounded-[24px] md:w-fit md:mx-auto'>
@@ -74,7 +73,9 @@ const UserProfileAndLinks = () => {
         {/* Name and email */}
         <div className='space-y-4'>
           {name ? (
-            <Heading variant='h1' className='text-center text-base lg:text-lg capitalize'>
+            <Heading
+              variant='h1'
+              className='text-center text-base lg:text-lg capitalize'>
               {name}
             </Heading>
           ) : (

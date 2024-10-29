@@ -12,6 +12,18 @@ import { toast } from 'sonner';
 import Loading from '../Loading';
 import { useAuthContext } from '@/context/AuthContext';
 
+/* ProfileInfoForm Component
+ *
+ * Purpose: Displays a form for updating a user's profile information, including an image preview for a profile picture, text fields for name and email, and options to save or log out.
+ *
+ * Key Features:
+ * - Input validation using Yup for structured input rules (e.g., file type and size for profile picture, required fields).
+ * - Initial profile data is fetched and set on form load, with preview functionality for the profile image.
+ * - Image upload supports drag-and-drop, click-to-select, and file preview.
+ * - Conditionally renders loading screen until initial data is ready.
+ * - Uses react-hook-form for form control and validation.
+ */
+
 const validationSchema = yup.object({
   profilePicture: yup
     .mixed<File>()
@@ -72,11 +84,13 @@ const profileInfoFormFields: Array<{
 ];
 
 const ProfileInfoForm = () => {
+  // ref to hold the file input element
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const { profileInfo, saveProfileInformation } = useProfileInfo();
   const { logout } = useAuthContext();
-  const [loading, setLoading] = useState(true);
+  // dummy file to serve as initial value for file state
   const dummyFile = new File([''], 'dummy.txt', { type: 'text/plain' });
   const [initialProfileInfo, setInitialProfileInfo] = useState<ProfileFormData>(
     {
@@ -87,7 +101,6 @@ const ProfileInfoForm = () => {
     }
   );
 
-  console.log(profileInfo);
   const {
     register,
     handleSubmit,
@@ -99,7 +112,7 @@ const ProfileInfoForm = () => {
     mode: 'onChange',
   });
 
-  // set initial values for input fields
+  // Load initial profile data, set form values and image preview if available
   useEffect(() => {
     const loadProfileData = async () => {
       if (profileInfo) {
@@ -136,6 +149,7 @@ const ProfileInfoForm = () => {
     loadProfileData();
   }, [profileInfo, reset, setValue]);
 
+  // Converts an image URL into a File object to support file preview functionality.
   const urlToFile = async (url: string, filename: string) => {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -150,22 +164,25 @@ const ProfileInfoForm = () => {
     fileInputRef.current?.click();
   };
 
+  // Creates a preview URL from a selected file and updates the file input’s state manually.
   const handleFileSelect = (file: File) => {
-    // setFileName(file.name); // Set the name of the uploaded file
     const objectUrl = URL.createObjectURL(file); // Create a URL for the file
-    setPreviewImage(objectUrl); // Set the image URL for the background
+
+    setPreviewImage(objectUrl); // Set the image URL for file preview
+
     // Manually set the file input value
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(file);
     fileInputRef.current!.files = dataTransfer.files;
   };
 
+  // Processes file selection for direct file input changes and stores the file.
   const handleFileInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      handleFileSelect(files[0]); // Handle the first file selected
+      handleFileSelect(files[0]);
       setValue('profilePicture', files[0]); // Register the file with react-hook-form
     }
   };
@@ -192,22 +209,20 @@ const ProfileInfoForm = () => {
   };
 
   const onSubmit = (data: ProfileFormData) => {
+    // Check if profile data has changed before saving
     if (areProfilesEqual(data, initialProfileInfo)) {
       toast.error('No changes detected');
       return;
     }
 
-    // handle form submission
     const { profilePicture, firstName, lastName, email } = data;
-    console.log(profilePicture);
     saveProfileInformation(profilePicture, firstName, lastName, email);
-    console.log('Profile data:', data);
-    reset(); // clear form fields
+    reset();
   };
 
   if (loading) {
     return (
-      <div className=''>
+      <div className='w-full h-[70vh] grid place-content-center'>
         <Loading />
       </div>
     );
@@ -218,7 +233,7 @@ const ProfileInfoForm = () => {
       action=''
       className='space-y-4 bg-white'
       onSubmit={handleSubmit(onSubmit)}>
-      {/* file */}
+      {/* Profile picture preview and upload. */}
       {fileInputField && (
         <div className='space-y-4 p-4 bg-lightestGray rounded-xl md:flex md:justify-between md:items-center gap-6 md:space-y-0'>
           <label className='text-gray text-sm xl:text-base basis-[50%]'>
@@ -226,6 +241,11 @@ const ProfileInfoForm = () => {
           </label>
 
           <div className='relative  h-fit  p-2'>
+            {/*
+             * the main file input is positioned below the profile picture preview div and is triggered when the profile preview is clicked
+             */}
+
+            {/* profile picture preview */}
             <div
               className='space-y-2 overflow-hidden rounded-xl bg-cover w-[193px] md:w-[220px] aspect-square  bg-veryLightBlue grid place-content-center cursor-pointer absolut'
               style={{
@@ -237,6 +257,7 @@ const ProfileInfoForm = () => {
                 {previewImage ? 'click to change' : fileInputField.placeholder}
               </Paragraph>
             </div>
+
             <input
               {...register(fileInputField.name)}
               type={fileInputField.type}
@@ -253,7 +274,6 @@ const ProfileInfoForm = () => {
           </Paragraph>
         </div>
       )}
-
       {/* text info */}
       <div className='space-y-2 p-4 bg-lightestGray rounded-xl'>
         {profileInfoFormFields
@@ -269,8 +289,13 @@ const ProfileInfoForm = () => {
           ))}
       </div>
 
+      {/* logout and save buttons */}
       <div className='py-4 mt-1 flex md:flex-row flex-col-reverse gap-2 justify-between bg-white w-full sticky bottom-0 rounded-b-xl md:'>
-        <Button className='md:w-fit' variant='danger' type='button' onClick={logout}>
+        <Button
+          className='md:w-fit'
+          variant='danger'
+          type='button'
+          onClick={logout}>
           logout
         </Button>
 

@@ -14,13 +14,17 @@ import { db, storage } from '../../config/firebase';
 import { toast } from 'sonner';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
-// Fetch user's links from Firestore
+/**
+ * Fetches the links for a specified user in real-time.
+ * @param userId - The ID of the user whose links are being fetched.
+ * @param onLinksFetched - Callback to handle fetched links data.
+ * @returns Function to unsubscribe from the snapshot listener.
+ */
 export const getUserLinks = (
   userId: string,
   onLinksFetched: (links: LinkType[]) => void
 ) => {
   const userDocRef = doc(db, 'users', userId);
-
   const unsubscribe = onSnapshot(
     userDocRef,
     (docSnapshot) => {
@@ -36,16 +40,20 @@ export const getUserLinks = (
       console.error('Error fetching document:', error);
     }
   );
-
   return unsubscribe;
 };
 
+/**
+ * Fetches profile information for a specified user in real-time.
+ * @param userId - The ID of the user whose profile info is being fetched.
+ * @param onProfileInformationFetched - Callback to handle fetched profile info.
+ * @returns Function to unsubscribe from the snapshot listener.
+ */
 export const getProfileInfo = (
   userId: string,
   onProfileInformationFetched: (profileInfo: ProfileDetails) => void
 ) => {
   const userDocRef = doc(db, 'users', userId);
-
   const emptyProfileInfo = {
     profilePicture: '',
     firstName: '',
@@ -68,14 +76,16 @@ export const getProfileInfo = (
       console.error('Error fetching document:', error);
     }
   );
-
   return unsubscribe;
 };
 
-// Save links to Firestore
+/**
+ * Saves user's links to Firestore with timestamp.
+ * @param userId - The ID of the user whose links are being saved.
+ * @param links - Array of link objects to save.
+ */
 export const saveUserLinks = async (userId: string, links: LinkType[]) => {
   const userDocRef = doc(db, 'users', userId);
-
   try {
     await setDoc(
       userDocRef,
@@ -92,6 +102,11 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
   }
 };
 
+/**
+ * Uploads a profile picture to Firebase Storage and tracks progress.
+ * @param file - The file to upload.
+ * @returns Promise resolving with the file URL and upload progress.
+ */
 export const saveProfilePicture = async (
   file: File
 ): Promise<{ fileURL: string; downloadProgress: number }> => {
@@ -107,19 +122,19 @@ export const saveProfilePicture = async (
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        // Track progress percentage
+        // Track upload progress as a percentage
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('Upload is ' + progress + '% done');
         downloadProgress = progress;
       },
       (error) => {
-        // Handle any errors that may occur
+        // Handle upload errors
         console.error('Upload error:', error);
         reject(error);
       },
       async () => {
-        // Get download URL once upload is complete
+        // Retrieve download URL on successful upload
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         console.log('File available at', downloadURL);
         resolve({ fileURL: downloadURL, downloadProgress });
@@ -128,12 +143,16 @@ export const saveProfilePicture = async (
   });
 };
 
+/**
+ * Saves user profile details to Firestore.
+ * @param profileInfo - Profile details to save.
+ * @param userId - The ID of the user whose profile details are being saved.
+ */
 export const saveProfileDetails = async (
   profileInfo: ProfileDetails,
   userId: string
 ) => {
   const userDocRef = doc(db, 'users', userId);
-
   try {
     await setDoc(
       userDocRef,
@@ -143,13 +162,18 @@ export const saveProfileDetails = async (
       },
       { merge: true }
     );
-    console.log('Links saved successfully');
+    console.log('Profile details saved successfully');
   } catch (error) {
-    console.error('Error saving links:', error);
-    toast.error('Error saving links');
+    console.error('Error saving profile details:', error);
+    toast.error('Error saving profile details');
   }
 };
 
+/**
+ * Retrieves the hashed UID for a specified user.
+ * @param userId - The ID of the user whose hashed UID is being fetched.
+ * @returns Promise resolving with the hashed UID or null if not found.
+ */
 export const getHashedUID = async (userId: string) => {
   const userRef = doc(db, 'users', userId);
   const docSnapShot = await getDoc(userRef);
@@ -163,11 +187,15 @@ export const getHashedUID = async (userId: string) => {
   }
 };
 
+/**
+ * Retrieves public user details based on hashed UID.
+ * @param hashedUID - The hashed UID to query.
+ * @returns Promise resolving with the user details or null if not found.
+ */
 export const getUserPublicDetails = async (hashedUID: string | string[]) => {
   try {
     const collectionRef = collection(db, 'users');
     const q = query(collectionRef, where('uid.hashedUID', '==', hashedUID));
-
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
@@ -183,13 +211,20 @@ export const getUserPublicDetails = async (hashedUID: string | string[]) => {
   }
 };
 
+/**
+ * Retrieves profile info and links for the public page of a specified user.
+ * @param userId - The ID of the user.
+ * @returns Promise resolving with profile info and links, or null if not found.
+ */
 export const getProfileInfoAndLinksForPublicPage = async (userId: string) => {
   const publicDocRef = doc(db, 'users', userId);
   const publicDocSnapShot = await getDoc(publicDocRef);
+
   if (!publicDocSnapShot.exists()) {
     console.error('No such document!');
     return null;
   }
+
   console.log(publicDocSnapShot.data());
   return {
     ...publicDocSnapShot.data()?.profileInfo,
