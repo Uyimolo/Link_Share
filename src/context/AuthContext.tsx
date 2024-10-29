@@ -23,8 +23,6 @@ type AuthContextType = {
   register: (
     email: string,
     password: string,
-    name: string,
-    links: string[]
   ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
