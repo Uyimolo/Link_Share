@@ -1,29 +1,43 @@
 import cn from '@/utilities/cn';
 import React from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister, FieldValues, Path } from 'react-hook-form';
 import { IconType } from 'react-icons';
 import Paragraph from '../text/Paragraph';
 
-type FormGroup = {
-  // eslint-disable-next-line
-  register: ReturnType<UseFormRegister<any>>;
+type FormGroupProps<TFormValues extends FieldValues> = {
+  register: ReturnType<UseFormRegister<TFormValues>>;
   formField: {
     label: string;
-    name: string;
+    name: Path<TFormValues>; // Ensures name is a valid key from TFormValues
     type: string;
     required: boolean;
     placeholder: string;
-    icon: IconType;
+    icon?: IconType;
   };
-  error: string | undefined;
+  error?: string;
+  responsive?: boolean;
 };
 
-const FormGroup = ({ register, formField, error }: FormGroup) => {
-  const { name, type, label, placeholder } = formField;
-  const Icon = formField.icon;
+const FormGroup = <TFormValues extends FieldValues>({
+  register,
+  formField,
+  error,
+  responsive = false,
+}: FormGroupProps<TFormValues>) => {
+  const { name, type, label, placeholder, icon } = formField;
+  const Icon = icon;
+
   return (
-    <div className='w-full flex flex-col space-y-2'>
-      <label className={cn('text-xs text-gray', error && 'text-red')} htmlFor={name}>
+    <div
+      className={cn(
+        'w-full flex flex-col space-y-2',
+        responsive
+          ? 'md:grid md:grid-cols-[40%,1fr] md:items-center space-y-0'
+          : ''
+      )}>
+      <label
+        className={cn('text-xs text-gray', error && 'text-red')}
+        htmlFor={name}>
         {label}
       </label>
 
@@ -31,14 +45,16 @@ const FormGroup = ({ register, formField, error }: FormGroup) => {
         <input
           className={cn(
             'pl-10 w-full pr-4 py-3 hover:border-blue text-sm xl:text-base text-gray border border-lighterGray rounded-lg placeholder:text-sm xl:placeholder:text-base placeholder:text-gray',
-            error && 'border-red'
+            error && 'border-red', responsive ? 'pl-4' : ''
           )}
           type={type}
           {...register}
           placeholder={placeholder}
         />
 
-        <Icon className='text-gray absolute top-1/2 -translate-y-1/2 left-4 text-xs' />
+        {Icon && (
+          <Icon className='text-gray absolute top-1/2 -translate-y-1/2 left-4 text-xs' />
+        )}
 
         {error && (
           <Paragraph

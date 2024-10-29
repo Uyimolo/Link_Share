@@ -25,7 +25,7 @@ export default function RootLayout({
       <AuthProvider>
         <Toaster position='top-center' />
         <body
-          className={` ${instrument_Sans.className} antialiased bg-lightestGray`}>
+          className={` ${instrument_Sans.className} antialiased bg-lightestGray max-w-[1900px] mx-auto`}>
           {children}
         </body>
       </AuthProvider>

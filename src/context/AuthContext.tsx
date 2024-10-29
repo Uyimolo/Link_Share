@@ -11,21 +11,29 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { auth } from '../../config/firebase';
+import { auth, db } from '../../config/firebase';
 import { toast } from 'sonner';
+import { nanoid } from 'nanoid';
+import { doc, setDoc } from 'firebase/firestore';
+import { FirebaseError } from 'firebase/app';
 
 type AuthContextType = {
   user: User | null;
   loading: boolean;
-  register: (email: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    password: string,
+    name: string,
+    links: string[]
+  ) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 };
 
-// create context
+// Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// hook to use context
+// Hook to use context
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -50,17 +58,49 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => unsubscribe();
-  });
+  }, []); // Add empty dependency array to run effect only on mount
 
   const register = async (email: string, password: string) => {
     setLoading(true);
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      setUser(auth.currentUser);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const newUser = userCredential.user; // Get the new user
+
+      // Hash the UID after ensuring the user is created
+      const hashedUID = nanoid(10);
+
+      // Save the user profile in Firestore
+      await setDoc(
+        doc(db, 'users', newUser.uid),
+        {
+          uid: {
+            hashedUID: hashedUID,
+            originalUID: newUser.uid,
+          },
+        },
+        { merge: true }
+      );
+
+      setUser(newUser);
       toast.success('Account created successfully');
     } catch (error) {
       console.error('Registration error', error);
-      toast.error('Failed to create account');
+      // Handle specific error types for better user feedback
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/invalid-email') {
+          toast.error('Invalid email address.');
+        } else if (error.code === 'auth/user-not-found') {
+          toast.error('User not found.');
+        } else if (error.code === 'auth/wrong-password') {
+          toast.error('Incorrect password.');
+        } else {
+          toast.error('Failed to create account. Please try again.');
+        }
+      }
     } finally {
       setLoading(false);
     }

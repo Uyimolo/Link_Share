@@ -33,7 +33,7 @@ const useConfirmPageLeave = (shouldConfirm: boolean) => {
           'You have unsaved changes. Are you sure you want to leave this page?'
         );
         if (!userConfirmed) {
-          throw new Error('Route change aborted due to unsaved changes.');
+          console.warn('Route change aborted due to unsaved changes.');
         }
       }
     };

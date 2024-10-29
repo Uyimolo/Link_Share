@@ -8,19 +8,33 @@ import Paragraph from '@/components/text/Paragraph';
 import { LinkCardProps } from '@/types/types';
 import CustomSelect from './Select';
 import { options } from '@/data/options';
+import { IconType } from 'react-icons';
 
+// Define the type for the form input data
 type LinkCardInputData = {
   link: string;
 };
 
+// Define the validation schema
 const validationSchema = yup.object({
   link: yup.string().url('Invalid URL').required('Address is required'),
 });
 
-const linkCardFormFields = {
+// Define the form field type
+type FormField = {
+  label: string;
+  name: 'link' | `link.${string}`;
+  type: string;
+  required: boolean;
+  placeholder: string;
+  icon?: IconType;
+};
+
+// Initialize the form fields with the correct type
+const linkCardFormFields: FormField = {
   type: 'text',
   label: 'Address',
-  name: 'link',
+  name: 'link', // Valid name as per the defined type
   placeholder: 'Enter the address',
   icon: FaLink,
   required: true,
@@ -32,7 +46,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm({
+  } = useForm<LinkCardInputData>({
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
     defaultValues: {
@@ -43,16 +57,14 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
   const [title, setTitle] = useState(link.title || '');
 
   useEffect(() => {
-    // Set the initial value for the link input when the component mounts
     setValue('link', link.url || '');
   }, [link, setValue]);
 
-  // Submit form with updated data whenever the platform title or link URL changes
   const onSubmit = (data: LinkCardInputData) => {
     const updatedLink = {
       id: link.id,
       url: data.link,
-      title: title, // Keep the title from the current state
+      title: title,
     };
     updateLink(updatedLink);
   };
@@ -82,7 +94,6 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       </div>
 
       <div className='space-y-4'>
-        {/* select input */}
         <div className='space-y-2'>
           <Paragraph variant='small'>Platform</Paragraph>
           <CustomSelect
@@ -91,7 +102,6 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             onSelect={handleTitleChange}
           />
         </div>
-        {/* text input */}
         <FormGroup
           register={register('link', { onChange: handleSubmit(onSubmit) })}
           formField={linkCardFormFields}
