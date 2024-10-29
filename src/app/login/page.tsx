@@ -79,34 +79,38 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     const { email, password } = data;
-
     setErrorMessage('');
 
     try {
       await login(email, password);
-      router.push('/dashboard');
       reset();
     } catch (error) {
       console.error('Error signing in with email and password:', error);
-      setErrorMessage('Invalid email or password. Please try again.'); // Update state with error message
+      setErrorMessage('Invalid email or password. Please try again.');
     }
   };
 
   return (
-    <div className='p-6 min-h-screen bg-white md:bg-transparent grid md:place-content-center'>
+    <div className='p-6 min-h-screen bg-white md:bg-transparent grid md:py-20'>
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-16'>
-        <Logo showFullLogo className='md:mx-auto w-fit ' />
+        <Logo
+          showFullLogo
+          className='md:mx-auto w-fit'
+          onClick={() => router.push('/')}
+        />
+
         <div className='space-y-8 md:p-10 md:w-[476px] md:mx-auto bg-white'>
           <div className='space-y-2'>
             <Heading variant='h1'>Login</Heading>
             <Paragraph>{`Add your details to get back into the app`}</Paragraph>
+
             {errorMessage && (
               <Paragraph variant='small' className='text-red-500'>
                 {errorMessage}
               </Paragraph>
-            )}{' '}
-            {/* Error Message */}
+            )}
           </div>
+
           <div className='space-y-2'>
             {loginFormFields.map((field, index) => (
               <FormGroup
@@ -117,9 +121,11 @@ const Login = () => {
               />
             ))}
           </div>
+
           <Button type='submit' variant='primary' disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </Button>
+
           <Paragraph className='text-sm text-gray text-center'>
             {` Don't have an account?`}{' '}
             <Link className='text-blue' href='/register'>

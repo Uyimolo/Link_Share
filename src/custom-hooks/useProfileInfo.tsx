@@ -10,6 +10,13 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { storage } from '../../config/firebase';
 
+/**
+ * Custom hook to manage profile information.
+ * This hook fetches and updates the user's profile information from Firestore.
+ * It also provides a function to update the profile picture and details.
+ *
+ * @returns An object containing the profile information, download progress, and a function to update the profile information.
+ */
 const useProfileInfo = () => {
   const [profileInfo, setProfileInfo] = useState<ProfileDetails>({
     profilePicture: '',
@@ -25,6 +32,7 @@ const useProfileInfo = () => {
     console.log(profileInfo);
   }, [profileInfo]);
 
+  // monitor and fetch profile info from firebase
   useEffect(() => {
     if (user) {
       const unsubscribe = getProfileInfo(user.uid, (profileInfo) => {
@@ -36,6 +44,11 @@ const useProfileInfo = () => {
     }
   }, [user]);
 
+  /**
+   * Updates the user's profile information.
+   * This function deletes the existing profile picture (if there is any), uploads the new file,
+   * saves the profile details to Firestore, and updates the profile information.
+   */
   const saveProfileInformation = async (
     file: File,
     firstName: string,
@@ -47,11 +60,11 @@ const useProfileInfo = () => {
         'Profile information is still loading. Please try again in a moment.'
       );
       return;
-      }
-      
+    }
+
     if (user) {
       try {
-        // Delete the existing profile picture if it exists
+        // Delete existing profile picture (if there is any)
         if (profileInfo.profilePicture) {
           const oldPictureRef = ref(storage, profileInfo.profilePicture);
           await deleteObject(oldPictureRef);

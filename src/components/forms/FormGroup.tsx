@@ -4,19 +4,21 @@ import { UseFormRegister, FieldValues, Path } from 'react-hook-form';
 import { IconType } from 'react-icons';
 import Paragraph from '../text/Paragraph';
 
+// Define the props type for the FormGroup component
 type FormGroupProps<TFormValues extends FieldValues> = {
   register: ReturnType<UseFormRegister<TFormValues>>;
   formField: {
     label: string;
-    name: Path<TFormValues>; // Ensures name is a valid key from TFormValues
+    name: Path<TFormValues>; // Ensures name is a valid key from TFormValues for type safety
     type: string;
     required: boolean;
     placeholder: string;
     icon?: IconType;
   };
   error?: string;
-  responsive?: boolean;
+  responsive?: boolean; // Determines whether the component should adapt to a grid layout on medium screens
 };
+
 
 const FormGroup = <TFormValues extends FieldValues>({
   register,
@@ -25,7 +27,7 @@ const FormGroup = <TFormValues extends FieldValues>({
   responsive = false,
 }: FormGroupProps<TFormValues>) => {
   const { name, type, label, placeholder, icon } = formField;
-  const Icon = icon;
+  const Icon = icon; // Assigning icon to a variable for JSX use
 
   return (
     <div
@@ -45,7 +47,8 @@ const FormGroup = <TFormValues extends FieldValues>({
         <input
           className={cn(
             'pl-10 w-full pr-4 py-3 hover:border-blue text-sm xl:text-base text-gray border border-lighterGray rounded-lg placeholder:text-sm xl:placeholder:text-base placeholder:text-gray',
-            error && 'border-red', responsive ? 'pl-4' : ''
+            error && 'border-red',
+            responsive ? 'pl-4' : ''
           )}
           type={type}
           {...register}

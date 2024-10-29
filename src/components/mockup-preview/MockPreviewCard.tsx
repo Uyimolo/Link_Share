@@ -7,6 +7,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import cn from '@/utilities/cn';
 
 const MockPreviewCard = ({ link }: { link: LinkType }) => {
+  // Find the corresponding icon and color for the link title from the options array.
   const linkIndex = options.findIndex((option) => option.value === link.title);
   const Icon = options[linkIndex].icon;
   const color = options[linkIndex].color || '#000000';
