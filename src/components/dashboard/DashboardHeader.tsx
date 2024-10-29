@@ -1,11 +1,11 @@
 'use client';
-import React from 'react';
 import Logo from '../brand/Logo';
 import { FaLink } from 'react-icons/fa';
 import { IoEyeOutline } from 'react-icons/io5';
 import { CgProfile } from 'react-icons/cg';
 import NavItem from './navigation/NavItem';
 import { IconType } from 'react-icons';
+import { useRouter } from 'next/navigation';
 
 type NavigationItemsType = {
   icon: IconType;
@@ -14,6 +14,7 @@ type NavigationItemsType = {
 }[];
 
 const DashboardHeader = () => {
+  const router = useRouter();
   const navigationItems: NavigationItemsType = [
     {
       label: 'Links',
@@ -23,20 +24,24 @@ const DashboardHeader = () => {
     {
       label: 'Profile Details',
       icon: CgProfile,
-      link: 'dashboard/profile',
+      link: '/dashboard/profile',
     },
     {
       label: 'Preview',
       icon: IoEyeOutline,
-      link: '/dashboard/preview',
+      link: '/preview',
     },
   ];
 
   return (
     <div className='flex justify-between p-6 mb-6 bg-white md:m-4 md:rounded-xl'>
       <>
-        <Logo className='md:hidden' />
-        <Logo showFullLogo className='hidden md:block' />
+        <Logo className='md:hidden' onClick={() => router.push('/')} />
+        <Logo
+          showFullLogo
+          className='hidden md:block'
+          onClick={() => router.push('/')}
+        />
       </>
 
       <div className='flex items center'>

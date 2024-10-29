@@ -11,15 +11,26 @@ import LinkCard from '@/components/dashboard/links/linkcard/LinkCard';
 import { useLinks } from '@/custom-hooks/useLinks';
 import { useAuthContext } from '@/context/AuthContext';
 import { toast } from 'sonner';
+import { useRef } from 'react';
 
 const Dashboard = () => {
   const { links, setLinks, linksFromDb, saveLinks } = useLinks();
   const { user } = useAuthContext();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleAddNewLink = () => {
     const uniqueId = `${Math.floor(Date.now() + Math.random() * 10000)}`;
     const newLink = { id: uniqueId, url: '', title: '' };
     setLinks([...links, newLink]);
+    setTimeout(() => {
+      if (containerRef.current) {
+        console.log('its working', containerRef.current.scrollHeight);
+        window.scrollTo({
+          top: containerRef.current.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    }, 500);
   };
 
   const handleLinkUpdate = (updatedLink: LinkType) => {
@@ -49,27 +60,33 @@ const Dashboard = () => {
   if (!user) {
     return (
       <div className='h-[80vh] w-full grid place-content-center'>
-        <Loading />;
+        <Loading />
       </div>
     );
   }
 
   return (
-    <div className='lg:space-y-0 gap-4 lg:grid lg:grid-cols-[40%,1fr]'>
+    <div
+      className='lg:space-y-0 gap-4 lg:grid lg:grid-cols-[40%,1fr]'
+      ref={containerRef}>
       <div className='bg-white hidden lg:block rounded-t-xl py-10 2xl:py-20'>
         <MockupPreview />
       </div>
 
       <div className=''>
-        <div className='space-y-6 bg-white  p-6 md:p-10 rounded-t-xl'>
-          <Heading variant='h1'>Customize your links</Heading>
-          <Paragraph>
-            Add/edit/remove links below and then share with the world!
-          </Paragraph>
+        <div className='space-y- bg-white  p-6 md:p-10 rounded-t-xl'>
+          <div className='space-y-2'>
+            <Heading variant='h1'>Customize your links</Heading>
+            <Paragraph>
+              Add/edit/remove links below and then share with the world!
+            </Paragraph>
+          </div>
 
-          <Button variant='secondary' className='sticky top-6 z-10' onClick={handleAddNewLink}>
-            + Add new link
-          </Button>
+          <div className='py-6 bg-white sticky top-0 z-10'>
+            <Button variant='secondary' className='' onClick={handleAddNewLink}>
+              + Add new link
+            </Button>
+          </div>
 
           {links.length > 0 ? (
             <div className='space-y-6'>

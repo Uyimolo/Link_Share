@@ -4,7 +4,7 @@ import { LinkType } from '@/types/types';
 import { getUserLinks, saveUserLinks } from '../services/firestoreService';
 import { toast } from 'sonner';
 
-const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
+ const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
   if (arr1.length !== arr2.length) return false;
 
   return arr1.every((link1, index) => {
@@ -33,8 +33,8 @@ export const useLinks = () => {
     if (user) {
       const unsubscribe = getUserLinks(user.uid, (fetchedLinks) => {
         setLinks(fetchedLinks);
-        setLinksFromDb(fetchedLinks); 
-        setIsDirty(false); 
+        setLinksFromDb(fetchedLinks);
+        setIsDirty(false);
       });
 
       // Cleanup Firestore listener on unmount
@@ -48,8 +48,8 @@ export const useLinks = () => {
         try {
           await saveUserLinks(user.uid, updatedLinks);
           toast.success('Links saved successfully');
-          setLinksFromDb(updatedLinks); 
-          setIsDirty(false); 
+          setLinksFromDb(updatedLinks);
+          setIsDirty(false);
         } catch (error) {
           console.error('Error saving links:', error);
           toast.error('Failed to save links');

@@ -6,18 +6,8 @@ type ButtonProps = {
   disabled?: boolean;
   onClick?: () => void;
   children?: React.ReactNode;
-  size?: 'default' | 'small' | 'large';
   type?: 'submit' | 'reset' | 'button';
-  variant?: 'primary' | 'secondary';
-  loading?: boolean;
-  icon?: React.ReactNode;
-  block?: boolean;
-  ghost?: boolean;
-  href?: string;
-  target?: '_blank' | '_self' | '_parent' | '_top';
-  onClickOutside?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  tabIndex?: number;
-  title?: string;
+  variant?: 'primary' | 'secondary' | 'danger';
 };
 
 const Button = ({
@@ -31,7 +21,9 @@ const Button = ({
   const typeStyles =
     variant === 'primary'
       ? 'bg-blue text-white disabled:bg-veryLightBlue hover:bg-lightBlue'
-      : ' bg-lightestGray disabled:bg-lightestGray disabled:border-lighterBlue hover:bg-veryLightBlue border-[1px] border-blue text-blue hover:light disabled:text-lighterBlue';
+      : variant === 'secondary'
+      ? ' bg-lightestGray disabled:bg-lightestGray disabled:border-lighterBlue hover:bg-veryLightBlue border-[1px] border-blue text-blue hover:light disabled:text-lighterBlue'
+      : 'border-red border text-red hover:bg-red/20 bg-red/10';
   return (
     <button
       type={type}

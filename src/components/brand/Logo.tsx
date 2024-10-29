@@ -6,15 +6,21 @@ import fullLogo from '@/assets/images/logo_full.svg';
 type LogoProps = {
   showFullLogo?: boolean;
   className?: string;
+  onClick?: () => void;
 };
 
-const Logo = ({ showFullLogo = false, className }: LogoProps) => {
+const Logo = ({ showFullLogo = false, className, onClick }: LogoProps) => {
   return (
     <>
       {showFullLogo ? (
-        <Image src={fullLogo} alt='logo' className={className} />
+        <Image
+          src={fullLogo}
+          alt='logo'
+          className={className}
+          onClick={onClick}
+        />
       ) : (
-        <Image src={logo} alt='logo' className={className} />
+        <Image src={logo} alt='logo' className={className} onClick={onClick} />
       )}
     </>
   );

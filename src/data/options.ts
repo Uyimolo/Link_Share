@@ -42,7 +42,7 @@ export const options = [
     value: 'instagram',
     label: 'Instagram',
     icon: FaInstagram,
-    color: 'FD2AB6',
+    color: '#FD2AB6',
   },
   { value: 'twitch', label: 'Twitch', icon: FaTwitch, color: '#EE3FC8' },
   { value: 'youtube', label: 'YouTube', icon: FaYoutube, color: '#EE3939' },
