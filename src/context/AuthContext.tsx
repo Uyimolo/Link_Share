@@ -11,11 +11,14 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { auth, db } from '../../config/firebase';
+import { auth, db, storage } from '../../config/firebase';
 import { toast } from 'sonner';
 import { nanoid } from 'nanoid';
-import { doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
+import { deleteObject, ref } from 'firebase/storage';
+import { ProfileDetails } from '@/types/types';
+import { getErrorMessage } from '@/data/firebaseErrors';
 
 type AuthContextType = {
   user: User | null;
@@ -23,6 +26,7 @@ type AuthContextType = {
   registerNewUser: (email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  handleAccountDeletion: (profileInfo: ProfileDetails) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,6 +42,7 @@ export const useAuthContext = () => {
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  // const { profileInfo } = useProfileInfo();
 
   // Monitors auth state changes and sets current user
   useEffect(() => {
@@ -84,18 +89,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       toast.success('Account created successfully');
     } catch (error) {
       console.error('Registration error', error);
-
-      if (error instanceof FirebaseError) {
-        if (error.code === 'auth/invalid-email') {
-          toast.error('Invalid email address.');
-        } else if (error.code === 'auth/user-not-found') {
-          toast.error('User not found.');
-        } else if (error.code === 'auth/wrong-password') {
-          toast.error('Incorrect password.');
-        } else {
-          toast.error('Failed to create account. Please try again.');
-        }
-      }
+      const firebaseError = error as FirebaseError;
+      const errorMessage = getErrorMessage(firebaseError.code);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -115,7 +111,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error('Signin error', error);
-      toast.error('Sign in failed. Please try again');
+      const firebaseError = error as FirebaseError;
+      const errorMessage = getErrorMessage(firebaseError.code);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -135,9 +133,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const handleAccountDeletion = async (profileInfo: ProfileDetails) => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const userId = user.uid;
+
+    try {
+      // Step 1: Delete profile picture
+      if (profileInfo?.profilePicture) {
+        const pictureRef = ref(storage, profileInfo.profilePicture);
+        await deleteObject(pictureRef);
+        console.log('Profile picture deleted.');
+      }
+
+      // Step 2: Delete Firestore user document
+      const documentRef = doc(db, 'users', userId);
+      deleteDoc(documentRef);
+      console.log('User document deleted.');
+      toast.success('Data deleted successfully');
+
+      // Step 3: Delete Firebase Authentication user account
+      await user.delete();
+      console.log('User account deleted.');
+      toast.success('Account deleted successfully.');
+
+      // Redirect or show success message as needed
+    } catch (error) {
+      console.error('Error during account deletion:', error);
+      // Optional: Show error message to user or retry mechanism
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, loading, registerNewUser, login, logout }}>
+      value={{
+        user,
+        loading,
+        registerNewUser,
+        login,
+        logout,
+        handleAccountDeletion,
+      }}>
       {children}
     </AuthContext.Provider>
   );

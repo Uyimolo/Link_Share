@@ -1,65 +1,78 @@
-import { useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const useConfirmPageLeave = (shouldConfirm: boolean) => {
   const router = useRouter();
-  const pathname = usePathname();
+  const [isBlockingNavigation, setIsBlockingNavigation] = useState(false);
 
   useEffect(() => {
-    // Handle the browser/tab close scenario
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       if (shouldConfirm) {
         event.preventDefault();
-        event.returnValue = ''; // This triggers the confirmation dialog
+        event.returnValue = '';
       }
     };
 
-    // Attach the event listener for browser/tab close
-    if (shouldConfirm) {
-      window.addEventListener('beforeunload', handleBeforeUnload);
-    }
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // Clean up the event listener on unmount
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [shouldConfirm]);
 
   useEffect(() => {
-    // Handle the route change interception
-    const handleRouteChange = () => {
+    const handleNavigation = (event: Event) => {
+      if (shouldConfirm && isBlockingNavigation) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener('click', handleNavigation);
+    window.addEventListener('submit', handleNavigation);
+
+    return () => {
+      window.removeEventListener('click', handleNavigation);
+      window.removeEventListener('submit', handleNavigation);
+    };
+  }, [shouldConfirm, isBlockingNavigation]);
+
+  useEffect(() => {
+    const originalPush = router.push;
+    const originalReplace = router.replace;
+
+    router.push = (...args) => {
       if (shouldConfirm) {
         const userConfirmed = window.confirm(
           'You have unsaved changes. Are you sure you want to leave this page?'
         );
         if (!userConfirmed) {
-          console.warn('Route change aborted due to unsaved changes.');
+          setIsBlockingNavigation(true);
+          return;
         }
       }
-    };
-
-    // Listen for the `push` or `replace` methods for route change
-    const originalPush = router.push;
-    const originalReplace = router.replace;
-
-    // Intercept `push`
-    router.push = (...args) => {
-      handleRouteChange();
+      setIsBlockingNavigation(false);
       return originalPush(...args);
     };
 
-    // Intercept `replace`
     router.replace = (...args) => {
-      handleRouteChange();
+      if (shouldConfirm) {
+        const userConfirmed = window.confirm(
+          'You have unsaved changes. Are you sure you want to leave this page?'
+        );
+        if (!userConfirmed) {
+          setIsBlockingNavigation(true);
+          return;
+        }
+      }
+      setIsBlockingNavigation(false);
       return originalReplace(...args);
     };
 
-    // Cleanup the method overrides on unmount
     return () => {
       router.push = originalPush;
       router.replace = originalReplace;
     };
-  }, [pathname, shouldConfirm, router]);
+  }, [shouldConfirm, router]);
 };
 
 export default useConfirmPageLeave;

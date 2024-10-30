@@ -1,10 +1,11 @@
 'use client';
 import MockupPreview from '@/components/mockup-preview/MockupPreview';
+import AccountOptions from '@/components/profile/AccountOptions';
 import ProfileInfoForm from '@/components/profile/ProfileInfoForm';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
 import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
-import React from 'react';
+import React, { useState } from 'react';
 
 /**
  * Component: [Profile]
@@ -13,6 +14,7 @@ import React from 'react';
 
 const Profile = () => {
   useProtectedRoute(true);
+  const [showAccountOptions, setShowAccountOptions] = useState<boolean>(false);
 
   return (
     <div className='lg:space-y-0 gap-4 lg:grid lg:grid-cols-[40%,1fr]'>
@@ -30,8 +32,10 @@ const Profile = () => {
           </Paragraph>
         </div>
         {/* form for setting and viewing user information*/}
-        <ProfileInfoForm />
+        <ProfileInfoForm setShowAccountOptions={setShowAccountOptions} />
       </div>
+      {/*  */}
+     {showAccountOptions && <AccountOptions closeModal={() => setShowAccountOptions(false)}/>}
     </div>
   );
 };
