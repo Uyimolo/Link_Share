@@ -10,7 +10,6 @@ import { ProfileFormData } from '@/types/types';
 import useProfileInfo from '@/custom-hooks/useProfileInfo';
 import { toast } from 'sonner';
 import Loading from '../Loading';
-import { useAuthContext } from '@/context/AuthContext';
 
 /* ProfileInfoForm Component
  *
@@ -83,13 +82,16 @@ const profileInfoFormFields: Array<{
   },
 ];
 
-const ProfileInfoForm = () => {
+const ProfileInfoForm = ({
+  setShowAccountOptions,
+}: {
+  setShowAccountOptions: (showAccountOptions: boolean) => void;
+}) => {
   // ref to hold the file input element
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { profileInfo, saveProfileInformation } = useProfileInfo();
-  const { logout } = useAuthContext();
   // dummy file to serve as initial value for file state
   const dummyFile = new File([''], 'dummy.txt', { type: 'text/plain' });
   const [initialProfileInfo, setInitialProfileInfo] = useState<ProfileFormData>(
@@ -295,8 +297,10 @@ const ProfileInfoForm = () => {
           className='md:w-fit'
           variant='danger'
           type='button'
-          onClick={logout}>
-          logout
+          onClick={() => {
+            setShowAccountOptions(true);
+          }}>
+          Account actions
         </Button>
 
         <Button className='md:w-fit' type='submit'>
