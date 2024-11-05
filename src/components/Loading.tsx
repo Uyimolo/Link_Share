@@ -1,10 +1,10 @@
 import React from 'react'
-import Logo from './brand/Logo'
+import { FaSpinner } from 'react-icons/fa6'
 
 const Loading = () => {
   return (
-    <div>
-      <Logo className='animate-bounce'/>
+    <div className='p-4 bg-blue rounded'>
+      <FaSpinner className='text-white text-2xl animate-spin z-50'  />
     </div>
   )
 }

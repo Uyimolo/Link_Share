@@ -1,31 +1,38 @@
-'use client';
-import { useAuthContext } from '@/context/AuthContext';
-import { useLinks } from '@/custom-hooks/useLinks';
-import useProfileInfo from '@/custom-hooks/useProfileInfo';
-import React from 'react';
 import MockPreviewCard from '../mockup-preview/MockPreviewCard';
 import PreviewHeader from './PreviewHeader';
 import Loading from '../Loading';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
+import { LinkType, ProfileDetails } from '@/types/types';
+import { RxAvatar } from 'react-icons/rx';
+import cn from '@/utilities/cn';
 
-const PreviewLinksAndProfile = () => {
-  const { profileInfo } = useProfileInfo();
-  const { loading } = useAuthContext();
-  const { links } = useLinks();
-  const { firstName, lastName, profilePicture, email } = profileInfo;
-  const fullName = `${firstName} ${lastName}`;
+type PreviewLinksAndProfileProps = {
+  links: LinkType[] | undefined;
+  loading: boolean;
+  profileInfo: ProfileDetails | undefined;
+};
+
+const PreviewLinksAndProfile = ({
+  links,
+  loading,
+  profileInfo,
+}: PreviewLinksAndProfileProps) => {
+  const { firstName, lastName, profilePicture, email } = profileInfo || {};
+  const fullName = `${firstName || ''} ${lastName || ''}`;
 
   if (loading) {
     return (
-      <div className='h-screen  w-full grid place-content-center'>
+      <div className='h-screen max-w-[1900px] mx-auto w-full p-4'>
         <PreviewHeader />
-        <Loading />
+        <div className='self-center left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 justify-self-center z-60 absolute'>
+          <Loading />
+        </div>
       </div>
     );
   }
   return (
-    <div className='p-4 space-y-16 md:pb-80 md:bg-transparent bg-white'>
+    <div className='p-4 space-y-16 md:pb-80 md:bg-transparent h-screen md:h-auto bg-white'>
       {/* top section */}
 
       <PreviewHeader />
@@ -34,10 +41,19 @@ const PreviewLinksAndProfile = () => {
       <div className='space-y-8 relative md:translate-y-40 md:min-h-[500px] md:p-12 md:shadow-2xl md:bg-white md:rounded-[24px] md:w-fit md:mx-auto'>
         {/* profile image */}
         <div
-          className='w-28 border-4 border-blue aspect-square bg-lighterGray/50 bg-center bg-cover rounded-full mx-auto bg-blend-multiply'
+          className={cn(
+            ' mx-auto w-28 aspect-square',
+            profilePicture
+              ? 'border-4 border-blue bg-center bg-cover  rounded-full'
+              : 'grid place-content-center'
+          )}
           style={{
-            backgroundImage: `url(${profilePicture})`,
-          }}></div>
+            backgroundImage: profilePicture ? `url(${profilePicture})` : 'none',
+          }}>
+          {!profilePicture && (
+            <RxAvatar className='text-gray rounded-full bg-lightestGray text-[110px]' />
+          )}
+        </div>
 
         {/* name and email */}
         <div className='space-y-4'>
@@ -59,9 +75,9 @@ const PreviewLinksAndProfile = () => {
         </div>
 
         {/* links */}
-        {links.length > 0 ? (
+        {links && links.length > 0 ? (
           <div className='space-y-2 w-[237px] mx-auto'>
-            {links.map((link, index) => (
+            {links?.map((link, index) => (
               <MockPreviewCard key={index} link={link} />
             ))}
           </div>

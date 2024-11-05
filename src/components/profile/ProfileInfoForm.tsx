@@ -91,6 +91,7 @@ const ProfileInfoForm = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [imageUploading, setImageUploading] = useState(false);
   const { profileInfo, saveProfileInformation } = useProfileInfo();
   // dummy file to serve as initial value for file state
   const dummyFile = new File([''], 'dummy.txt', { type: 'text/plain' });
@@ -109,6 +110,7 @@ const ProfileInfoForm = ({
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
@@ -210,17 +212,21 @@ const ProfileInfoForm = ({
     );
   };
 
-  const onSubmit = (data: ProfileFormData) => {
+  const onSubmit = async (data: ProfileFormData) => {
     // Check if profile data has changed before saving
     if (areProfilesEqual(data, initialProfileInfo)) {
       toast.error('No changes detected');
       return;
     }
 
+    setImageUploading(true);
     const { profilePicture, firstName, lastName, email } = data;
-    saveProfileInformation(profilePicture, firstName, lastName, email);
+    await saveProfileInformation(profilePicture, firstName, lastName, email);
     reset();
+    setImageUploading(false);
   };
+
+  const saveButtonState = areProfilesEqual(watch(), initialProfileInfo);
 
   if (loading) {
     return (
@@ -256,7 +262,13 @@ const ProfileInfoForm = ({
               onClick={handleCustomUploadClick}>
               <CiImageOn className='text-blue w-fit mx-auto text-4xl' />
               <Paragraph className='text-blue mx-auto text-nowrap font-semibold'>
-                {previewImage ? 'click to change' : fileInputField.placeholder}
+                {imageUploading ? (
+                  <Loading />
+                ) : previewImage ? (
+                  'click to change'
+                ) : (
+                  fileInputField.placeholder
+                )}
               </Paragraph>
             </div>
 
@@ -303,7 +315,7 @@ const ProfileInfoForm = ({
           Account actions
         </Button>
 
-        <Button className='md:w-fit' type='submit'>
+        <Button className='md:w-fit' type='submit' disabled={saveButtonState}>
           Save
         </Button>
       </div>

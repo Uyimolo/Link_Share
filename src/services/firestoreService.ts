@@ -32,7 +32,7 @@ export const getUserLinks = (
         const data = docSnapshot.data();
         onLinksFetched(data.links || []);
       } else {
-        console.log('No such document!');
+        // console.log('No such document!');
         onLinksFetched([]);
       }
     },
@@ -68,7 +68,7 @@ export const getProfileInfo = (
         const data = docSnapshot.data();
         onProfileInformationFetched(data.profileInfo || emptyProfileInfo);
       } else {
-        console.log('No such document!');
+        // console.log('No such document!');
         onProfileInformationFetched(emptyProfileInfo);
       }
     },
@@ -95,9 +95,9 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
       },
       { merge: true }
     );
-    console.log('Links saved successfully');
-  } catch (error) {
-    console.error('Error saving links:', error);
+    // console.log('Links saved successfully');
+  } catch {
+    // console.error('Error saving links:', error);
     toast.error('Error saving links');
   }
 };
@@ -108,12 +108,13 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
  * @returns Promise resolving with the file URL and upload progress.
  */
 export const saveProfilePicture = async (
-  file: File
+  file: File,
+  userId: string
 ): Promise<{ fileURL: string; downloadProgress: number }> => {
-  const storageRef = ref(
-    storage,
-    `${Math.floor(Date.now() + Math.random() * 10000)}` + file.name
-  );
+  // i am setting the filename to user.uid
+  // so that the old profile picture will be automatically replaced with the new one.
+  // hence making my database cleaner and more efficient
+  const storageRef = ref(storage, `profile-images/${userId}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   return new Promise((resolve, reject) => {
@@ -125,18 +126,18 @@ export const saveProfilePicture = async (
         // Track upload progress as a percentage
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        // console.log('Upload is ' + progress + '% done');
         downloadProgress = progress;
       },
       (error) => {
-        // Handle upload errors
-        console.error('Upload error:', error);
+        // console.error('Upload error:', error);
         reject(error);
       },
       async () => {
         // Retrieve download URL on successful upload
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        console.log('File available at', downloadURL);
+        // console.log('File available at', downloadURL);
+
         resolve({ fileURL: downloadURL, downloadProgress });
       }
     );
@@ -162,9 +163,9 @@ export const saveProfileDetails = async (
       },
       { merge: true }
     );
-    console.log('Profile details saved successfully');
-  } catch (error) {
-    console.error('Error saving profile details:', error);
+    // console.log('Profile details saved successfully');
+  } catch {
+    // console.error('Error saving profile details:', error);
     toast.error('Error saving profile details');
   }
 };
@@ -179,10 +180,10 @@ export const getHashedUID = async (userId: string) => {
   const docSnapShot = await getDoc(userRef);
 
   if (docSnapShot.exists()) {
-    console.log('Document data:', docSnapShot.data());
+    // console.log('Document data:', docSnapShot.data());
     return docSnapShot.data().uid.hashedUID;
   } else {
-    console.error('No such document!');
+    // console.error('No such document!');
     return null;
   }
 };
@@ -205,8 +206,8 @@ export const getUserPublicDetails = async (hashedUID: string | string[]) => {
     } else {
       return null;
     }
-  } catch (error) {
-    console.error('Error fetching document:', error);
+  } catch {
+    // console.error('Error fetching document:', error);
     return null;
   }
 };
@@ -221,7 +222,7 @@ export const getProfileInfoAndLinksForPublicPage = async (userId: string) => {
   const publicDocSnapShot = await getDoc(publicDocRef);
 
   if (!publicDocSnapShot.exists()) {
-    console.error('No such document!');
+    // console.error('No such document!');
     return null;
   }
 

@@ -23,9 +23,9 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <AuthProvider>
-        <Toaster position='top-center' />
         <body
           className={` ${instrument_Sans.className} antialiased bg-lightestGray max-w-[1900px] mx-auto`}>
+          <Toaster position='top-center' />
           {children}
         </body>
       </AuthProvider>

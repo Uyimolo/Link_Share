@@ -1,8 +1,9 @@
 import cn from '@/utilities/cn';
-import React from 'react';
+import React, { useState } from 'react';
 import { UseFormRegister, FieldValues, Path } from 'react-hook-form';
 import { IconType } from 'react-icons';
 import Paragraph from '../text/Paragraph';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 
 // Define the props type for the FormGroup component
 type FormGroupProps<TFormValues extends FieldValues> = {
@@ -19,7 +20,6 @@ type FormGroupProps<TFormValues extends FieldValues> = {
   responsive?: boolean; // Determines whether the component should adapt to a grid layout on medium screens
 };
 
-
 const FormGroup = <TFormValues extends FieldValues>({
   register,
   formField,
@@ -27,7 +27,8 @@ const FormGroup = <TFormValues extends FieldValues>({
   responsive = false,
 }: FormGroupProps<TFormValues>) => {
   const { name, type, label, placeholder, icon } = formField;
-  const Icon = icon; // Assigning icon to a variable for JSX use
+  const [showPassword, setShowPassword] = useState(false);
+  const Icon = icon;
 
   return (
     <div
@@ -50,7 +51,7 @@ const FormGroup = <TFormValues extends FieldValues>({
             error && 'border-red',
             responsive ? 'pl-4' : ''
           )}
-          type={type}
+          type={type !== 'password' ? type : showPassword ? 'text' : 'password'}
           {...register}
           placeholder={placeholder}
         />
@@ -59,10 +60,20 @@ const FormGroup = <TFormValues extends FieldValues>({
           <Icon className='text-gray absolute top-1/2 -translate-y-1/2 left-4 text-xs' />
         )}
 
+        {type === 'password' && (
+          <button
+            type='button'
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            onClick={() => setShowPassword(!showPassword)}
+            className='absolute top-1/2 -translate-y-1/2 right-4 text-gray'>
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        )}
+
         {error && (
           <Paragraph
             variant='small'
-            className='text-red text-right w-full md:w-fit absolute md:top-1/2 -bottom-5 md:bottom-0 md:-translate-y-1/2 md:right-4'>
+            className='text-red text-right w-full md:w-fit absolute md:top-1/2 -bottom-4 md:bottom-0 md:-translate-y-1/2 md:right-4'>
             {error}
           </Paragraph>
         )}

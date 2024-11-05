@@ -8,7 +8,7 @@ export type LinkCardProps = {
   index: number;
   link: LinkType;
   updateLink: (link: LinkType) => void;
-  deleteLink: (link: LinkType) => void;
+  deleteLink: (linkId: string) => void;
 };
 
 export type ProfileFormData = {

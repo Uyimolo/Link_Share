@@ -6,9 +6,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import FormGroup from '@/components/forms/FormGroup';
 import Paragraph from '@/components/text/Paragraph';
 import { LinkCardProps } from '@/types/types';
-import CustomSelect from './Select';
-import { options } from '@/data/options';
 import { IconType } from 'react-icons';
+import SelectInput from './SelectInput';
+import Modal from '@/components/Modal';
+import Button from '@/components/Button';
 
 // Define the type for the form input data
 type LinkCardInputData = {
@@ -56,6 +57,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
 
   // State for title field, allowing platform selection via CustomSelect component
   const [title, setTitle] = useState(link.title || '');
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   // Update URL input field whenever `link` prop changes (sync with external data) making the input a controlled input
   useEffect(() => {
@@ -88,6 +90,11 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     }
   };
 
+  const handleDeleteLink = () => {
+    deleteLink(link.id);
+    setShowDeleteConfirmation(false);
+  }
+
   return (
     <div className='bg-lightestGray p-5 rounded-xl space-y-4'>
       {/* Header: displays link index and delete option */}
@@ -95,8 +102,8 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         <Paragraph className='font-semibold'>{`Link #${index + 1}`}</Paragraph>
 
         <Paragraph
-          className='cursor-pointer hover:text-blue'
-          onClick={() => deleteLink(link)}>
+          className='cursor-pointer text-red hover:text-blue'
+          onClick={() => setShowDeleteConfirmation(true)}>
           Remove
         </Paragraph>
       </div>
@@ -105,11 +112,8 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         {/* Platform Selection: uses CustomSelect for title field */}
         <div className='space-y-2'>
           <Paragraph variant='small'>Platform</Paragraph>
-          <CustomSelect
-            defaultValue={link.title}
-            options={options}
-            onSelect={handleTitleChange}
-          />
+
+          <SelectInput onChange={handleTitleChange} initialValue={link.title} />
         </div>
 
         {/* URL Input: with validation error messaging */}
@@ -119,6 +123,35 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
           error={errors.link?.message}
         />
       </div>
+
+      {showDeleteConfirmation && (
+        <Modal closeModal={() => setShowDeleteConfirmation(false)} className=''>
+          <div className='p-4 w-fit bg-white max-w-xs lg:max-w-sm space-y-6 rounded-xl shadow-2xl shadow-black/50'>
+            <Paragraph className='text-lg font-semibold text-red-600'>
+              Confirm Deletion
+            </Paragraph>
+            <Paragraph>
+              Are you sure you want to delete this link?
+              <br />
+              <strong className='text-red'>
+                This action cannot be undone,
+              </strong>{' '}
+              and you will lose any data associated with it.
+            </Paragraph>
+
+            <div className='flex justify-end space-x-4'>
+              <Button variant='danger' onClick={handleDeleteLink}>
+                Delete
+              </Button>
+              <Button
+                variant='secondary'
+                onClick={() => setShowDeleteConfirmation(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

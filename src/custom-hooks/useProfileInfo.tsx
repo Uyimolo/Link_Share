@@ -5,10 +5,8 @@ import {
   saveProfilePicture,
 } from '@/services/firestoreService';
 import { ProfileDetails } from '@/types/types';
-import { deleteObject, ref } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { storage } from '../../config/firebase';
 
 /**
  * Custom hook to manage profile information.
@@ -29,7 +27,7 @@ const useProfileInfo = () => {
   const { user } = useAuthContext();
 
   useEffect(() => {
-    console.log(profileInfo);
+    // console.log(profileInfo);
   }, [profileInfo]);
 
   // monitor and fetch profile info from firebase
@@ -64,18 +62,14 @@ const useProfileInfo = () => {
 
     if (user) {
       try {
-        // Delete existing profile picture (if there is any)
-        if (profileInfo.profilePicture) {
-          const oldPictureRef = ref(storage, profileInfo.profilePicture);
-          await deleteObject(oldPictureRef);
-          console.log('Old profile picture deleted successfully');
-        }
-
-        // Wait for the new file upload and URL retrieval to complete
-        const { fileURL, downloadProgress } = await saveProfilePicture(file);
+        // Wait for the new file upload and URL retrieval
+        const { fileURL, downloadProgress } = await saveProfilePicture(
+          file,
+          user.uid
+        );
         setDownloadProgress(downloadProgress);
 
-        // Save profile details to Firestore after downloadURL is available
+        // Save profile details to Firestore
         await saveProfileDetails(
           { profilePicture: fileURL, firstName, lastName, email },
           user.uid
