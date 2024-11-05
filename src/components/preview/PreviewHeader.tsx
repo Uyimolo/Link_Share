@@ -45,14 +45,14 @@ const PreviewHeader = () => {
   return (
     <div className='md:h-[357px] lg:left-1/2 lg:-translate-x-1/2 max-w-[1900px] mx-auto md:absolute md:p-4 md:top-0 md:left-0 w-full md:bg-blue md:rounded-b-[32px] '>
       {user ? (
-        <div className='flex justify-between md:bg-white md:p-4 md:rounded-xl'>
+        <div className='flex gap-4 justify-between md:bg-white md:p-4 md:rounded-xl'>
           <Button
             variant='secondary'
-            className='w-fit'
+            className='md:w-fit max-w-48 md:max-w-none'
             onClick={() => router.push('/dashboard')}>
             Back to editor
           </Button>
-          <Button className='w-fit' onClick={handleShareLink}>
+          <Button className='md:w-fit max-w-48 md:max-w-none' onClick={handleShareLink}>
             Share link
           </Button>
         </div>

@@ -13,7 +13,6 @@ import { LinkType, ProfileDetails } from '@/types/types';
 import { db, storage } from '../../config/firebase';
 import { toast } from 'sonner';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { User } from 'firebase/auth';
 
 /**
  * Fetches the links for a specified user in real-time.
@@ -38,7 +37,7 @@ export const getUserLinks = (
       }
     },
     (error) => {
-      // console.error('Error fetching document:', error);
+      console.error('Error fetching document:', error);
     }
   );
   return unsubscribe;
@@ -74,7 +73,7 @@ export const getProfileInfo = (
       }
     },
     (error) => {
-      // console.error('Error fetching document:', error);
+      console.error('Error fetching document:', error);
     }
   );
   return unsubscribe;
@@ -97,7 +96,7 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
       { merge: true }
     );
     // console.log('Links saved successfully');
-  } catch (error) {
+  } catch {
     // console.error('Error saving links:', error);
     toast.error('Error saving links');
   }
@@ -112,10 +111,10 @@ export const saveProfilePicture = async (
   file: File,
   userId: string
 ): Promise<{ fileURL: string; downloadProgress: number }> => {
-  // i am setting the filename to user.uid 
+  // i am setting the filename to user.uid
   // so that the old profile picture will be automatically replaced with the new one.
   // hence making my database cleaner and more efficient
-  const storageRef = ref(storage, userId);
+  const storageRef = ref(storage, `profile-images/${userId}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
   return new Promise((resolve, reject) => {
@@ -165,7 +164,7 @@ export const saveProfileDetails = async (
       { merge: true }
     );
     // console.log('Profile details saved successfully');
-  } catch (error) {
+  } catch {
     // console.error('Error saving profile details:', error);
     toast.error('Error saving profile details');
   }
@@ -207,7 +206,7 @@ export const getUserPublicDetails = async (hashedUID: string | string[]) => {
     } else {
       return null;
     }
-  } catch (error) {
+  } catch {
     // console.error('Error fetching document:', error);
     return null;
   }

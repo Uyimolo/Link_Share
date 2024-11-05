@@ -8,7 +8,7 @@ import MockupPreview from '@/components/mockup-preview/MockupPreview';
 import Intro from '@/components/dashboard/links/Intro';
 import Loading from '@/components/Loading';
 import LinkCard from '@/components/dashboard/links/linkcard/LinkCard';
-import { useLinks } from '@/custom-hooks/useLinks';
+import { areLinksEqual, useLinks } from '@/custom-hooks/useLinks';
 import { useAuthContext } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import { useRef } from 'react';
@@ -34,7 +34,6 @@ const Dashboard = () => {
     // scroll down to the new link added
     setTimeout(() => {
       if (containerRef.current) {
-        console.log('its working', containerRef.current.scrollHeight);
         window.scrollTo({
           top: containerRef.current.scrollHeight,
           behavior: 'smooth',
@@ -86,7 +85,7 @@ const Dashboard = () => {
       </div>
 
       <div className=''>
-        <div className='space-y- bg-white  p-6 md:p-10 rounded-t-xl'>
+        <div className=' bg-white  p-6 md:p-10 rounded-t-xl'>
           <div className='space-y-2'>
             <Heading variant='h1'>Customize your links</Heading>
             <Paragraph>
@@ -109,7 +108,7 @@ const Dashboard = () => {
                   key={link.id}
                   link={link}
                   updateLink={handleLinkUpdate}
-                  deleteLink={() => handleRemoveLink(link.id)}
+                  deleteLink={handleRemoveLink}
                 />
               ))}
             </div>
@@ -120,7 +119,10 @@ const Dashboard = () => {
 
         {/* save button */}
         <div className='p-6 mt-1 flex bg-white w-full sticky bottom-0 rounded-b-xl md:px-10'>
-          <Button className='md:w-fit mr-0 ml-auto' onClick={handleSaveLinks}>
+          <Button
+            className='md:w-fit mr-0 ml-auto'
+            disabled={areLinksEqual(links, linksFromDb)}
+            onClick={handleSaveLinks}>
             Save
           </Button>
         </div>

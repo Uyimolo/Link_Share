@@ -9,12 +9,10 @@ import { IconType } from 'react-icons';
 import Button from '@/components/Button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
 import { useAuthContext } from '@/context/AuthContext';
 import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
-import { toast } from 'sonner';
 
 // Form data type definition based on validation schema
 type LoginFormData = {
@@ -107,15 +105,9 @@ const Login = () => {
               Test details: <br /> Email: test@mail.linkshare <br /> Password:
               12345678
             </Paragraph>
-
-            {/* {errorMessage && (
-              <Paragraph variant='small' className='text-red-500'>
-                {errorMessage}
-              </Paragraph>
-            )} */}
           </div>
 
-          <div className='space-y-2'>
+          <div className='space-y-4'>
             {loginFormFields.map((field, index) => (
               <FormGroup
                 key={index}
@@ -127,7 +119,7 @@ const Login = () => {
           </div>
 
           <Button type='submit' variant='primary' disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            Login
           </Button>
 
           <Paragraph className='text-sm text-gray text-center'>

@@ -10,7 +10,6 @@ import Button from '@/components/Button';
 import Link from 'next/link';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
-import { useState } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
 import { useRouter } from 'next/navigation';
@@ -90,19 +89,14 @@ const Register = () => {
   });
 
   const { registerNewUser, loading } = useAuthContext();
-  const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (data: RegisterFormData) => {
     const { email, password } = data;
-
-    setErrorMessage('');
-
     try {
       await registerNewUser(email, password);
       reset();
     } catch (error) {
       console.error('Error creating user:', error);
-      setErrorMessage('Error creating user. Please try again.');
     }
   };
 
@@ -122,7 +116,7 @@ const Register = () => {
           </div>
 
           {/* form fields */}
-          <div className='space-y-2'>
+          <div className='space-y-4'>
             {registerFormFields.map((field, index) => (
               <FormGroup
                 key={index}
@@ -137,15 +131,8 @@ const Register = () => {
             Password must contain at least 8 characters
           </Paragraph>
 
-          {/* Error Messages */}
-          {errorMessage && (
-            <Paragraph variant='small' className='text-red-500'>
-              {errorMessage}
-            </Paragraph>
-          )}
-
           <Button type='submit' variant='primary' disabled={loading}>
-            {loading ? 'Creating account...' : 'Create new account'}
+            Create new account
           </Button>
 
           <Paragraph className='text-center'>

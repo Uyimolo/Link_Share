@@ -10,7 +10,6 @@ import { ProfileFormData } from '@/types/types';
 import useProfileInfo from '@/custom-hooks/useProfileInfo';
 import { toast } from 'sonner';
 import Loading from '../Loading';
-import { FaSpinner } from 'react-icons/fa6';
 
 /* ProfileInfoForm Component
  *
@@ -111,6 +110,7 @@ const ProfileInfoForm = ({
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
@@ -226,6 +226,8 @@ const ProfileInfoForm = ({
     setImageUploading(false);
   };
 
+  const saveButtonState = areProfilesEqual(watch(), initialProfileInfo);
+
   if (loading) {
     return (
       <div className='w-full h-[70vh] grid place-content-center'>
@@ -258,7 +260,6 @@ const ProfileInfoForm = ({
                 backgroundImage: previewImage ? `url(${previewImage})` : 'none',
               }}
               onClick={handleCustomUploadClick}>
-              
               <CiImageOn className='text-blue w-fit mx-auto text-4xl' />
               <Paragraph className='text-blue mx-auto text-nowrap font-semibold'>
                 {imageUploading ? (
@@ -314,7 +315,7 @@ const ProfileInfoForm = ({
           Account actions
         </Button>
 
-        <Button className='md:w-fit' type='submit'>
+        <Button className='md:w-fit' type='submit' disabled={saveButtonState}>
           Save
         </Button>
       </div>

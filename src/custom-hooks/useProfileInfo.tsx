@@ -5,10 +5,8 @@ import {
   saveProfilePicture,
 } from '@/services/firestoreService';
 import { ProfileDetails } from '@/types/types';
-import { deleteObject, ref } from 'firebase/storage';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { storage } from '../../config/firebase';
 
 /**
  * Custom hook to manage profile information.

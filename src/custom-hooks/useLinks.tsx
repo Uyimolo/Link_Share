@@ -1,11 +1,11 @@
-'use client'
+'use client';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import { LinkType } from '@/types/types';
 import { getUserLinks, saveUserLinks } from '../services/firestoreService';
 import { toast } from 'sonner';
 
-const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
+export const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
   if (arr1.length !== arr2.length) return false;
 
   return arr1.every((link1, index) => {
@@ -55,7 +55,7 @@ export const useLinks = () => {
 
           // once links from db and the offline links are the same isDirty should be updated to false
           setIsDirty(false);
-        } catch (error) {
+        } catch {
           // console.error('Error saving links:', error);
           toast.error('Failed to save links');
         }

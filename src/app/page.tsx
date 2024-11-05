@@ -1,13 +1,10 @@
 'use client';
-import Loading from '@/components/Loading';
 import PreviewHeader from '@/components/preview/PreviewHeader';
 import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
-import { useAuthContext } from '@/context/AuthContext';
 import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
 
 const Home = () => {
-  const { loading } = useAuthContext();
   useProtectedRoute(false);
 
   return (

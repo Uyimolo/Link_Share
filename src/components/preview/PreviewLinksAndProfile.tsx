@@ -32,7 +32,7 @@ const PreviewLinksAndProfile = ({
     );
   }
   return (
-    <div className='p-4 space-y-16 md:pb-80 md:bg-transparent bg-white'>
+    <div className='p-4 space-y-16 md:pb-80 md:bg-transparent h-screen md:h-auto bg-white'>
       {/* top section */}
 
       <PreviewHeader />

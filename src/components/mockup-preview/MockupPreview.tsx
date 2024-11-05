@@ -65,15 +65,15 @@ const MockupPreview = () => {
         </div>
 
         {/* links */}
-        <div className='pt-10'>
+        <div className='pt-5'>
           {links.length > 0 ? (
-            <div className='space-y-2 h-[40vh] max-h-[400px] overflow-y-scroll custom-scrollbar'>
+            <div className='space-y-2 h-[30vh] max-h-[400px] overflow-y-scroll custom-scrollbar'>
               {links.map((link, index) => (
                 <MockPreviewCard key={index} link={link} />
               ))}
             </div>
           ) : (
-            <div className='space-y-2 pt-10'>
+            <div className='space-y-2 pt-5'>
               {[1, 2, 3, 4].map((placeholder, index) => (
                 <div key={index} className='w-full p-5 bg-lighterGray'></div>
               ))}
