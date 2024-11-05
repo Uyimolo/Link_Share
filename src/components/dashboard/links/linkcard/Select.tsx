@@ -139,7 +139,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       {/* Dropdown */}
       {isOpen && (
         <ul
-          className='absolute px-4 scrollbar-thin z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg max-h-[40vh] overflow-y-scroll'
+          className='absolute px-4 scrollbar-thin z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg lg:max-h-[50vh] max-h-[40vh] overflow-y-scroll'
           role='listbox'>
           {options.map((option, index) => {
             const Icon = option.icon;
@@ -147,7 +147,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
               <li
                 key={option.value}
                 className={`py-2 cursor-pointer border-b text-gray border-lighterGray hover:bg-gray-100 flex items-center ${
-                  focusedOptionIndex === index ? 'bg-gray-100' : ''
+                  focusedOptionIndex === index ? 'bg-lighterGray' : ''
                 }`}
                 role='option'
                 aria-selected={focusedOptionIndex === index}

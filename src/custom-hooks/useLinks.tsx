@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import { LinkType } from '@/types/types';
@@ -19,6 +20,7 @@ const areLinksEqual = (arr1: LinkType[], arr2: LinkType[]) => {
 
 export const useLinks = () => {
   const { user } = useAuthContext();
+  const [loading, setLoading] = useState(true);
   const [links, setLinks] = useState<LinkType[]>([]);
   const [linksFromDb, setLinksFromDb] = useState<LinkType[]>([]);
   const [isDirty, setIsDirty] = useState(false);
@@ -35,6 +37,7 @@ export const useLinks = () => {
       const unsubscribe = getUserLinks(user.uid, (fetchedLinks) => {
         setLinks(fetchedLinks);
         setLinksFromDb(fetchedLinks);
+        setLoading(false);
       });
 
       return () => unsubscribe();
@@ -53,7 +56,7 @@ export const useLinks = () => {
           // once links from db and the offline links are the same isDirty should be updated to false
           setIsDirty(false);
         } catch (error) {
-          console.error('Error saving links:', error);
+          // console.error('Error saving links:', error);
           toast.error('Failed to save links');
         }
       } else {
@@ -62,5 +65,5 @@ export const useLinks = () => {
     }
   };
 
-  return { links, setLinks, linksFromDb, saveLinks, isDirty };
+  return { links, setLinks, linksFromDb, saveLinks, isDirty, loading };
 };

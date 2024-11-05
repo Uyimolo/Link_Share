@@ -9,6 +9,7 @@ import { LinkCardProps } from '@/types/types';
 import CustomSelect from './Select';
 import { options } from '@/data/options';
 import { IconType } from 'react-icons';
+import SelectInput from './SelectInput';
 
 // Define the type for the form input data
 type LinkCardInputData = {
@@ -88,6 +89,11 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     }
   };
 
+  // find index of selected platform if available
+  const selectedPlatformIndex = options.findIndex(
+    (option) => option.value === link.title
+  );
+
   return (
     <div className='bg-lightestGray p-5 rounded-xl space-y-4'>
       {/* Header: displays link index and delete option */}
@@ -105,11 +111,8 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         {/* Platform Selection: uses CustomSelect for title field */}
         <div className='space-y-2'>
           <Paragraph variant='small'>Platform</Paragraph>
-          <CustomSelect
-            defaultValue={link.title}
-            options={options}
-            onSelect={handleTitleChange}
-          />
+
+          <SelectInput onChange={handleTitleChange} initialValue={link.title} />
         </div>
 
         {/* URL Input: with validation error messaging */}

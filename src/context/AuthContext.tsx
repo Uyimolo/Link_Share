@@ -157,6 +157,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await user.delete();
       console.log('User account deleted.');
       toast.success('Account deleted successfully.');
+      setUser(null);
 
       // Redirect or show success message as needed
     } catch (error) {

@@ -14,6 +14,7 @@ import Heading from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
 import { useAuthContext } from '@/context/AuthContext';
 import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
+import { toast } from 'sonner';
 
 // Form data type definition based on validation schema
 type LoginFormData = {
@@ -75,18 +76,17 @@ const Login = () => {
 
   const router = useRouter();
   const { login, loading } = useAuthContext();
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
 
   const onSubmit = async (data: LoginFormData) => {
     const { email, password } = data;
-    setErrorMessage('');
+    // setErrorMessage('');
 
     try {
       await login(email, password);
       reset();
     } catch (error) {
       console.error('Error signing in with email and password:', error);
-      setErrorMessage('Invalid email or password. Please try again.');
     }
   };
 
@@ -95,7 +95,7 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-16'>
         <Logo
           showFullLogo
-          className='md:mx-auto w-fit'
+          className='md:mx-auto w-fit cursor-pointer'
           onClick={() => router.push('/')}
         />
 
@@ -103,12 +103,16 @@ const Login = () => {
           <div className='space-y-2'>
             <Heading variant='h1'>Login</Heading>
             <Paragraph>{`Add your details to get back into the app`}</Paragraph>
+            <Paragraph className='text-blue' variant='small'>
+              Test details: <br /> Email: test@mail.linkshare <br /> Password:
+              12345678
+            </Paragraph>
 
-            {errorMessage && (
+            {/* {errorMessage && (
               <Paragraph variant='small' className='text-red-500'>
                 {errorMessage}
               </Paragraph>
-            )}
+            )} */}
           </div>
 
           <div className='space-y-2'>

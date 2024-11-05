@@ -10,6 +10,7 @@ import { ProfileFormData } from '@/types/types';
 import useProfileInfo from '@/custom-hooks/useProfileInfo';
 import { toast } from 'sonner';
 import Loading from '../Loading';
+import { FaSpinner } from 'react-icons/fa6';
 
 /* ProfileInfoForm Component
  *
@@ -91,6 +92,7 @@ const ProfileInfoForm = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [imageUploading, setImageUploading] = useState(false);
   const { profileInfo, saveProfileInformation } = useProfileInfo();
   // dummy file to serve as initial value for file state
   const dummyFile = new File([''], 'dummy.txt', { type: 'text/plain' });
@@ -210,16 +212,18 @@ const ProfileInfoForm = ({
     );
   };
 
-  const onSubmit = (data: ProfileFormData) => {
+  const onSubmit = async (data: ProfileFormData) => {
     // Check if profile data has changed before saving
     if (areProfilesEqual(data, initialProfileInfo)) {
       toast.error('No changes detected');
       return;
     }
 
+    setImageUploading(true);
     const { profilePicture, firstName, lastName, email } = data;
-    saveProfileInformation(profilePicture, firstName, lastName, email);
+    await saveProfileInformation(profilePicture, firstName, lastName, email);
     reset();
+    setImageUploading(false);
   };
 
   if (loading) {
@@ -254,9 +258,16 @@ const ProfileInfoForm = ({
                 backgroundImage: previewImage ? `url(${previewImage})` : 'none',
               }}
               onClick={handleCustomUploadClick}>
+              
               <CiImageOn className='text-blue w-fit mx-auto text-4xl' />
               <Paragraph className='text-blue mx-auto text-nowrap font-semibold'>
-                {previewImage ? 'click to change' : fileInputField.placeholder}
+                {imageUploading ? (
+                  <Loading />
+                ) : previewImage ? (
+                  'click to change'
+                ) : (
+                  fileInputField.placeholder
+                )}
               </Paragraph>
             </div>
 

@@ -2,6 +2,8 @@ import useProfileInfo from '@/custom-hooks/useProfileInfo';
 import MockPreviewCard from './MockPreviewCard';
 import { useLinks } from '@/custom-hooks/useLinks';
 import Paragraph from '../text/Paragraph';
+import cn from '@/utilities/cn';
+import { RxAvatar } from 'react-icons/rx';
 
 const MockupPreview = () => {
   const { links } = useLinks();
@@ -28,10 +30,21 @@ const MockupPreview = () => {
         <div className='w-3/4 mx-auto space-y-4'>
           {/* profile image */}
           <div
-            className='w-20 aspect-square bg-lighterGray/50 bg-center bg-cover rounded-full mx-auto bg-blend-multiply'
+            className={cn(
+              ' mx-auto w-28 aspect-square',
+              profilePicture
+                ? 'border-4 border-blue bg-center bg-cover  rounded-full'
+                : 'grid place-content-center'
+            )}
             style={{
-              backgroundImage: `url(${profilePicture})`,
-            }}></div>
+              backgroundImage: profilePicture
+                ? `url(${profilePicture})`
+                : 'none',
+            }}>
+            {!profilePicture && (
+              <RxAvatar className='text-gray rounded-full bg-lightestGray text-[110px]' />
+            )}
+          </div>
 
           {/* name and email */}
           <div className='space-y-'>

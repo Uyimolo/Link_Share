@@ -39,7 +39,7 @@ const DashboardHeader = () => {
         <Logo className='md:hidden' onClick={() => router.push('/')} />
         <Logo
           showFullLogo
-          className='hidden md:block'
+          className='hidden md:flex cursor-pointer'
           onClick={() => router.push('/')}
         />
       </>

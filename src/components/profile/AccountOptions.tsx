@@ -21,10 +21,10 @@ const AccountOptions = ({ closeModal }: { closeModal: () => void }) => {
           Delete account
         </Button>
         <Paragraph>
-          NOTE: Deleting your account will erase all your data permanently.{' '}
-          <br />
-          Account deletion requires a recent login. So if it fails logout and
-          login again before deleting account.
+          Note: Deleting your account will permanently erase all associated data
+          and cannot be undone. <br /> <br /> For security reasons, account
+          deletion requires a recent login. If the deletion fails, please log
+          out and log back in before attempting to delete your account again.
         </Paragraph>
       </div>
     </Modal>

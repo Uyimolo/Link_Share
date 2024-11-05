@@ -19,8 +19,7 @@ import { useRef } from 'react';
  */
 
 const Dashboard = () => {
-  
-  const { links, setLinks, linksFromDb, saveLinks } = useLinks();
+  const { links, setLinks, linksFromDb, saveLinks, loading } = useLinks();
   const { user } = useAuthContext();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -65,10 +64,15 @@ const Dashboard = () => {
     }
   };
 
-  if (!user) {
+  if (!user || loading) {
     return (
-      <div className='h-[80vh] w-full grid place-content-center'>
-        <Loading />
+      <div className='h-[80vh] w-full grid lg:space-y-0 gap-4 lg:grid lg:grid-cols-[40%,1fr] '>
+        <div className='bg-white hidden lg:block rounded-t-xl py-10 2xl:py-20'>
+          <MockupPreview />
+        </div>
+        <div className='grid bg-white rounded-t-xl place-content-center'>
+          <Loading />
+        </div>
       </div>
     );
   }
@@ -90,7 +94,7 @@ const Dashboard = () => {
             </Paragraph>
           </div>
 
-          <div className='py-6 bg-white sticky top-0 z-10'>
+          <div className='py-6 bg-white sticky top-0 z-20'>
             <Button variant='secondary' className='' onClick={handleAddNewLink}>
               + Add new link
             </Button>

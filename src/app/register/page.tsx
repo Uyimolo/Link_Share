@@ -111,7 +111,7 @@ const Register = () => {
       <form onSubmit={handleSubmit(onSubmit)} className='space-y-16'>
         <Logo
           showFullLogo
-          className='md:mx-auto w-fit'
+          className='md:mx-auto w-fit cursor-pointer'
           onClick={() => router.push('/')}
         />
 
