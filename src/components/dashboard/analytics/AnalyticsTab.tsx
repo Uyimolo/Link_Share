@@ -4,6 +4,7 @@ import TopLinksByClicksChart from "./TopLinksByClicksChart";
 // import DeviceTypeDistributionChart from "./DeviceTypeDistribution";
 import OverviewSection from "./OverviewSection";
 import TopClicksByCountries from "./TopClicksByCountries";
+import Loading from "@/components/Loading";
 
 const AnalyticsTab = () => {
   const {
@@ -15,8 +16,17 @@ const AnalyticsTab = () => {
     uniqueViews,
     linksLength,
     // deviceData,
-    countriesInfo
+    loading,
+    countriesInfo,
   } = useAnalytics();
+
+  if (loading) {
+    return (
+      <div className="grid h-screen w-full place-content-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 pb-40">

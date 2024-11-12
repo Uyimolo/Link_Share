@@ -7,6 +7,7 @@ import {
 } from "@/services/firestoreService";
 import { useAuthContext } from "@/context/AuthContext";
 import { AnalyticsData, ClickTrendData, DeviceData } from "@/types/types";
+import Loading from "@/components/Loading";
 
 type TopFiveLinks = {
   clickCount: number;
@@ -34,6 +35,8 @@ export const useAnalytics = () => {
       clicks: number;
     }[]
   >();
+  const [loading, setLoading] = useState<boolean>(true);
+
   const { user } = useAuthContext();
   const { links } = useLinks();
   const linksLength = links.length;
@@ -62,6 +65,7 @@ export const useAnalytics = () => {
         }
 
         setAnalyticsData(validAnalyticsData);
+        setLoading(false);
       });
 
       return () => unsubscribe();
@@ -219,6 +223,7 @@ export const useAnalytics = () => {
     uniqueViews,
     linksLength,
     deviceData,
-    countriesInfo
+    countriesInfo,
+    loading
   };
 };
