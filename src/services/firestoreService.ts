@@ -255,9 +255,9 @@ const getGeolocationInfo = async (): Promise<{
   countryCode: string;
 } | null> => {
   try {
-    const response = await fetch(
-      `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_GEOLOCATION_TOKEN}`,
-    );
+    const token = process.env.NEXT_PUBLIC_GEOLOCATION_TOKEN;
+    console.log(token)
+    const response = await fetch(`https://ipinfo.io/json?token=${token}`);
     const locationData = await response.json();
 
     if (!locationData) {
