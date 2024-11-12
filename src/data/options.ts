@@ -24,7 +24,7 @@ export const options = [
     value: 'frontend mentor',
     label: 'Frontend Mentor',
     icon: SiFrontendmentor,
-    color: '#FFFFFF',
+    color: '#222222',
   },
   { value: 'linkedin', label: 'LinkedIn', icon: FaLinkedin, color: '#2D68FF' },
   { value: 'medium', label: 'Medium', icon: FaMedium, color: '#BEBEBE' },

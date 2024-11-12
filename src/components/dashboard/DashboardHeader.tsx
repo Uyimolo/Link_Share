@@ -1,55 +1,73 @@
-'use client';
-import Logo from '../brand/Logo';
-import { FaLink } from 'react-icons/fa';
-import { IoEyeOutline } from 'react-icons/io5';
-import { CgProfile } from 'react-icons/cg';
-import NavItem from './navigation/NavItem';
-import { IconType } from 'react-icons';
-import { useRouter } from 'next/navigation';
+"use client";
+import Logo from "../brand/Logo";
+import { FaLink } from "react-icons/fa";
+import { IoEyeOutline } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import NavItem from "./navigation/NavItem";
+import { useRouter } from "next/navigation";
+import { FaChartBar } from "react-icons/fa6";
 
-type NavigationItemsType = {
-  icon: IconType;
-  label: string;
-  link: string;
-}[];
-
-const DashboardHeader = () => {
+const DashboardHeader = ({
+  tabIndex,
+  setTabIndex,
+}: {
+  tabIndex: number;
+  setTabIndex: (tabIndex: number) => void;
+}) => {
   const router = useRouter();
-  const navigationItems: NavigationItemsType = [
+
+  const tabs = [
     {
-      label: 'Links',
+      label: "Links",
       icon: FaLink,
-      link: '/dashboard',
     },
     {
-      label: 'Profile Details',
+      label: "Profile Details",
       icon: CgProfile,
-      link: '/dashboard/profile',
     },
     {
-      label: 'Preview',
+      label: "Analytics",
+      icon: FaChartBar,
+    },
+    {
+      label: "Preview",
       icon: IoEyeOutline,
-      link: '/preview',
     },
   ];
 
+  const previewTabIndex = tabs.findIndex((tab) => tab.label === "Preview");
+
   return (
-    <div className='flex justify-between p-6 mb-6 bg-white md:m-4 md:rounded-xl'>
+    <div className="mb-4 flex justify-between bg-white p-4 md:m-4 md:rounded-xl">
       <>
-        <Logo className='md:hidden' onClick={() => router.push('/')} />
+        <Logo className="lg:hidden" onClick={() => router.push("/")} />
         <Logo
           showFullLogo
-          className='hidden md:flex cursor-pointer'
-          onClick={() => router.push('/')}
+          className="hidden cursor-pointer lg:flex"
+          onClick={() => router.push("/")}
         />
       </>
 
-      <div className='flex items center'>
-        <NavItem navItem={navigationItems[0]} />
-        <NavItem navItem={navigationItems[1]} />
+      <div className="items center flex">
+        {tabs
+          .filter((tab) => tab.label !== "Preview")
+          .map((tab, index) => (
+            <NavItem
+              key={index}
+              isLink={false}
+              navItem={tab}
+              isTabActive={index === tabIndex}
+              onClick={() => setTabIndex(index)}
+            />
+          ))}
       </div>
 
-      <NavItem navItem={navigationItems[2]} />
+      <NavItem
+        isLink={false}
+        isTabActive={tabIndex === previewTabIndex}
+        navItem={tabs[previewTabIndex]}
+        onClick={() => setTabIndex(previewTabIndex)}
+      />
     </div>
   );
 };

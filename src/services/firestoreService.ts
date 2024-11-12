@@ -8,11 +8,26 @@ import {
   query,
   where,
   getDocs,
-} from 'firebase/firestore';
-import { LinkType, ProfileDetails } from '@/types/types';
-import { db, storage } from '../../config/firebase';
-import { toast } from 'sonner';
-import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+  updateDoc,
+  increment,
+  arrayUnion,
+  deleteDoc,
+} from "firebase/firestore";
+import {
+  AnalyticsData,
+  LifetimeAnalyticsData,
+  LinkType,
+  ProfileDetails,
+} from "@/types/types";
+import { db, storage } from "../../config/firebase";
+import { toast } from "sonner";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import countries from "i18n-iso-countries";
+
+import enLocale from "i18n-iso-countries/langs/en.json";
+
+countries.registerLocale(enLocale);
+// countries.registerLocale(require("i18n-iso-countries/langs/en.json"));
 
 /**
  * Fetches the links for a specified user in real-time.
@@ -22,9 +37,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
  */
 export const getUserLinks = (
   userId: string,
-  onLinksFetched: (links: LinkType[]) => void
+  onLinksFetched: (links: LinkType[]) => void,
 ) => {
-  const userDocRef = doc(db, 'users', userId);
+  const userDocRef = doc(db, "users", userId);
   const unsubscribe = onSnapshot(
     userDocRef,
     (docSnapshot) => {
@@ -37,8 +52,8 @@ export const getUserLinks = (
       }
     },
     (error) => {
-      console.error('Error fetching document:', error);
-    }
+      console.error("Error fetching document:", error);
+    },
   );
   return unsubscribe;
 };
@@ -51,14 +66,14 @@ export const getUserLinks = (
  */
 export const getProfileInfo = (
   userId: string,
-  onProfileInformationFetched: (profileInfo: ProfileDetails) => void
+  onProfileInformationFetched: (profileInfo: ProfileDetails) => void,
 ) => {
-  const userDocRef = doc(db, 'users', userId);
+  const userDocRef = doc(db, "users", userId);
   const emptyProfileInfo = {
-    profilePicture: '',
-    firstName: '',
-    lastName: '',
-    email: '',
+    profilePicture: "",
+    firstName: "",
+    lastName: "",
+    email: "",
   };
 
   const unsubscribe = onSnapshot(
@@ -68,13 +83,12 @@ export const getProfileInfo = (
         const data = docSnapshot.data();
         onProfileInformationFetched(data.profileInfo || emptyProfileInfo);
       } else {
-        // console.log('No such document!');
         onProfileInformationFetched(emptyProfileInfo);
       }
     },
     (error) => {
-      console.error('Error fetching document:', error);
-    }
+      console.error("Error fetching document:", error);
+    },
   );
   return unsubscribe;
 };
@@ -85,7 +99,7 @@ export const getProfileInfo = (
  * @param links - Array of link objects to save.
  */
 export const saveUserLinks = async (userId: string, links: LinkType[]) => {
-  const userDocRef = doc(db, 'users', userId);
+  const userDocRef = doc(db, "users", userId);
   try {
     await setDoc(
       userDocRef,
@@ -93,12 +107,12 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
         links: links,
         updatedAt: serverTimestamp(),
       },
-      { merge: true }
+      { merge: true },
     );
     // console.log('Links saved successfully');
   } catch {
     // console.error('Error saving links:', error);
-    toast.error('Error saving links');
+    toast.error("Error saving links");
   }
 };
 
@@ -109,7 +123,7 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
  */
 export const saveProfilePicture = async (
   file: File,
-  userId: string
+  userId: string,
 ): Promise<{ fileURL: string; downloadProgress: number }> => {
   // i am setting the filename to user.uid
   // so that the old profile picture will be automatically replaced with the new one.
@@ -121,7 +135,7 @@ export const saveProfilePicture = async (
     let downloadProgress = 0;
 
     uploadTask.on(
-      'state_changed',
+      "state_changed",
       (snapshot) => {
         // Track upload progress as a percentage
         const progress =
@@ -139,7 +153,7 @@ export const saveProfilePicture = async (
         // console.log('File available at', downloadURL);
 
         resolve({ fileURL: downloadURL, downloadProgress });
-      }
+      },
     );
   });
 };
@@ -151,9 +165,9 @@ export const saveProfilePicture = async (
  */
 export const saveProfileDetails = async (
   profileInfo: ProfileDetails,
-  userId: string
+  userId: string,
 ) => {
-  const userDocRef = doc(db, 'users', userId);
+  const userDocRef = doc(db, "users", userId);
   try {
     await setDoc(
       userDocRef,
@@ -161,12 +175,12 @@ export const saveProfileDetails = async (
         profileInfo: profileInfo,
         updatedAt: serverTimestamp(),
       },
-      { merge: true }
+      { merge: true },
     );
     // console.log('Profile details saved successfully');
   } catch {
     // console.error('Error saving profile details:', error);
-    toast.error('Error saving profile details');
+    toast.error("Error saving profile details");
   }
 };
 
@@ -176,7 +190,7 @@ export const saveProfileDetails = async (
  * @returns Promise resolving with the hashed UID or null if not found.
  */
 export const getHashedUID = async (userId: string) => {
-  const userRef = doc(db, 'users', userId);
+  const userRef = doc(db, "users", userId);
   const docSnapShot = await getDoc(userRef);
 
   if (docSnapShot.exists()) {
@@ -190,24 +204,25 @@ export const getHashedUID = async (userId: string) => {
 
 /**
  * Retrieves public user details based on hashed UID.
- * @param hashedUID - The hashed UID to query.
+ * @param username - The username to query.
  * @returns Promise resolving with the user details or null if not found.
  */
-export const getUserPublicDetails = async (hashedUID: string | string[]) => {
+export const getUserPublicDetails = async (username: string | string[]) => {
   try {
-    const collectionRef = collection(db, 'users');
-    const q = query(collectionRef, where('uid.hashedUID', '==', hashedUID));
+    toast.success("starting");
+    const collectionRef = collection(db, "users");
+    const q = query(collectionRef, where("uid.username", "==", username));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
-      console.log(userDoc.data());
+      // console.log(userDoc.data());
       return { ...userDoc.data() };
     } else {
       return null;
     }
-  } catch {
-    // console.error('Error fetching document:', error);
+  } catch (error) {
+    console.error("Error fetching document:", error);
     return null;
   }
 };
@@ -218,7 +233,7 @@ export const getUserPublicDetails = async (hashedUID: string | string[]) => {
  * @returns Promise resolving with profile info and links, or null if not found.
  */
 export const getProfileInfoAndLinksForPublicPage = async (userId: string) => {
-  const publicDocRef = doc(db, 'users', userId);
+  const publicDocRef = doc(db, "users", userId);
   const publicDocSnapShot = await getDoc(publicDocRef);
 
   if (!publicDocSnapShot.exists()) {
@@ -226,9 +241,207 @@ export const getProfileInfoAndLinksForPublicPage = async (userId: string) => {
     return null;
   }
 
-  console.log(publicDocSnapShot.data());
+  // console.log(publicDocSnapShot.data());
   return {
     ...publicDocSnapShot.data()?.profileInfo,
     ...publicDocSnapShot.data()?.links,
   };
+};
+
+const getGeolocationInfo = async (): Promise<{
+  ip: string;
+  city: string;
+  region: string;
+  countryCode: string;
+} | null> => {
+  try {
+    const response = await fetch(
+      `https://ipinfo.io/json?token=${process.env.NEXT_PUBLIC_GEOLOCATION_TOKEN}`,
+    );
+    const locationData = await response.json();
+
+    if (!locationData) {
+      return null;
+    }
+
+    return {
+      ip: locationData.ip, // The user's IP address
+      city: locationData.city,
+      region: locationData.region,
+      // country: countryName || locationData.country,
+      countryCode: locationData.country,
+    };
+  } catch (error) {
+    console.error("Error getting geolocation:", error);
+    return null;
+  }
+};
+
+export const saveAnalyticsData = async (userId: string, linkId: string) => {
+  try {
+    const geolocationInfo = await getGeolocationInfo();
+    if (geolocationInfo) {
+      const deviceType = /Mobi|Android/i.test(navigator.userAgent)
+        ? "mobile"
+        : "desktop";
+      const visitorId = geolocationInfo.ip;
+
+      const docRef = doc(db, "users", userId, "analytics", linkId);
+      const docSnap = await getDoc(docRef);
+
+      const analyticsUpdate = {
+        id: linkId,
+        clickCount: increment(1),
+        lastClickDate: serverTimestamp(),
+        [`deviceType.${deviceType}`]: increment(1),
+        clickTrends: arrayUnion(new Date()), // Adds recent click time
+        uniqueVisitors: arrayUnion(visitorId),
+      };
+
+      if (docSnap.exists()) {
+        await updateDoc(docRef, analyticsUpdate);
+
+        await updateDoc(docRef, {
+          [`clickLocations.${geolocationInfo.countryCode}`]: increment(1),
+        });
+      } else {
+        await setDoc(
+          docRef,
+          {
+            id: linkId,
+            clickCount: 1,
+            lastClickDate: new Date(),
+            clickLocations: {
+              [geolocationInfo?.countryCode]: 1,
+            },
+            clickTrends: [new Date()],
+            deviceType: {
+              mobile: deviceType === "mobile" ? 1 : 0,
+              desktop: deviceType === "desktop" ? 1 : 0,
+            },
+            uniqueVisitors: [visitorId],
+          },
+          { merge: true },
+        );
+      }
+    }
+    console.log("Analytics data saved");
+  } catch (error) {
+    console.error("Error saving analytics data:", error);
+    toast.error("Error saving analytics data");
+  }
+};
+
+export const saveLifeTimeAnalyticsData = async (userId: string) => {
+  const docRef = doc(db, "users", userId, "analytics", "life-time-analytics");
+  const docSnapshot = await getDoc(docRef);
+  const geolocationInfo = await getGeolocationInfo();
+
+  const deviceType = /Mobi|Android/i.test(navigator.userAgent)
+    ? "mobile"
+    : "desktop";
+  const visitorId = geolocationInfo?.ip;
+
+  if (docSnapshot.exists()) {
+    await updateDoc(docRef, {
+      clickCount: increment(1),
+      uniqueVisitors: arrayUnion(visitorId),
+      [`deviceType.${deviceType}`]: increment(1),
+    });
+  } else {
+    await setDoc(
+      docRef,
+      {
+        clickCount: 1,
+        uniqueVisitors: [visitorId],
+        deviceType: {
+          mobile: deviceType === "mobile" ? 1 : 0,
+          desktop: deviceType === "desktop" ? 1 : 0,
+        },
+      },
+      { merge: true },
+    );
+  }
+};
+
+export const getLifetimeAnalyticsData = (
+  userId: string,
+  onAnalyticsDataFetched: (analyticsData: LifetimeAnalyticsData) => void,
+) => {
+  const docRef = doc(db, "users", userId, "analytics", "life-time-analytics");
+  const emptyAnalyticsData = {
+    clickCount: 0,
+    uniqueVisitors: [],
+    deviceType: {
+      mobile: 0,
+      desktop: 0,
+    },
+  };
+  const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
+    if (docSnapshot.exists()) {
+      const analyticsData = docSnapshot.data() as LifetimeAnalyticsData;
+      onAnalyticsDataFetched(analyticsData);
+    } else {
+      onAnalyticsDataFetched(emptyAnalyticsData);
+    }
+  });
+
+  return () => unsubscribe;
+};
+
+export const getAnalyticsData = (
+  userId: string,
+  onAnalyticsDataFetched: (analyticsData: AnalyticsData[]) => void,
+) => {
+  const emptyAnalyticsData: AnalyticsData = {
+    id: "",
+    clickCount: 0,
+    lastClickDate: new Date(0),
+    clickLocations: {},
+    clickTrends: [],
+    deviceType: { mobile: 0, desktop: 0 },
+    uniqueVisitors: [],
+  };
+
+  if (userId) {
+    const analyticsCollectionRef = collection(db, "users", userId, "analytics");
+
+    const unsubscribe = onSnapshot(
+      analyticsCollectionRef,
+      (snapshot) => {
+        const analyticsDataArray = snapshot.docs.map(
+          (doc) => doc.data() as AnalyticsData,
+        );
+
+        console.log(analyticsDataArray);
+
+        onAnalyticsDataFetched(
+          analyticsDataArray.length ? analyticsDataArray : [emptyAnalyticsData],
+        );
+      },
+      (error) => {
+        console.error("Error getting analytics data:", error);
+        onAnalyticsDataFetched([emptyAnalyticsData]);
+      },
+    );
+    return unsubscribe;
+  }
+
+  return () => {};
+};
+
+export const deleteAnalyticsData = async (userId: string, linkId: string) => {
+  console.log(linkId);
+  try {
+    if (linkId) {
+      const analyticsRef = doc(db, "users", userId, "analytics", linkId);
+
+      await deleteDoc(analyticsRef);
+    } else {
+      console.log("no link");
+    }
+    // console.log(`Deleted analytics data for link ${linkId}`);
+  } catch (error) {
+    console.error("Error deleting analytics data:", error);
+  }
 };

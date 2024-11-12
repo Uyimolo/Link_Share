@@ -1,22 +1,23 @@
-'use client';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Logo from '@/components/brand/Logo';
-import FormGroup from '@/components/forms/FormGroup';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { IconType } from 'react-icons';
-import Button from '@/components/Button';
-import Link from 'next/link';
-import Heading from '@/components/text/Heading';
-import Paragraph from '@/components/text/Paragraph';
-import { useAuthContext } from '@/context/AuthContext';
-import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
-import { useRouter } from 'next/navigation';
+"use client";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Logo from "@/components/brand/Logo";
+import FormGroup from "@/components/forms/FormGroup";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { IconType } from "react-icons";
+import Button from "@/components/Button";
+import Link from "next/link";
+import Heading from "@/components/text/Heading";
+import Paragraph from "@/components/text/Paragraph";
+import { useAuthContext } from "@/context/AuthContext";
+import useProtectedRoute from "@/custom-hooks/useProtectedRoute";
+import { useRouter } from "next/navigation";
 
 // Form data type definition based on validation schema
 type RegisterFormData = {
   email: string;
+  username: string;
   password: string;
   confirmPassword: string;
 };
@@ -25,16 +26,17 @@ type RegisterFormData = {
 const validationSchema = yup.object({
   email: yup
     .string()
-    .email('Invalid email format')
-    .required('Email is required'),
+    .email("Invalid email format")
+    .required("Email is required"),
+  username: yup.string().min(6).max(30).required("Username is required"),
   password: yup
     .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .required('Password is required'),
+    .min(8, "Password must be at least 8 characters long")
+    .required("Password is required"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref('password')], 'Passwords must match')
-    .required('Confirm password is required'),
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Confirm password is required"),
 });
 
 type FormFieldsType = {
@@ -49,27 +51,35 @@ type FormFieldsType = {
 // Form fields definition
 const registerFormFields: FormFieldsType = [
   {
-    label: 'Email address',
-    name: 'email',
-    type: 'email',
+    label: "Email address",
+    name: "email",
+    type: "email",
     required: true,
-    placeholder: 'Email',
+    placeholder: "Email",
     icon: FaEnvelope,
   },
   {
-    label: 'Create password',
-    name: 'password',
-    type: 'password',
+    label: "Username",
+    name: "username",
+    type: "text",
     required: true,
-    placeholder: 'Password',
+    placeholder: "Username",
+    icon: FaUser,
+  },
+  {
+    label: "Create password",
+    name: "password",
+    type: "password",
+    required: true,
+    placeholder: "Password",
     icon: FaLock,
   },
   {
-    label: 'Confirm Password',
-    name: 'confirmPassword',
-    type: 'password',
+    label: "Confirm Password",
+    name: "confirmPassword",
+    type: "password",
     required: true,
-    placeholder: 'Confirm Password',
+    placeholder: "Confirm Password",
     icon: FaLock,
   },
 ];
@@ -85,38 +95,40 @@ const Register = () => {
     reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const { registerNewUser, loading } = useAuthContext();
 
   const onSubmit = async (data: RegisterFormData) => {
-    const { email, password } = data;
+    const { email, password, username } = data;
     try {
-      await registerNewUser(email, password);
-      reset();
+      const registered = await registerNewUser(email, password, username);
+      if (registered) {
+        reset();
+      }
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error("Error creating user:", error);
     }
   };
 
   return (
-    <div className='p-6 min-h-screen bg-white md:bg-transparent grid md:py-20'>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-16'>
+    <div className="grid min-h-screen bg-white p-6 md:bg-transparent md:py-20">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-16">
         <Logo
           showFullLogo
-          className='md:mx-auto w-fit cursor-pointer'
-          onClick={() => router.push('/')}
+          className="w-fit cursor-pointer md:mx-auto"
+          onClick={() => router.push("/")}
         />
 
-        <div className='space-y-8 md:p-10 md:w-[476px] md:mx-auto bg-white'>
-          <div className='space-y-2'>
-            <Heading variant='h1'>Create account</Heading>
-            <Paragraph className='text-base'>{`Let's get you started sharing your links!`}</Paragraph>
+        <div className="space-y-8 bg-white md:mx-auto md:w-[476px] md:p-10">
+          <div className="space-y-2">
+            <Heading variant="h1">Create account</Heading>
+            <Paragraph className="text-base">{`Let's get you started sharing your links!`}</Paragraph>
           </div>
 
           {/* form fields */}
-          <div className='space-y-4'>
+          <div className="space-y-4">
             {registerFormFields.map((field, index) => (
               <FormGroup
                 key={index}
@@ -127,17 +139,17 @@ const Register = () => {
             ))}
           </div>
 
-          <Paragraph variant='small'>
+          <Paragraph variant="small">
             Password must contain at least 8 characters
           </Paragraph>
 
-          <Button type='submit' variant='primary' disabled={loading}>
+          <Button type="submit" variant="primary" disabled={loading}>
             Create new account
           </Button>
 
-          <Paragraph className='text-center'>
-            Already have an account?{' '}
-            <Link className='text-blue' href='/login'>
+          <Paragraph className="text-center">
+            Already have an account?{" "}
+            <Link className="text-blue" href="/login">
               Login
             </Link>
           </Paragraph>

@@ -1,4 +1,3 @@
-'use client';
 import { useEffect, useState } from 'react';
 import { useAuthContext } from '@/context/AuthContext';
 import { LinkType } from '@/types/types';

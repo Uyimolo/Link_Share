@@ -14,6 +14,7 @@ const Preview = () => {
   return (
     <>
       {<PreviewLinksAndProfile
+        isPublic
         links={links}
         loading={loading}
         profileInfo={profileInfo}

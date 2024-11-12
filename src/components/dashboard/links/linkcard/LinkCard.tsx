@@ -102,7 +102,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         <Paragraph className='font-semibold'>{`Link #${index + 1}`}</Paragraph>
 
         <Paragraph
-          className='cursor-pointer text-red hover:text-blue'
+          className='cursor-pointer text-gray hover:text-blue'
           onClick={() => setShowDeleteConfirmation(true)}>
           Remove
         </Paragraph>
