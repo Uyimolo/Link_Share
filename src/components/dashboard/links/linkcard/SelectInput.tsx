@@ -16,19 +16,8 @@ const SelectInput = ({
   onChange: (selectedValue: string) => void;
   initialValue?: string;
 }) => {
-  // // Initialize state with the provided initialValue or the first option
-  // const [selectedValue, setSelectedValue] = useState(
-  //   initialValue || options[0].value
-  // );
 
-  // Effect to update selectedValue when initialValue prop changes
-  // useEffect(() => {
-  //   if (initialValue) {
-  //     setSelectedValue(initialValue);
-  //   }
-  // }, [initialValue]);
-
-  // Find the default option for the placeholder
+  // Finds the default option for the placeholder
   const defaultOption = options.find((option) => option.value === initialValue);
   const DefaultValueIcon = defaultOption?.icon;
 
@@ -48,7 +37,6 @@ const SelectInput = ({
     );
 
   const handleChange = (value: string) => {
-    // setSelectedValue(value);
     onChange(value);
   };
 
@@ -58,7 +46,7 @@ const SelectInput = ({
         <SelectTrigger className='py-6'>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
-        <SelectContent className='bg-veryLightBlue'>
+        <SelectContent className=''>
           <SelectGroup>
             {options.map((option, index) => {
               const Icon = option.icon;

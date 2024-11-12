@@ -10,32 +10,32 @@ import dashboardScreenshot from "@/assets/images/dashboard-screenshot.png";
 import logo from "@/assets/images/logo.svg";
 import Logo from "@/components/brand/Logo";
 
-const features = [
-  {
-    title: "Simple Link Creation",
-    content:
-      "Easily add links to showcase your work, social profiles, or resources.",
-  },
-  // {
-  //   title: 'Drag-and-Drop Organization',
-  //   content:
-  //     'Reorder your links instantly with a simple drag-and-drop interface.',
-  // },
-  {
-    title: "Real-Time Preview",
-    content:
-      "See changes live as you edit, ensuring your profile looks perfect.",
-  },
-  {
-    title: "Batch Updates",
-    content:
-      "Make multiple edits and save them all at once with a single click.",
-  },
-  {
-    title: "Mobile-First Design",
-    content: "Manage your links smoothly from any device, wherever you are.",
-  },
-];
+// const features = [
+//   {
+//     title: "Simple Link Creation",
+//     content:
+//       "Easily add links to showcase your work, social profiles, or resources.",
+//   },
+//   // {
+//   //   title: 'Drag-and-Drop Organization',
+//   //   content:
+//   //     'Reorder your links instantly with a simple drag-and-drop interface.',
+//   // },
+//   {
+//     title: "Real-Time Preview",
+//     content:
+//       "See changes live as you edit, ensuring your profile looks perfect.",
+//   },
+//   {
+//     title: "Batch Updates",
+//     content:
+//       "Make multiple edits and save them all at once with a single click.",
+//   },
+//   {
+//     title: "Mobile-First Design",
+//     content: "Manage your links smoothly from any device, wherever you are.",
+//   },
+// ];
 
 const Home = () => {
   useProtectedRoute(false);

@@ -1,9 +1,10 @@
 import React from 'react';
-import Button from '../Button';
-import Modal from '../Modal';
-import Paragraph from '../text/Paragraph';
+
 import { useAuthContext } from '@/context/AuthContext';
 import useProfileInfo from '@/custom-hooks/useProfileInfo';
+import Modal from '@/components/Modal';
+import Paragraph from '@/components/text/Paragraph';
+import Button from '@/components/Button';
 
 const AccountOptions = ({ closeModal }: { closeModal: () => void }) => {
   const { logout, handleAccountDeletion } = useAuthContext();

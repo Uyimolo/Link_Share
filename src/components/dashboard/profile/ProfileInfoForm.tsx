@@ -1,15 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import FormGroup from '../forms/FormGroup';
-import Paragraph from '../text/Paragraph';
+
 import { CiImageOn } from 'react-icons/ci';
 import { useEffect, useRef, useState } from 'react';
-import Button from '../Button';
 import { ProfileFormData } from '@/types/types';
 import useProfileInfo from '@/custom-hooks/useProfileInfo';
 import { toast } from 'sonner';
-import Loading from '../Loading';
+import Loading from '@/components/Loading';
+import Paragraph from '@/components/text/Paragraph';
+import FormGroup from '@/components/forms/FormGroup';
+import Button from '@/components/Button';
 
 /* ProfileInfoForm Component
  *
