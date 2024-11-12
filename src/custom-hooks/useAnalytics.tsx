@@ -7,7 +7,6 @@ import {
 } from "@/services/firestoreService";
 import { useAuthContext } from "@/context/AuthContext";
 import { AnalyticsData, ClickTrendData, DeviceData } from "@/types/types";
-import Loading from "@/components/Loading";
 
 type TopFiveLinks = {
   clickCount: number;
