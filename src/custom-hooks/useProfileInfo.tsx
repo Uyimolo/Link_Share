@@ -1,13 +1,16 @@
-'use client'
-import { useAuthContext } from '@/context/AuthContext';
+"use client";
+import { useAuthContext } from "@/context/AuthContext";
 import {
-  getProfileInfo,
+  fetchDocumentData,
+  // getProfileInfo,
   saveProfileDetails,
   saveProfilePicture,
-} from '@/services/firestoreService';
-import { ProfileDetails } from '@/types/types';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+} from "@/services/firestoreService";
+import { ProfileDetails } from "@/types/types";
+import { doc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { db } from "../../config/firebase";
 
 /**
  * Custom hook to manage profile information.
@@ -18,26 +21,25 @@ import { toast } from 'sonner';
  */
 const useProfileInfo = () => {
   const [profileInfo, setProfileInfo] = useState<ProfileDetails>({
-    profilePicture: '',
-    firstName: '',
-    lastName: '',
-    email: '',
+    profilePicture: "",
+    firstName: "",
+    lastName: "",
+    email: "",
   });
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    // console.log(profileInfo);
-  }, [profileInfo]);
-
   // monitor and fetch profile info from firebase
   useEffect(() => {
     if (user) {
-      const unsubscribe = getProfileInfo(user.uid, (profileInfo) => {
-        setProfileInfo(profileInfo);
-        setLoading(false);
-      });
+      const unsubscribe = fetchDocumentData(
+        doc(db, "users", user.uid),
+        (data) => {
+          setProfileInfo(data?.profileInfo);
+          setLoading(false);
+        },
+      );
 
       return () => unsubscribe();
     }
@@ -52,11 +54,11 @@ const useProfileInfo = () => {
     file: File,
     firstName: string,
     lastName: string,
-    email?: string
+    email?: string,
   ) => {
     if (loading) {
       toast.error(
-        'Profile information is still loading. Please try again in a moment.'
+        "Profile information is still loading. Please try again in a moment.",
       );
       return;
     }
@@ -66,19 +68,19 @@ const useProfileInfo = () => {
         // Wait for the new file upload and URL retrieval
         const { fileURL, downloadProgress } = await saveProfilePicture(
           file,
-          user.uid
+          user.uid,
         );
         setDownloadProgress(downloadProgress);
 
         // Save profile details to Firestore
         await saveProfileDetails(
           { profilePicture: fileURL, firstName, lastName, email },
-          user.uid
+          user.uid,
         );
-        toast.success('Profile information updated successfully');
+        toast.success("Profile information updated successfully");
       } catch (error) {
-        console.error('Error updating profile information', error);
-        toast.error('Error updating profile information');
+        console.error("Error updating profile information", error);
+        toast.error("Error updating profile information");
       }
     }
   };

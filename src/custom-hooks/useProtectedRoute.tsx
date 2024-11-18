@@ -22,7 +22,7 @@ const useProtectedRoute = (authMode: boolean) => {
       }
 
       if (!authMode && authStatus) {
-        router.push('/dashboard');
+        router.push('/admin');
       }
     }
   }, [router, user, loading, authMode, pathname]);

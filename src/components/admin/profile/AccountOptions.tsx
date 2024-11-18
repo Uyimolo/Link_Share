@@ -1,5 +1,4 @@
-import React from 'react';
-
+'use client'
 import { useAuthContext } from '@/context/AuthContext';
 import useProfileInfo from '@/custom-hooks/useProfileInfo';
 import Modal from '@/components/Modal';

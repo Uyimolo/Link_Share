@@ -1,17 +1,17 @@
 "use client";
+import AccountOptions from "@/components/admin/profile/AccountOptions";
+import ProfileInfoForm from "@/components/admin/profile/ProfileInfoForm";
 import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
 import useProtectedRoute from "@/custom-hooks/useProtectedRoute";
 import React, { useState } from "react";
-import ProfileInfoForm from "./ProfileInfoForm";
-import AccountOptions from "./AccountOptions";
 
 /**
  * Component: [Profile]
  * Description: [Handles all tasks associated with setting and updating profile information]
  */
 
-const ProfileTab = () => {
+const Profile = () => {
   useProtectedRoute(true);
   const [showAccountOptions, setShowAccountOptions] = useState<boolean>(false);
 
@@ -36,4 +36,4 @@ const ProfileTab = () => {
   );
 };
 
-export default ProfileTab;
+export default Profile;

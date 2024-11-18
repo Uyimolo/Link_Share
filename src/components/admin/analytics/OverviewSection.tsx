@@ -7,13 +7,13 @@ const OverviewSection = ({
   mobile = 0,
   desktop = 0,
   uniqueImpressions,
-  numberOfLinks,
+  numberOfLinks = 0,
 }: {
   totalClicks: number | undefined;
   mobile: number | undefined;
   desktop: number | undefined;
   uniqueImpressions: number;
-  numberOfLinks: number;
+  numberOfLinks?: number;
 }) => {
   const mobilePercentage = (mobile / totalClicks) * 100;
   const desktopPercentage = (desktop / totalClicks) * 100;
@@ -30,7 +30,7 @@ const OverviewSection = ({
               <FaEye className="text-lg text-gray" />
               <Paragraph>Total views</Paragraph>
             </div>
-            <Paragraph className="leading-none pl-2 text-gray">
+            <Paragraph className="pl-2 leading-none text-gray">
               {" "}
               <strong>{uniqueImpressions}</strong>{" "}
               {uniqueImpressions === 1 ? "view" : "unique views"}
@@ -43,7 +43,7 @@ const OverviewSection = ({
               <FaPercent className="text-lg text-gray" />
               <Paragraph>Total links</Paragraph>
             </div>
-            <Paragraph className="text-gray pl-2">
+            <Paragraph className="pl-2 text-gray">
               {" "}
               <strong>{numberOfLinks}</strong> links
             </Paragraph>
@@ -55,7 +55,7 @@ const OverviewSection = ({
               <FaHandPointer className="text-lg text-gray" />
               <Paragraph>Total clicks</Paragraph>
             </div>
-            <Paragraph className="text-gray pl-2">
+            <Paragraph className="pl-2 text-gray">
               {" "}
               <strong>{totalClicks}</strong> total clicks
             </Paragraph>
@@ -67,12 +67,16 @@ const OverviewSection = ({
               <PiDevices className="text-lg text-gray" />
               <Paragraph>Devices</Paragraph>
             </div>
-            <Paragraph className="text-gray lg:flex lg:gap-2 pl-2">
+            <Paragraph className="pl-2 text-gray lg:flex lg:gap-2">
               {" "}
-              <strong>{mobilePercentage}%</strong> mobile
+              <strong>{mobilePercentage ? mobilePercentage : 0}%</strong> mobile
               <br className="lg:hidden" />
               <span className="hidden lg:block">|</span>
-              <strong> {desktopPercentage}%</strong> {" " + "desktop"}
+              <strong>
+                {" "}
+                {desktopPercentage ? desktopPercentage : 0}%
+              </strong>{" "}
+              {" " + "desktop"}
             </Paragraph>
           </div>
         </div>

@@ -1,3 +1,4 @@
+"use client";
 import MockPreviewCard from "../mockup-preview/MockPreviewCard";
 import PreviewHeader from "./PreviewHeader";
 import Loading from "../Loading";
@@ -6,10 +7,8 @@ import Paragraph from "@/components/text/Paragraph";
 import { LinkType, ProfileDetails } from "@/types/types";
 import { RxAvatar } from "react-icons/rx";
 import cn from "@/utilities/cn";
-import {
-  saveAnalyticsData,
-  saveLifeTimeAnalyticsData,
-} from "@/services/firestoreService";
+import { saveAnalyticsData } from "@/services/firestoreService";
+import { useAuthContext } from "@/context/AuthContext";
 
 type PreviewLinksAndProfileProps = {
   links: LinkType[] | undefined;
@@ -28,18 +27,18 @@ const PreviewLinksAndProfile = ({
 }: PreviewLinksAndProfileProps) => {
   const { firstName, lastName, profilePicture, email } = profileInfo || {};
   const fullName = `${firstName || ""} ${lastName || ""}`;
+  const { user } = useAuthContext();
 
   const handleLinkClick = async (link: LinkType) => {
     try {
-      if (userId) {
+      if (userId && isPublic) {
         await saveAnalyticsData(userId, link.id);
-        await saveLifeTimeAnalyticsData(userId);
         if (isPublic) {
-          window.open(link.url, "_blank");
+          // window.open(link.url, "_blank");
         }
       } else {
         if (isPublic) {
-          window.open(link.url, "_blank");
+          // window.open(link.url, "_blank");
         }
       }
     } catch (error) {
@@ -50,7 +49,7 @@ const PreviewLinksAndProfile = ({
   if (loading) {
     return (
       <div className="mx-auto h-screen w-full max-w-[1900px] p-4">
-        <PreviewHeader />
+        {!user && !loading && <PreviewHeader />}
         <div className="z-60 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 self-center justify-self-center">
           <Loading />
         </div>
@@ -115,7 +114,7 @@ const PreviewLinksAndProfile = ({
           </div>
         ) : (
           <div className="mx-auto w-[237px] space-y-2 pt-10">
-            {[1, 2, 3, 4].map((placeholder, index) => (
+            {[1, 2, 3, 4].map((_, index) => (
               <div key={index} className="w-[237px] bg-lighterGray p-5"></div>
             ))}
           </div>

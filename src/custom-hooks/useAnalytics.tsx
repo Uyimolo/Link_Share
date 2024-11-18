@@ -6,7 +6,13 @@ import {
   getAnalyticsData,
 } from "@/services/firestoreService";
 import { useAuthContext } from "@/context/AuthContext";
-import { AnalyticsData, ClickTrendData, DeviceData } from "@/types/types";
+import {
+  AnalyticsData,
+  ClickTrendData,
+  DeviceData,
+  LinkWithAnalytics,
+} from "@/types/types";
+import { options } from "@/data/options";
 
 type TopFiveLinks = {
   clickCount: number;
@@ -16,9 +22,9 @@ type TopFiveLinks = {
 }[];
 
 export const useAnalytics = () => {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData[] | null>(
-    null,
-  );
+  const [analyticsData, setAnalyticsData] = useState<
+    AnalyticsData[] | null | undefined
+  >(null);
   const [uniqueViews, setUniqueViews] = useState<number>(0);
   const [clickTrendData, setClickTrendData] = useState<
     ClickTrendData[] | undefined
@@ -35,29 +41,33 @@ export const useAnalytics = () => {
     }[]
   >();
   const [loading, setLoading] = useState<boolean>(true);
+  const [linksWithAnalytics, setLinksWithAnalytics] = useState<
+    LinkWithAnalytics[]
+  >([]);
 
   const { user } = useAuthContext();
-  const { links } = useLinks();
-  const linksLength = links.length;
+  const { links, loading: linksLoading } = useLinks();
+  const linksLength = links?.length;
 
   const mobile = deviceData.find((data) => data.name === "mobile")?.value;
   const desktop = deviceData.find((data) => data.name === "desktop")?.value;
 
   // GET ANALYTICS DATA IN REAL TIME
   useEffect(() => {
-    if (user) {
+    if (user && links) {
       const unsubscribe = getAnalyticsData(user.uid, (fetchedData) => {
-        const validAnalyticsData = fetchedData.filter((analytics) =>
-          links.some((link) => link.id === analytics.id),
+        const validAnalyticsData = fetchedData?.filter((analytics) =>
+          links?.some((link) => link.id === analytics.id),
         );
 
-        const invalidAnalyticsData = fetchedData.filter(
-          (analytics) => !links.some((link) => link.id === analytics.id),
+        const invalidAnalyticsData = fetchedData?.filter(
+          (analytics) => !links?.some((link) => link.id === analytics.id),
         );
 
         // DELETE INVALID ANALYTICS DATA
-        if (links) {
-          invalidAnalyticsData.forEach((analytics) => {
+        if (links && fetchedData && !linksLoading) {
+          console.log("deleting", links, fetchedData);
+          invalidAnalyticsData?.forEach((analytics) => {
             console.log(analytics);
             deleteAnalyticsData(user.uid, analytics.id);
           });
@@ -130,7 +140,7 @@ export const useAnalytics = () => {
 
     // Create a new array with links that have analytics data
     const linksWithAnalytics = links
-      .map((link) => {
+      ?.map((link) => {
         const analyticsData = analyticsMap.get(link.id);
         return analyticsData
           ? {
@@ -142,13 +152,46 @@ export const useAnalytics = () => {
       .filter((item) => item !== null); // Remove null values
 
     // Sort the array by click count in descending order
-    const sortedLinks = linksWithAnalytics.sort(
+    const sortedLinks = linksWithAnalytics?.sort(
       (a, b) => b.clickCount - a.clickCount,
     );
 
     // Return only the top 5 most clicked links
-    setTopFiveLinks(sortedLinks.slice(0, 5));
+    setTopFiveLinks(sortedLinks?.slice(0, 5));
   }, [analyticsData]);
+
+  // MERGE LINKS ARRAY WITH ANALYTICS DATA
+  useEffect(() => {
+    const linksWithAnalytics = links?.map((link) => {
+      const relatedAnalyticsData = analyticsData?.find(
+        (data) => data.id === link.id,
+      );
+      const relatedOptions = options.find(
+        (option) => option.value === link.title,
+      );
+
+      return {
+        id: link.id,
+        url: link.url,
+        title: relatedOptions?.label ?? "",
+        icon: relatedOptions?.icon,
+        color: relatedOptions?.color ?? "",
+        clickCount: relatedAnalyticsData?.clickCount ?? 0,
+        clickTrends: relatedAnalyticsData?.clickTrends ?? [],
+        deviceType: relatedAnalyticsData?.deviceType ?? {},
+        uniqueVisitors: relatedAnalyticsData?.uniqueVisitors ?? [],
+        clickLocations: relatedAnalyticsData?.clickLocations ?? {},
+        lastClickDate: relatedAnalyticsData
+          ? new Date(
+              relatedAnalyticsData?.lastClickDate?.seconds * 1000,
+            ).toLocaleDateString()
+          : "",
+      };
+    });
+
+    // Set the state or perform any further actions with linksWithAnalytics here
+    if (linksWithAnalytics) setLinksWithAnalytics(linksWithAnalytics);
+  }, [links, analyticsData, options]);
 
   // CALCULATE AND GENERATE DEVICE DATA
   useEffect(() => {
@@ -223,6 +266,7 @@ export const useAnalytics = () => {
     linksLength,
     deviceData,
     countriesInfo,
-    loading
+    loading,
+    linksWithAnalytics,
   };
 };

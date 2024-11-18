@@ -29,7 +29,7 @@ const UserProfileAndLinks = () => {
             const { profileInfo, links, uid } = originalUIDData;
 
             setProfileData({ links: links, profileInfo: profileInfo });
-            setUserId(uid.originalUID);
+            setUserId(uid);
           }
         } catch (error) {
           console.error("Error fetching profile and links:", error);
@@ -41,7 +41,6 @@ const UserProfileAndLinks = () => {
   }, [username]);
 
   const { profileInfo, links } = profileData || {};
-
 
   return (
     <PreviewLinksAndProfile

@@ -63,16 +63,16 @@ const NavItem = ({
         <Link
           href={link}
           className={cn(
-            "flex items-center gap-2 rounded-lg p-3 md:px-7",
+            "flex items-center gap-2 rounded-lg px-4 py-3 md:px-7",
             isActive(link) ? "bg-veryLightBlue" : "",
-            label === "Preview" && "border border-blue",
+            // label === "Preview" && "border border-blue",
           )}
         >
           <Icon
             className={cn(
               "text-lg",
               isActive(link) ? "text-blue" : "text-gray",
-              label === "Preview" && "text-blue",
+              // label === "Preview" && "text-blue",
             )}
           />
           <Paragraph
