@@ -28,6 +28,7 @@ import { FirebaseError } from "firebase/app";
 import { deleteObject, ref } from "firebase/storage";
 import { ProfileDetails } from "@/types/types";
 import { getErrorMessage } from "@/data/firebaseErrors";
+import { useRouter } from "next/navigation";
 
 type AuthContextType = {
   user: User | null;
@@ -57,6 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [username, setUsername] = useState("");
+  const router = useRouter()
 
   // Monitors auth state changes and sets current user
   useEffect(() => {
@@ -130,7 +132,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
 
       setUser(newUser);
-      toast.success("Account created successfully");
+      toast.success(
+        "Account created successfully, redirecting you to your dashboard",
+      );
       return true;
     } catch (error) {
       console.error("Registration error", error);
@@ -152,7 +156,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       );
       if (userCredential) {
         setUser(auth.currentUser);
-        toast.success("Logged in successfully");
+        toast.success(
+          "Logged in successfully, Redirecting you to your dashboard",
+        );
       }
     } catch (error) {
       console.error("Signin error", error);
@@ -170,6 +176,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await auth.signOut();
       setUser(null);
       toast.success("Logged out successfully");
+      router.push('/login')
     } catch (error) {
       console.error("Error while logging out", error);
       toast.error("Failed to log out");
