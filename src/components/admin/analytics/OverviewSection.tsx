@@ -15,8 +15,8 @@ const OverviewSection = ({
   uniqueImpressions: number;
   numberOfLinks?: number;
 }) => {
-  const mobilePercentage = (mobile / totalClicks) * 100;
-  const desktopPercentage = (desktop / totalClicks) * 100;
+  const mobilePercentage = Math.round((mobile / totalClicks) * 100);
+  const desktopPercentage = Math.round((desktop / totalClicks) * 100);
 
   return (
     <div className="bg-whit rounded-xl">
@@ -37,7 +37,7 @@ const OverviewSection = ({
             </Paragraph>
           </div>
 
-          {/* click rate */}
+          {/* number of links */}
           <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
               <FaPercent className="text-lg text-gray" />

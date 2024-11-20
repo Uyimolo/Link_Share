@@ -6,6 +6,8 @@ import { LinkCardProps } from "@/types/types";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { IconType } from "react-icons";
+import { FaEarthOceania, FaLink } from "react-icons/fa6";
 import * as yup from "yup";
 
 type LinkCardForm = {
@@ -24,6 +26,7 @@ type LinkCardFieldTypes = {
   type: string;
   required: boolean;
   placeholder: string;
+  icon: IconType;
 };
 
 const linkCardFields: LinkCardFieldTypes[] = [
@@ -33,6 +36,7 @@ const linkCardFields: LinkCardFieldTypes[] = [
     type: "text",
     required: true,
     placeholder: "Enter the title",
+    icon: FaEarthOceania
   },
   {
     label: "Address",
@@ -40,6 +44,7 @@ const linkCardFields: LinkCardFieldTypes[] = [
     type: "text",
     required: true,
     placeholder: "Enter the address",
+    icon: FaLink
   },
 ];
 const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {

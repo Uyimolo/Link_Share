@@ -18,12 +18,12 @@ const Modal = ({
 
   return (
     <div
-      className="fixed left-0 top-0 z-30 grid h-screen w-screen place-content-center bg-lighterGray/40 backdrop-blur-sm"
+      className="fixed left-0 py-10 top-0 z-30 grid h-screen w-screen place-content-center bg-lighterGray/40 backdrop-blur-sm"
       onClick={closeModal} // Trigger closeModal when the overlay is clicked
     >
       {/* Close modal button */}
       <div
-        className="group absolute right-6 top-5 flex cursor-pointer items-center gap-2"
+        className="group absolute z-10 right-6 top-5 flex cursor-pointer items-center gap-2"
         onClick={closeModal}
       >
         <FaTimesCircle className="text-xl group-hover:text-red" />
@@ -32,7 +32,7 @@ const Modal = ({
 
       {/* Modal content */}
       <div
-        className={`relative ${className}`}
+        className={`relative h-[90vh] overflow-y-scroll overflow-x-hidden ${className}`}
         onClick={handleContentClick} // Prevent closeModal from firing when clicking inside the modal
       >
         {children}

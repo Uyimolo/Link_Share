@@ -19,7 +19,7 @@ const MockupPreview = () => {
     <>
       <div
         className={cn(
-          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[700px] w-[calc(100vw-32px)] max-w-[300px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:bg-gradient-to-tr lg:shadow-black/70",
+          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[700px] w-[calc(100vw-32px)] max-w-[300px] lg:max-w-[260px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:bg-gradient-to-tr lg:shadow-black/70",
         )}
       >
         {/* bezels */}
@@ -31,7 +31,7 @@ const MockupPreview = () => {
         </>
 
         {/* Mockup screen */}
-        <div className="h-full overflow-hidden rounded-[25px] border-gray bg-white p-3 lg:border">
+        <div className="h-full overflow-hidden rounded-[25px] border-gray bg-white px-3 py-10 lg:border lg:p-3">
           {/* camera notch */}
           <div className="mx-auto mb-6 hidden h-4 w-2/6 rounded-full border border-black bg-black lg:block"></div>
 
@@ -84,7 +84,7 @@ const MockupPreview = () => {
           </div>
 
           {/* links */}
-          <div className="pt-5">
+          <div className="pt-10">
             {links && links.length > 0 ? (
               <div className="custom-scrollbar h-[40vh] max-h-[600px] space-y-2 overflow-y-scroll">
                 {links.map((link, index) => (

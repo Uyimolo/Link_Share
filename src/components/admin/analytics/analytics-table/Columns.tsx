@@ -14,8 +14,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuthContext } from "@/context/AuthContext";
-import { deleteLink } from "@/services/firestoreService";
 import Paragraph from "@/components/text/Paragraph";
+import { useLinkContext } from "@/context/LinkContext";
+import Modal from "@/components/Modal";
+import ClickTrendsChart from "../ClickTrendsChart";
+import { useState } from "react";
+import TopClicksByCountries from "../TopClicksByCountries";
+import { PiDevices } from "react-icons/pi";
+import { FaEarthOceania, FaEye } from "react-icons/fa6";
+import LinkAnalytics from "./LinkAnalytics";
 
 export const columns: ColumnDef<LinkWithAnalytics>[] = [
   {
@@ -35,10 +42,19 @@ export const columns: ColumnDef<LinkWithAnalytics>[] = [
     cell: ({ row }) => {
       const link = row.original;
       const Icon = link.icon;
+
+      console.log(link);
       return (
         <div className="flex items-center gap-2">
-          {Icon && <Icon style={{ color: link.color }} className="text-lg" />}
-          <Paragraph>{link.title}</Paragraph>
+          {Icon ? (
+            <Icon style={{ color: link.color }} className="text-lg" />
+          ) : (
+            <FaEarthOceania
+              style={{ color: link.color ? link.color : "#633CFF" }}
+              className="text-lg"
+            />
+          )}
+          <Paragraph className="capitalize">{link.title}</Paragraph>
         </div>
       );
     },
@@ -52,7 +68,7 @@ export const columns: ColumnDef<LinkWithAnalytics>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="border"
         >
-        Address
+          Address
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -83,6 +99,15 @@ export const columns: ColumnDef<LinkWithAnalytics>[] = [
     cell: ({ row }) => {
       const link = row.original;
       const { user } = useAuthContext();
+      const { deleteLink } = useLinkContext();
+      const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
+
+      const mobilePercentage = Math.round(
+        (link.deviceType.mobile / link.clickCount) * 100,
+      );
+      const desktopPercentage = Math.round(
+        (link.deviceType.desktop / link.clickCount) * 100,
+      );
 
       return (
         <DropdownMenu>
@@ -94,13 +119,29 @@ export const columns: ColumnDef<LinkWithAnalytics>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => deleteLink(user?.uid, link.id)}>
+            <DropdownMenuItem onClick={() => deleteLink(link.id, user!.uid)}>
               Delete Link
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View link analytics</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setShowAnalyticsModal(true)}>
+              View link analytics
+            </DropdownMenuItem>
             <DropdownMenuItem>Make link private</DropdownMenuItem>
           </DropdownMenuContent>
+          {showAnalyticsModal && (
+            <Modal
+              closeModal={() => setShowAnalyticsModal(false)}
+              className="p-4"
+            >
+              <LinkAnalytics
+                mobilePercentage={mobilePercentage}
+                desktopPercentage={desktopPercentage}
+                uniqueVisitorsCount={link.uniqueVisitors.length}
+                clickLocations={link.clickLocations}
+                clickTrendChartData={link.clickTrendsChartData}
+              />
+            </Modal>
+          )}
         </DropdownMenu>
       );
     },

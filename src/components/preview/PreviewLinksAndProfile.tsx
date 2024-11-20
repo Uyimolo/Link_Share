@@ -11,7 +11,7 @@ import { saveAnalyticsData } from "@/services/firestoreService";
 import { useAuthContext } from "@/context/AuthContext";
 
 type PreviewLinksAndProfileProps = {
-  links: LinkType[] | undefined;
+  links: LinkType[] | null;
   loading: boolean;
   profileInfo: ProfileDetails | undefined;
   isPublic: boolean;
@@ -57,13 +57,13 @@ const PreviewLinksAndProfile = ({
     );
   }
   return (
-    <div className="min-h-screen space-y-16 bg-white p-4 md:h-auto md:bg-transparent md:pb-80">
+    <div className="mx-auto min-h-[80vh] max-w-[300px] space-y-16 rounded-xl bg-white p-4 shadow-xl shadow-black/70 md:h-auto md:max-w-none md:shadow-none md:bg-transparent md:pb-80">
       {/* top section */}
 
       <PreviewHeader />
 
       {/*  bottom section */}
-      <div className="relative space-y-8 md:mx-auto md:min-h-[500px] md:w-fit md:rounded-[24px] md:bg-white md:p-12 md:shadow-2xl">
+      <div className="relative space-y-8 md:mx-auto md:min-h-[500px] md:w-[300px] md:rounded-[24px] md:bg-white  md:p-12 md:shadow-2xl">
         {/* profile image */}
         <div
           className={cn(
@@ -103,7 +103,7 @@ const PreviewLinksAndProfile = ({
 
         {/* links */}
         {links && links.length > 0 ? (
-          <div className="mx-auto w-[237px] space-y-2">
+          <div className="mx-auto space-y-2">
             {links?.map((link, index) => (
               <MockPreviewCard
                 onClick={() => handleLinkClick(link)}

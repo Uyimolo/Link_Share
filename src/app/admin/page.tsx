@@ -1,22 +1,23 @@
-'use client'
+"use client";
 import Button from "@/components/Button";
 import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
 import { useAuthContext } from "@/context/AuthContext";
-import { areLinksEqual, useLinks } from "@/custom-hooks/useLinks";
 import { LinkType } from "@/types/types";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import Loading from "@/components/Loading";
 import useConfirmPageLeave from "@/custom-hooks/useConfirmPageLeave";
 import LinkCard from "@/components/admin/links/linkcard/LinkCard";
 import Intro from "@/components/admin/links/Intro";
+import { areLinksEqual, useLinkContext } from "@/context/LinkContext";
 
 const Dashboard = () => {
-  const { links, setLinks, linksFromDb, saveLinks, loading } = useLinks();
+  const { links, setLinks, linksFromDb, saveLinks, loading } = useLinkContext();
+
   const { user } = useAuthContext();
   // Ask for user confirmation before reloading or leaving page if there are unsaved link changes.
-  useConfirmPageLeave(links !== linksFromDb);
+  useConfirmPageLeave(!areLinksEqual(links, linksFromDb));
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleAddNewLink = () => {
@@ -37,33 +38,22 @@ const Dashboard = () => {
     }, 100);
   };
 
-  // const handleLinkUpdate = (updatedLink: LinkType) => {
-  //   const linkToUpdate = links?.map((link) =>
-  //     link.id === updatedLink.id ? updatedLink : link,
-  //   );
-
-  //   if (linkToUpdate) {
-  //     setLinks(linkToUpdate);
-  //   }
-  // };
-
   const handleLinkUpdate = (updatedLink: LinkType) => {
-    console.log(updatedLink.title)
-    if (links)
-      setLinks((prevLinks) => {
-      const updatedLinks = prevLinks!.map((link) =>
-        link.id === updatedLink.id ? updatedLink : link,
-      );
-      return updatedLinks;
-    });
+    const linkToUpdate = links?.map((link) =>
+      link.id === updatedLink.id ? updatedLink : link,
+    );
+
+    if (linkToUpdate) {
+      setLinks(linkToUpdate);
+    }
   };
 
   const handleRemoveLink = (linkId: string) => {
-    const updatedLinks = links?.filter((link) => link.id !== linkId);
+    const updatedLinks = links?.filter(
+      (link) => link.id !== linkId,
+    ) as LinkType[];
 
-    if (updatedLinks) {
-      setLinks(updatedLinks);
-    }
+    setLinks(updatedLinks);
   };
 
   // SAVE LINKS TO DB (THIS IS THE TRUE SAVE THE REST ARE TO UPDATE THE LOCAL STATE)

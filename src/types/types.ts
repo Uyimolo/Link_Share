@@ -90,11 +90,12 @@ export type LinkWithAnalytics = {
   };
   uniqueVisitors: string[];
   clickLocations: {
-    [countryCode: string]: number;
-  };
+    countryCode: string;
+    clicks: number;
+  }[];
   lastClickDate?: string;
+  clickTrendsChartData?: ClickTrendData[];
 };
-
 
 // Type '{ id: string;
 // url: string;

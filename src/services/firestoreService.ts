@@ -61,7 +61,7 @@ export const deleteLink = async (
   linkId: string,
 ) => {
   if (userId) {
-    const userDocRef = doc(db, "users", userId, "links", linkId);
+    const userDocRef = doc(db, "links", userId, "links", linkId);
     await deleteDoc(userDocRef);
   }
 };
@@ -329,7 +329,7 @@ export const getAnalyticsData = (
 export const deleteAnalyticsData = async (userId: string, linkId: string) => {
   try {
     if (linkId) {
-      const analyticsRef = doc(db, "users", userId, "analytics", linkId);
+      const analyticsRef = doc(db, "analytics", userId, "links", linkId);
 
       await deleteDoc(analyticsRef);
     } else {

@@ -23,7 +23,7 @@ const TopLinksByClicksChart = ({
     | undefined;
 }) => {
   return (
-    <Card className="border-none bg-white rounded-xl">
+    <Card className="rounded-xl border-none bg-white">
       <CardHeader>
         <Heading
           variant="h2"
@@ -63,7 +63,7 @@ const TopLinksByClicksChart = ({
             <Tooltip formatter={(value) => `${value} clicks`} />
             <Bar
               dataKey="clickCount"
-              fill="#4B5563" // Neutral color from ShadCN for bars
+              fill="#633CFF" // Neutral color from ShadCN for bars
               radius={[5, 5, 0, 0]}
               barSize={80}
             />
