@@ -18,7 +18,7 @@ const Modal = ({
 
   return (
     <div
-      className="fixed left-0 py-10 top-0 z-30 grid h-screen w-screen place-content-center bg-lighterGray/40 backdrop-blur-sm"
+      className="fixed left-0 py-10 top-0 z-30 grid h-screen w-screen place-content-center bg-lighterGray/80 backdrop-blur-sm"
       onClick={closeModal} // Trigger closeModal when the overlay is clicked
     >
       {/* Close modal button */}
@@ -32,7 +32,7 @@ const Modal = ({
 
       {/* Modal content */}
       <div
-        className={`relative h-[90vh] overflow-y-scroll overflow-x-hidden ${className}`}
+        className={`relative overflow-y-auto overflow-x-hidden ${className}`}
         onClick={handleContentClick} // Prevent closeModal from firing when clicking inside the modal
       >
         {children}

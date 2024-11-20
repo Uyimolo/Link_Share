@@ -26,12 +26,11 @@ const FormGroup = <TFormValues extends FieldValues>({
   formField,
   error,
   responsive = false,
-  options,
+  // options,
 }: FormGroupProps<TFormValues>) => {
   const { name, type, label, placeholder, icon } = formField;
   const [showPassword, setShowPassword] = useState(false);
   const Icon = icon;
-  options && console.log(options);
 
   return (
     <div

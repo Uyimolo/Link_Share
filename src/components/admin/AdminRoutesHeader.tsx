@@ -5,7 +5,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import NavItem from "./navigation/NavItem";
 import { useRouter } from "next/navigation";
-import { FaChartBar, FaScrewdriverWrench } from "react-icons/fa6";
+import { FaChartBar, FaGear, } from "react-icons/fa6";
 import { useState } from "react";
 import AccountOptions from "./profile/AccountOptions";
 
@@ -57,7 +57,7 @@ const AdminRoutesHeader = () => {
       <div className="" onClick={() => setShowSettings(true)}>
         <NavItem
           isLink={false}
-          navItem={{ icon: FaScrewdriverWrench, label: "Settings" }}
+          navItem={{ icon: FaGear, label: "Settings" }}
         />
       </div>
 

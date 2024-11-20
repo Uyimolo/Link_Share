@@ -1,17 +1,26 @@
 "use client";
 import useProfileInfo from "@/custom-hooks/useProfileInfo";
 import MockPreviewCard from "./MockPreviewCard";
-import { useLinks } from "@/custom-hooks/useLinks";
 import Paragraph from "../text/Paragraph";
 import cn from "@/utilities/cn";
 import { RxAvatar } from "react-icons/rx";
 import { useAuthContext } from "@/context/AuthContext";
-import { FaEye } from "react-icons/fa6";
+import { useLinkContext } from "@/context/LinkContext";
 
 const MockupPreview = () => {
-  const { links } = useLinks();
+  const { linksFromDb } = useLinkContext();
   const { profileInfo } = useProfileInfo();
-  const { firstName, lastName, profilePicture, email } = profileInfo;
+
+  // provides fallback incase no profile info is returned
+  const emptyProfileObject = {
+    firstName: "",
+    lastName: "",
+    profilePicture: "",
+    email: "",
+  };
+
+  const { firstName, lastName, profilePicture, email } =
+    profileInfo || emptyProfileObject;
   const name = firstName && lastName ? `${firstName} ${lastName}` : "";
   const { username } = useAuthContext();
 
@@ -19,7 +28,7 @@ const MockupPreview = () => {
     <>
       <div
         className={cn(
-          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[700px] w-[calc(100vw-32px)] max-w-[300px] lg:max-w-[260px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:bg-gradient-to-tr lg:shadow-black/70",
+          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[600px] w-[calc(100vw-32px)] max-w-[300px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:max-w-[270px] lg:bg-gradient-to-tr lg:shadow-black/70 2xl:max-w-[300px]",
         )}
       >
         {/* bezels */}
@@ -85,9 +94,9 @@ const MockupPreview = () => {
 
           {/* links */}
           <div className="pt-10">
-            {links && links.length > 0 ? (
-              <div className="custom-scrollbar h-[40vh] max-h-[600px] space-y-2 overflow-y-scroll">
-                {links.map((link, index) => (
+            {linksFromDb && linksFromDb.length > 0 ? (
+              <div className="custom-scrollbar h-[40vh] max-h-[500px] space-y-2 overflow-y-auto">
+                {linksFromDb.map((link, index) => (
                   <MockPreviewCard key={index} link={link} />
                 ))}
               </div>

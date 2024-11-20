@@ -118,7 +118,7 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
       setLinksFromDb(updatedLinks);
       setIsDirty(false);
       toast.success("Link deleted successfully");
-    } catch (error) {
+    } catch {
       // console.error('Error deleting link:', error);
       toast.error("Failed to delete link");
     }

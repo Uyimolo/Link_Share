@@ -9,7 +9,6 @@ import {
   AnalyticsData,
   ClickTrendData,
   DeviceData,
-  LinkType,
   LinkWithAnalytics,
 } from "@/types/types";
 import { options } from "@/data/options";
@@ -47,7 +46,7 @@ export const useAnalytics = () => {
   >([]);
 
   const { user } = useAuthContext();
-  const { links, loading: linksLoading } = useLinkContext();
+  const { links, } = useLinkContext();
   const linksLength = links?.length;
 
   const mobile = deviceData.find((data) => data.name === "mobile")?.value;
@@ -183,12 +182,12 @@ export const useAnalytics = () => {
       });
 
       // Convert the map to an array of objects (if needed)
-      const clickTrendsPerLink = Array.from(trendsPerLink.entries()).map(
-        ([linkId, trends]) => ({
-          linkId,
-          trends,
-        }),
-      );
+      // const clickTrendsPerLink = Array.from(trendsPerLink.entries()).map(
+      //   ([linkId, trends]) => ({
+      //     linkId,
+      //     trends,
+      //   }),
+      // );
 
       setLinksWithAnalytics((prevLinks) =>
         prevLinks.map((link) => ({
@@ -208,6 +207,8 @@ export const useAnalytics = () => {
     const linksWithAnalytics = links
       ?.map((link) => {
         const analyticsData = analyticsMap.get(link.id);
+        // if link exists return object containing links info and analytics data
+        // else return null
         return analyticsData
           ? {
               ...link, // Link details
@@ -215,7 +216,7 @@ export const useAnalytics = () => {
             }
           : null; // Exclude links without analytics
       })
-      .filter((item) => item !== null); // Remove null values
+      .filter((item) => item !== null); // Remove null values (returning only the valid objects)
 
     // Sort the array by click count in descending order
     const sortedLinks = linksWithAnalytics?.sort(
@@ -276,12 +277,12 @@ export const useAnalytics = () => {
       });
 
       // Convert the map to an array of objects (if needed)
-      const clickTrendsPerLink = Array.from(trendsPerLink.entries()).map(
-        ([linkId, trends]) => ({
-          linkId,
-          trends,
-        }),
-      );
+      // const clickTrendsPerLink = Array.from(trendsPerLink.entries()).map(
+      //   ([linkId, trends]) => ({
+      //     linkId,
+      //     trends,
+      //   }),
+      // );
 
       const countryCountArray = relatedAnalyticsData
         ? Object.entries(relatedAnalyticsData?.clickLocations).map(
@@ -311,7 +312,7 @@ export const useAnalytics = () => {
 
     // Set the state or perform any further actions with linksWithAnalytics here
     if (linksWithAnalytics) setLinksWithAnalytics(linksWithAnalytics);
-  }, [links, analyticsData, options]);
+  }, [links, analyticsData]);
 
   // CALCULATE AND GENERATE DEVICE DATA
   useEffect(() => {

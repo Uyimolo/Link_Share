@@ -4,6 +4,7 @@ import React from "react";
 import Paragraph from "../text/Paragraph";
 import { FaArrowRight } from "react-icons/fa";
 import cn from "@/utilities/cn";
+import { FaEarthOceania } from "react-icons/fa6";
 
 const MockPreviewCard = ({
   link,
@@ -25,12 +26,21 @@ const MockPreviewCard = ({
         color === "#FFFFFF" && "border border-black",
       )}
     >
-     {Icon && <Icon
-        className={cn(
-          "text-xl",
-          color === "#FFFFFF" ? "text-black" : "text-white",
-        )}
-      />}
+      {Icon ? (
+        <Icon
+          className={cn(
+            "text-xl",
+            color === "#FFFFFF" ? "text-black" : "text-white",
+          )}
+        />
+      ) : (
+        <FaEarthOceania
+          className={cn(
+            "text-xl",
+            color === "#FFFFFF" ? "text-black" : "text-white",
+          )}
+        />
+      )}
       <Paragraph
         variant="small"
         className={cn(color === "#FFFFFF" ? "text-black" : "text-white")}

@@ -35,6 +35,7 @@ countries.registerLocale(enLocale);
 
 export const fetchDocumentData = (
   docRef: DocumentReference<DocumentData, DocumentData>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onDataFetched: (data: Record<string, any> | null) => void,
 ) => {
   const unsubscribe = onSnapshot(

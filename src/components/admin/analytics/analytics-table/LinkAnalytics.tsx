@@ -1,11 +1,10 @@
-import Modal from "@/components/Modal";
 import Paragraph from "@/components/text/Paragraph";
 import React from "react";
 import { FaEye } from "react-icons/fa6";
 import { PiDevices } from "react-icons/pi";
 import ClickTrendsChart from "../ClickTrendsChart";
 import TopClicksByCountries from "../TopClicksByCountries";
-import { ClickTrendData, LinkWithAnalytics } from "@/types/types";
+import { ClickTrendData } from "@/types/types";
 
 type LinkAnalytics = {
   mobilePercentage: number;
@@ -26,7 +25,7 @@ const LinkAnalytics = ({
   clickTrendChartData,
 }: LinkAnalytics) => {
   return (
-    <div className="lg:w-[70vw] grid md:w-[calc(100vw-36px)] gap-4">
+    <div className="grid gap-4 md:w-[calc(100vw-36px)] lg:w-[70vw]">
       <div className="lg:grid-cols- grid w-[calc(100vw-36px)] gap-4 md:w-full md:grid-cols-2">
         <div className="space-y-4">
           {/* devices info */}
@@ -49,7 +48,7 @@ const LinkAnalytics = ({
           </div>
 
           {/* views info */}
-          <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
+          <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center">
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
               <FaEye className="text-lg text-gray" />
               <Paragraph>Total views</Paragraph>

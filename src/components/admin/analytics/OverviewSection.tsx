@@ -1,12 +1,12 @@
 import Paragraph from "@/components/text/Paragraph";
-import { FaEye, FaHandPointer, FaPercent } from "react-icons/fa6";
+import { FaEye, FaHandPointer, FaLink } from "react-icons/fa6";
 import { PiDevices } from "react-icons/pi";
 
 const OverviewSection = ({
   totalClicks = 0,
   mobile = 0,
   desktop = 0,
-  uniqueImpressions,
+  uniqueImpressions = 0,
   numberOfLinks = 0,
 }: {
   totalClicks: number | undefined;
@@ -40,7 +40,7 @@ const OverviewSection = ({
           {/* number of links */}
           <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <FaPercent className="text-lg text-gray" />
+              <FaLink className="text-lg text-gray" />
               <Paragraph>Total links</Paragraph>
             </div>
             <Paragraph className="pl-2 text-gray">

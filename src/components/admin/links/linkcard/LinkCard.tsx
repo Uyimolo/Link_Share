@@ -36,7 +36,7 @@ const linkCardFields: LinkCardFieldTypes[] = [
     type: "text",
     required: true,
     placeholder: "Enter the title",
-    icon: FaEarthOceania
+    icon: FaEarthOceania,
   },
   {
     label: "Address",
@@ -44,13 +44,12 @@ const linkCardFields: LinkCardFieldTypes[] = [
     type: "text",
     required: true,
     placeholder: "Enter the address",
-    icon: FaLink
+    icon: FaLink,
   },
 ];
 const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
   const {
     register,
-    handleSubmit,
     getValues,
     formState: { errors },
   } = useForm({

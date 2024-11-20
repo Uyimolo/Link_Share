@@ -2,29 +2,13 @@
 
 import { LinkWithAnalytics } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-
+import { ArrowUpDown } from "lucide-react";
+import ActionCell from "@/components/admin/analytics/analytics-table/ActionCell";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuthContext } from "@/context/AuthContext";
 import Paragraph from "@/components/text/Paragraph";
-import { useLinkContext } from "@/context/LinkContext";
-import Modal from "@/components/Modal";
-import ClickTrendsChart from "../ClickTrendsChart";
-import { useState } from "react";
-import TopClicksByCountries from "../TopClicksByCountries";
-import { PiDevices } from "react-icons/pi";
-import { FaEarthOceania, FaEye } from "react-icons/fa6";
-import LinkAnalytics from "./LinkAnalytics";
+import { FaEarthOceania } from "react-icons/fa6";
 
-export const columns: ColumnDef<LinkWithAnalytics>[] = [
+export const Columns: ColumnDef<LinkWithAnalytics>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -96,54 +80,6 @@ export const columns: ColumnDef<LinkWithAnalytics>[] = [
   {
     header: "Actions",
     id: "actions",
-    cell: ({ row }) => {
-      const link = row.original;
-      const { user } = useAuthContext();
-      const { deleteLink } = useLinkContext();
-      const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
-
-      const mobilePercentage = Math.round(
-        (link.deviceType.mobile / link.clickCount) * 100,
-      );
-      const desktopPercentage = Math.round(
-        (link.deviceType.desktop / link.clickCount) * 100,
-      );
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => deleteLink(link.id, user!.uid)}>
-              Delete Link
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setShowAnalyticsModal(true)}>
-              View link analytics
-            </DropdownMenuItem>
-            <DropdownMenuItem>Make link private</DropdownMenuItem>
-          </DropdownMenuContent>
-          {showAnalyticsModal && (
-            <Modal
-              closeModal={() => setShowAnalyticsModal(false)}
-              className="p-4"
-            >
-              <LinkAnalytics
-                mobilePercentage={mobilePercentage}
-                desktopPercentage={desktopPercentage}
-                uniqueVisitorsCount={link.uniqueVisitors.length}
-                clickLocations={link.clickLocations}
-                clickTrendChartData={link.clickTrendsChartData}
-              />
-            </Modal>
-          )}
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ActionCell link={row.original} />,
   },
 ];
