@@ -68,7 +68,7 @@ const MockupPreview = () => {
               }}
             >
               {!profilePicture && (
-                <RxAvatar className="rounded-full bg-lightestGray text-[110px] text-gray" />
+                <RxAvatar className="rounded-full bg-lightestGray text-[93px] text-gray" />
               )}
             </div>
 

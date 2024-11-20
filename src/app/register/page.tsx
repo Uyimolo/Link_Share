@@ -13,6 +13,7 @@ import Paragraph from "@/components/text/Paragraph";
 import { useAuthContext } from "@/context/AuthContext";
 import useProtectedRoute from "@/custom-hooks/useProtectedRoute";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 
 // Form data type definition based on validation schema
 type RegisterFormData = {
@@ -85,9 +86,8 @@ const registerFormFields: FormFieldsType = [
 ];
 
 const Register = () => {
-  useProtectedRoute(false);
+  const { isRouteLoading } = useProtectedRoute(false);
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -111,6 +111,14 @@ const Register = () => {
       console.error("Error creating user:", error);
     }
   };
+
+  if (isRouteLoading) {
+    return (
+      <div className="grid h-screen place-content-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="grid min-h-screen bg-white p-6 md:bg-transparent md:py-20">

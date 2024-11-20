@@ -1,7 +1,15 @@
-import React, { ReactNode, MouseEvent } from "react";
-import { FaTimesCircle } from "react-icons/fa";
-import Paragraph from "./text/Paragraph";
-
+import React, { ReactNode, MouseEvent } from "react"; 
+import { FaTimesCircle } from "react-icons/fa"; 
+import Paragraph from "./text/Paragraph"; 
+/**
+ * A modal component for displaying content in a centered and fixed position on the screen.
+ *
+ * @param children - The content to be displayed inside the modal.
+ * @param closeModal - A function to be called when the modal is to be closed.
+ * @param className - An optional CSS class name to be applied to the modal content.
+ *
+ * @returns A React component representing the modal.
+ */
 const Modal = ({
   children,
   closeModal,
@@ -18,12 +26,12 @@ const Modal = ({
 
   return (
     <div
-      className="fixed left-0 py-10 top-0 z-30 grid h-screen w-screen place-content-center bg-lighterGray/80 backdrop-blur-sm"
+      className="fixed left-0 top-0 z-50 grid h-screen w-screen place-content-center bg-lighterGray/80 py-10 backdrop-blur-sm"
       onClick={closeModal} // Trigger closeModal when the overlay is clicked
     >
       {/* Close modal button */}
       <div
-        className="group absolute z-10 right-6 top-5 flex cursor-pointer items-center gap-2"
+        className="group absolute right-6 top-5 z-10 flex cursor-pointer items-center gap-2"
         onClick={closeModal}
       >
         <FaTimesCircle className="text-xl group-hover:text-red" />

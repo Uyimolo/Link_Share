@@ -1,18 +1,19 @@
-'use client';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Logo from '@/components/brand/Logo';
-import FormGroup from '@/components/forms/FormGroup';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { IconType } from 'react-icons';
-import Button from '@/components/Button';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import Heading from '@/components/text/Heading';
-import Paragraph from '@/components/text/Paragraph';
-import { useAuthContext } from '@/context/AuthContext';
-import useProtectedRoute from '@/custom-hooks/useProtectedRoute';
+"use client";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Logo from "@/components/brand/Logo";
+import FormGroup from "@/components/forms/FormGroup";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+import { IconType } from "react-icons";
+import Button from "@/components/Button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Heading from "@/components/text/Heading";
+import Paragraph from "@/components/text/Paragraph";
+import { useAuthContext } from "@/context/AuthContext";
+import useProtectedRoute from "@/custom-hooks/useProtectedRoute";
+import Loading from "@/components/Loading";
 
 // Form data type definition based on validation schema
 type LoginFormData = {
@@ -24,12 +25,12 @@ type LoginFormData = {
 const validationSchema = yup.object({
   email: yup
     .string()
-    .email('Invalid email format')
-    .required('Email is required'),
+    .email("Invalid email format")
+    .required("Email is required"),
   password: yup
     .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .required('Password is required'),
+    .min(8, "Password must be at least 8 characters long")
+    .required("Password is required"),
 });
 
 // Form fields definition
@@ -42,25 +43,25 @@ const loginFormFields: Array<{
   icon: IconType;
 }> = [
   {
-    label: 'Email address',
-    name: 'email',
-    type: 'email',
+    label: "Email address",
+    name: "email",
+    type: "email",
     required: true,
-    placeholder: 'Email',
+    placeholder: "Email",
     icon: FaEnvelope,
   },
   {
-    label: 'Password',
-    name: 'password',
-    type: 'password',
+    label: "Password",
+    name: "password",
+    type: "password",
     required: true,
-    placeholder: 'Password',
+    placeholder: "Password",
     icon: FaLock,
   },
 ];
 
 const Login = () => {
-  useProtectedRoute(false);
+  const { isRouteLoading } = useProtectedRoute(false);
 
   const {
     register,
@@ -69,7 +70,7 @@ const Login = () => {
     reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   const router = useRouter();
@@ -84,30 +85,38 @@ const Login = () => {
       await login(email, password);
       reset();
     } catch (error) {
-      console.error('Error signing in with email and password:', error);
+      console.error("Error signing in with email and password:", error);
     }
   };
 
+  if (isRouteLoading) {
+    return (
+      <div className="grid h-screen place-content-center">
+        <Loading />
+      </div>
+    );
+  }
+
   return (
-    <div className='p-6 min-h-screen bg-white md:bg-transparent grid md:py-20'>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-16'>
+    <div className="grid min-h-screen bg-white p-6 md:bg-transparent md:py-20">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-16">
         <Logo
           showFullLogo
-          className='md:mx-auto w-fit cursor-pointer'
-          onClick={() => router.push('/')}
+          className="w-fit cursor-pointer md:mx-auto"
+          onClick={() => router.push("/")}
         />
 
-        <div className='space-y-8 md:p-10 md:w-[476px] md:mx-auto bg-white'>
-          <div className='space-y-2'>
-            <Heading variant='h1'>Login</Heading>
+        <div className="space-y-8 bg-white md:mx-auto md:w-[476px] md:p-10">
+          <div className="space-y-2">
+            <Heading variant="h1">Login</Heading>
             <Paragraph>{`Add your details to get back into the app`}</Paragraph>
-            <Paragraph className='text-blue' variant='small'>
+            <Paragraph className="text-blue" variant="small">
               Test details: <br /> Email: test@mail.com <br /> Password:
               12345678
             </Paragraph>
           </div>
 
-          <div className='space-y-4'>
+          <div className="space-y-4">
             {loginFormFields.map((field, index) => (
               <FormGroup
                 key={index}
@@ -118,13 +127,13 @@ const Login = () => {
             ))}
           </div>
 
-          <Button type='submit' variant='primary' disabled={loading}>
+          <Button type="submit" variant="primary" disabled={loading}>
             Login
           </Button>
 
-          <Paragraph className='text-sm text-gray text-center'>
-            {` Don't have an account?`}{' '}
-            <Link className='text-blue' href='/register'>
+          <Paragraph className="text-center text-sm text-gray">
+            {` Don't have an account?`}{" "}
+            <Link className="text-blue" href="/register">
               Create account
             </Link>
           </Paragraph>

@@ -25,9 +25,9 @@ const LinkAnalytics = ({
   clickTrendChartData,
 }: LinkAnalytics) => {
   return (
-    <div className="grid gap-4 md:w-[calc(100vw-36px)] lg:w-[70vw]">
-      <div className="lg:grid-cols- grid w-[calc(100vw-36px)] gap-4 md:w-full md:grid-cols-2">
-        <div className="space-y-4">
+    <div className="grid gap-4 md:w-[calc(100vw-36px)] lg:w-[800px]">
+      <div className="grid w-[calc(100vw-36px)] gap-4 md:w-full">
+        <div className="gap-4 grid-cols-2 grid">
           {/* devices info */}
           <div className="md:p- grid items-start gap-2 rounded-xl bg-white p-2 md:items-center">
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
