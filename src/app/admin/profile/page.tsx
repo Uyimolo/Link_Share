@@ -1,19 +1,16 @@
 "use client";
+import ProfileInfoForm from "@/components/admin/profile/ProfileInfoForm";
 import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
 import useProtectedRoute from "@/custom-hooks/useProtectedRoute";
-import React, { useState } from "react";
-import ProfileInfoForm from "./ProfileInfoForm";
-import AccountOptions from "./AccountOptions";
 
 /**
  * Component: [Profile]
  * Description: [Handles all tasks associated with setting and updating profile information]
  */
 
-const ProfileTab = () => {
+const Profile = () => {
   useProtectedRoute(true);
-  const [showAccountOptions, setShowAccountOptions] = useState<boolean>(false);
 
   return (
     <div className="gap-4">
@@ -26,14 +23,10 @@ const ProfileTab = () => {
           </Paragraph>
         </div>
         {/* form for setting and viewing user information*/}
-        <ProfileInfoForm setShowAccountOptions={setShowAccountOptions} />
+        <ProfileInfoForm />
       </div>
-      {/*  */}
-      {showAccountOptions && (
-        <AccountOptions closeModal={() => setShowAccountOptions(false)} />
-      )}
     </div>
   );
 };
 
-export default ProfileTab;
+export default Profile;

@@ -1,3 +1,5 @@
+import { IconType } from "react-icons";
+
 export type LinkType = {
   id: string;
   url: string;
@@ -35,7 +37,7 @@ export type GeolocationResponse = {
   timezone: string;
 };
 
-type FirestoreTimestamp = {
+export type FirestoreTimestamp = {
   seconds: number;
   nanoseconds: number;
 };
@@ -43,7 +45,7 @@ type FirestoreTimestamp = {
 export type AnalyticsData = {
   id: string;
   clickCount: number;
-  lastClickDate: Date;
+  lastClickDate: FirestoreTimestamp;
   clickLocations: {
     [countryCode: string]: number; // Country codes as keys, counts as values
   };
@@ -74,3 +76,52 @@ export type DeviceData = {
   name: string;
   value: number;
 }[];
+
+export type LinkWithAnalytics = {
+  id: string;
+  url: string;
+  title: string;
+  icon?: IconType;
+  color: string;
+  clickCount: number;
+  clickTrends: FirestoreTimestamp[];
+  deviceType: {
+    [device: string]: number;
+  };
+  uniqueVisitors: string[];
+  clickLocations: {
+    countryCode: string;
+    clicks: number;
+  }[];
+  lastClickDate?: string;
+  clickTrendsChartData?: ClickTrendData[];
+};
+
+// Type '{ id: string;
+// url: string;
+// title: string;
+// icon: IconType | undefined;
+// clickCount: number;
+// clickTrends: FirestoreTimestamp[];
+// deviceType: { }; uniqueVisitors: string[];
+// clickLocations: { ...; };
+// lastClickDate: number | undefined; }[]
+// ' is not assignable to type 'LinkWithAnalytics[]'.
+//     Type '{ id: string; url: string; title: string; icon: IconType | undefined; clickCount: number; clickTrends: FirestoreTimestamp[]; deviceType: {}; uniqueVisitors: string[]; clickLocations: { ...; }; lastClickDate: number | undefined; }' is not assignable to type 'LinkWithAnalytics'.
+//       Types of property 'lastClickDate' are incompatible.
+//         Type 'number | undefined' is not assignable to type 'FirestoreTimestamp | undefined'.
+//           Type 'number' is not assignable to type 'FirestoreTimestamp'.ts(2345)
+// const linksWithAnalytics: {
+//     id: string;
+//     url: string;
+//     title: string;
+//     icon: IconType | undefined;
+//     clickCount: number;
+//     clickTrends: FirestoreTimestamp[];
+//     deviceType: {};
+//     uniqueVisitors: string[];
+//     clickLocations: {
+//         ...;
+//     };
+//     lastClickDate: number | undefined;
+// }[]

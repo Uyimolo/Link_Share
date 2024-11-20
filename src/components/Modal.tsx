@@ -1,6 +1,6 @@
-import React, { ReactNode, MouseEvent } from 'react';
-import { FaTimesCircle } from 'react-icons/fa';
-import Paragraph from './text/Paragraph';
+import React, { ReactNode, MouseEvent } from "react";
+import { FaTimesCircle } from "react-icons/fa";
+import Paragraph from "./text/Paragraph";
 
 const Modal = ({
   children,
@@ -18,20 +18,21 @@ const Modal = ({
 
   return (
     <div
-      className='h-screen fixed top-0 z-20 left-0 w-screen grid place-content-center bg-lighterGray/40 backdrop-blur-sm'
+      className="fixed left-0 py-10 top-0 z-30 grid h-screen w-screen place-content-center bg-lighterGray/80 backdrop-blur-sm"
       onClick={closeModal} // Trigger closeModal when the overlay is clicked
     >
       {/* Close modal button */}
       <div
-        className='flex gap-2 items-center cursor-pointer absolute top-20 left-1/2 -translate-x-1/2'
-        onClick={closeModal}>
-        <FaTimesCircle className='text-xl' />
-        <Paragraph>Close</Paragraph>
+        className="group absolute z-10 right-6 top-5 flex cursor-pointer items-center gap-2"
+        onClick={closeModal}
+      >
+        <FaTimesCircle className="text-xl group-hover:text-red" />
+        <Paragraph className="group-hover:text-red">Close</Paragraph>
       </div>
 
       {/* Modal content */}
       <div
-        className={`relative ${className}`}
+        className={`relative overflow-y-auto overflow-x-hidden ${className}`}
         onClick={handleContentClick} // Prevent closeModal from firing when clicking inside the modal
       >
         {children}

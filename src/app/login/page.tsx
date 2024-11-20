@@ -102,7 +102,7 @@ const Login = () => {
             <Heading variant='h1'>Login</Heading>
             <Paragraph>{`Add your details to get back into the app`}</Paragraph>
             <Paragraph className='text-blue' variant='small'>
-              Test details: <br /> Email: test@mail.linkshare <br /> Password:
+              Test details: <br /> Email: test@mail.com <br /> Password:
               12345678
             </Paragraph>
           </div>

@@ -12,9 +12,14 @@ interface PublicProfileData {
 }
 
 const UserProfileAndLinks = () => {
-  const [profileData, setProfileData] = useState<PublicProfileData | null>(
-    null,
-  );
+  const [profileData, setProfileData] = useState<PublicProfileData>({
+    profileInfo: {
+      profilePicture: "",
+      firstName: "",
+      lastName: "",
+    },
+    links: [],
+  });
   const [userId, setUserId] = useState("");
   const params = useParams();
 
@@ -29,7 +34,7 @@ const UserProfileAndLinks = () => {
             const { profileInfo, links, uid } = originalUIDData;
 
             setProfileData({ links: links, profileInfo: profileInfo });
-            setUserId(uid.originalUID);
+            setUserId(uid);
           }
         } catch (error) {
           console.error("Error fetching profile and links:", error);
@@ -40,8 +45,7 @@ const UserProfileAndLinks = () => {
     fetchProfileAndLinks();
   }, [username]);
 
-  const { profileInfo, links } = profileData || {};
-
+  const { profileInfo, links } = profileData;
 
   return (
     <PreviewLinksAndProfile

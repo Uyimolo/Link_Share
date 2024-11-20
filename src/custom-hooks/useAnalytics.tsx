@@ -1,12 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useLinks } from "./useLinks";
 import {
   deleteAnalyticsData,
   getAnalyticsData,
 } from "@/services/firestoreService";
 import { useAuthContext } from "@/context/AuthContext";
-import { AnalyticsData, ClickTrendData, DeviceData } from "@/types/types";
+import {
+  AnalyticsData,
+  ClickTrendData,
+  DeviceData,
+  LinkWithAnalytics,
+} from "@/types/types";
+import { options } from "@/data/options";
+import { useLinkContext } from "@/context/LinkContext";
 
 type TopFiveLinks = {
   clickCount: number;
@@ -15,10 +21,15 @@ type TopFiveLinks = {
   title: string;
 }[];
 
+type CountryInfo = {
+  countryCode: string;
+  clicks: number;
+}[];
+
 export const useAnalytics = () => {
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData[] | null>(
-    null,
-  );
+  const [analyticsData, setAnalyticsData] = useState<
+    AnalyticsData[] | null | undefined
+  >(null);
   const [uniqueViews, setUniqueViews] = useState<number>(0);
   const [clickTrendData, setClickTrendData] = useState<
     ClickTrendData[] | undefined
@@ -28,36 +39,39 @@ export const useAnalytics = () => {
     { name: "", value: 0 },
   ]);
   const [totalClicks, setTotalClicks] = useState<number>();
-  const [countriesInfo, setCountriesInfo] = useState<
-    {
-      countryCode: string;
-      clicks: number;
-    }[]
-  >();
+  const [countriesInfo, setCountriesInfo] = useState<CountryInfo>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [linksWithAnalytics, setLinksWithAnalytics] = useState<
+    LinkWithAnalytics[]
+  >([]);
 
   const { user } = useAuthContext();
-  const { links } = useLinks();
-  const linksLength = links.length;
+  const { links, } = useLinkContext();
+  const linksLength = links?.length;
 
   const mobile = deviceData.find((data) => data.name === "mobile")?.value;
   const desktop = deviceData.find((data) => data.name === "desktop")?.value;
 
   // GET ANALYTICS DATA IN REAL TIME
   useEffect(() => {
-    if (user) {
+    if (user && links) {
       const unsubscribe = getAnalyticsData(user.uid, (fetchedData) => {
-        const validAnalyticsData = fetchedData.filter((analytics) =>
-          links.some((link) => link.id === analytics.id),
+        const validAnalyticsData = fetchedData?.filter((analytics) =>
+          links?.some((link) => link.id === analytics.id),
         );
 
-        const invalidAnalyticsData = fetchedData.filter(
-          (analytics) => !links.some((link) => link.id === analytics.id),
+        const invalidAnalyticsData = fetchedData?.filter(
+          (analytics) => !links?.some((link) => link.id === analytics.id),
         );
 
         // DELETE INVALID ANALYTICS DATA
-        if (links) {
-          invalidAnalyticsData.forEach((analytics) => {
+        if (
+          invalidAnalyticsData &&
+          invalidAnalyticsData.length > 0 &&
+          links &&
+          analyticsData
+        ) {
+          invalidAnalyticsData?.forEach((analytics) => {
             console.log(analytics);
             deleteAnalyticsData(user.uid, analytics.id);
           });
@@ -123,6 +137,67 @@ export const useAnalytics = () => {
     }
   }, [analyticsData]);
 
+  // CALCULATE AND GENERATE CLICK TRENDS FOR INDIVIDUAL LINKS
+  // CALCULATE AND STORE CLICK TRENDS FOR INDIVIDUAL LINKS
+  useEffect(() => {
+    if (analyticsData) {
+      // Create a map to store click trends per link
+      const trendsPerLink = new Map<string, ClickTrendData[]>();
+
+      // Iterate over each analytics entry
+      analyticsData.forEach((data) => {
+        const linkId = data.id;
+        const monthNames = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+
+        // Aggregate clicks by month and year
+        const aggregatedData: { [key: string]: ClickTrendData } = {};
+        data.clickTrends.forEach((click) => {
+          const clickDate = new Date(click.seconds * 1000);
+          const year = clickDate.getUTCFullYear();
+          const month = monthNames[clickDate.getUTCMonth()];
+
+          const key = `${year}-${month}`;
+
+          if (!aggregatedData[key]) {
+            aggregatedData[key] = { year, month, count: 0 };
+          }
+          aggregatedData[key].count += 1;
+        });
+
+        // Store the aggregated data for the current link
+        trendsPerLink.set(linkId, Object.values(aggregatedData));
+      });
+
+      // Convert the map to an array of objects (if needed)
+      // const clickTrendsPerLink = Array.from(trendsPerLink.entries()).map(
+      //   ([linkId, trends]) => ({
+      //     linkId,
+      //     trends,
+      //   }),
+      // );
+
+      setLinksWithAnalytics((prevLinks) =>
+        prevLinks.map((link) => ({
+          ...link,
+          clickTrendsChartData: trendsPerLink.get(link.id) || [],
+        })),
+      );
+    }
+  }, [analyticsData]);
+
   // CALCULATE AND GENERATE TOP FIVE LINKS BY CLICKS
   useEffect(() => {
     // Map analytics by link ID for quick access
@@ -130,8 +205,10 @@ export const useAnalytics = () => {
 
     // Create a new array with links that have analytics data
     const linksWithAnalytics = links
-      .map((link) => {
+      ?.map((link) => {
         const analyticsData = analyticsMap.get(link.id);
+        // if link exists return object containing links info and analytics data
+        // else return null
         return analyticsData
           ? {
               ...link, // Link details
@@ -139,16 +216,103 @@ export const useAnalytics = () => {
             }
           : null; // Exclude links without analytics
       })
-      .filter((item) => item !== null); // Remove null values
+      .filter((item) => item !== null); // Remove null values (returning only the valid objects)
 
     // Sort the array by click count in descending order
-    const sortedLinks = linksWithAnalytics.sort(
+    const sortedLinks = linksWithAnalytics?.sort(
       (a, b) => b.clickCount - a.clickCount,
     );
 
     // Return only the top 5 most clicked links
-    setTopFiveLinks(sortedLinks.slice(0, 5));
+    setTopFiveLinks(sortedLinks?.slice(0, 5));
   }, [analyticsData]);
+
+  // MERGE LINKS ARRAY WITH ANALYTICS DATA
+  useEffect(() => {
+    const linksWithAnalytics = links?.map((link) => {
+      const relatedAnalyticsData = analyticsData?.find(
+        (data) => data.id === link.id,
+      );
+      const relatedOptions = options.find(
+        (option) => option.value === link.title,
+      );
+
+      const trendsPerLink = new Map<string, ClickTrendData[]>();
+
+      // Iterate over each analytics entry
+      analyticsData?.forEach((data) => {
+        const linkId = data.id;
+        const monthNames = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ];
+
+        // Aggregate clicks by month and year
+        const aggregatedData: { [key: string]: ClickTrendData } = {};
+        data.clickTrends.forEach((click) => {
+          const clickDate = new Date(click.seconds * 1000);
+          const year = clickDate.getUTCFullYear();
+          const month = monthNames[clickDate.getUTCMonth()];
+
+          const key = `${year}-${month}`;
+
+          if (!aggregatedData[key]) {
+            aggregatedData[key] = { year, month, count: 0 };
+          }
+          aggregatedData[key].count += 1;
+        });
+
+        // Store the aggregated data for the current link
+        trendsPerLink.set(linkId, Object.values(aggregatedData));
+      });
+
+      // Convert the map to an array of objects (if needed)
+      // const clickTrendsPerLink = Array.from(trendsPerLink.entries()).map(
+      //   ([linkId, trends]) => ({
+      //     linkId,
+      //     trends,
+      //   }),
+      // );
+
+      const countryCountArray = relatedAnalyticsData
+        ? Object.entries(relatedAnalyticsData?.clickLocations).map(
+            ([countryCode, clicks]) => ({ countryCode, clicks }),
+          )
+        : [];
+
+      return {
+        id: link.id,
+        url: link.url,
+        title: link.title,
+        icon: relatedOptions?.icon,
+        color: relatedOptions?.color ?? "",
+        clickCount: relatedAnalyticsData?.clickCount ?? 0,
+        clickTrends: relatedAnalyticsData?.clickTrends ?? [],
+        deviceType: relatedAnalyticsData?.deviceType ?? {},
+        uniqueVisitors: relatedAnalyticsData?.uniqueVisitors ?? [],
+        clickLocations: countryCountArray,
+        lastClickDate: relatedAnalyticsData
+          ? new Date(
+              relatedAnalyticsData?.lastClickDate?.seconds * 1000,
+            ).toLocaleDateString()
+          : "",
+        clickTrendsChartData: trendsPerLink.get(link.id) || [],
+      };
+    });
+
+    // Set the state or perform any further actions with linksWithAnalytics here
+    if (linksWithAnalytics) setLinksWithAnalytics(linksWithAnalytics);
+  }, [links, analyticsData]);
 
   // CALCULATE AND GENERATE DEVICE DATA
   useEffect(() => {
@@ -223,6 +387,7 @@ export const useAnalytics = () => {
     linksLength,
     deviceData,
     countriesInfo,
-    loading
+    loading,
+    linksWithAnalytics,
   };
 };

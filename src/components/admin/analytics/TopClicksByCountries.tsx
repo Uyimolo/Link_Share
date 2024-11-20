@@ -39,7 +39,7 @@ const TopClicksByCountries = ({
                 <img
                   alt="country"
                   src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${country.countryCode}.svg`}
-                  className="w-8 rounded-full"
+                  className="w-8 rounded-full shadow shadow-black/50"
                 />
                 <Paragraph>{displayNames.of(country.countryCode)}</Paragraph>
               </div>

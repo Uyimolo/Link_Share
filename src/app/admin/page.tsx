@@ -1,36 +1,31 @@
+"use client";
 import Button from "@/components/Button";
 import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
 import { useAuthContext } from "@/context/AuthContext";
-import { areLinksEqual} from "@/custom-hooks/useLinks";
 import { LinkType } from "@/types/types";
-import React, { RefObject } from "react";
-import LinkCard from "./linkcard/LinkCard";
-import Intro from "./Intro";
+import { useRef } from "react";
 import { toast } from "sonner";
 import Loading from "@/components/Loading";
+import useConfirmPageLeave from "@/custom-hooks/useConfirmPageLeave";
+import LinkCard from "@/components/admin/links/linkcard/LinkCard";
+import Intro from "@/components/admin/links/Intro";
+import { areLinksEqual, useLinkContext } from "@/context/LinkContext";
 
-const LinkTab = ({
-  containerRef,
-  links,
-  setLinks,
-  linksFromDb,
-  saveLinks,
-  loading,
-}: {
-    containerRef: RefObject<HTMLDivElement>;
-    links: LinkType[];
-    setLinks: (newLinks: LinkType[]) => void;
-    linksFromDb: LinkType[];
-    saveLinks: (newLinks: LinkType[]) => void;
-    loading: boolean;
-}) => {
+const Dashboard = () => {
+  const { links, setLinks, linksFromDb, saveLinks, loading } = useLinkContext();
+
   const { user } = useAuthContext();
+  // Ask for user confirmation before reloading or leaving page if there are unsaved link changes.
+  useConfirmPageLeave(!areLinksEqual(links, linksFromDb));
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleAddNewLink = () => {
     const uniqueId = `${Math.floor(Date.now() + Math.random() * 10000)}`;
     const newLink = { id: uniqueId, url: "", title: "" };
-    setLinks([...links, newLink]);
+    if (links) {
+      setLinks([...links, newLink]);
+    }
 
     // scroll down to the new link added
     setTimeout(() => {
@@ -44,36 +39,43 @@ const LinkTab = ({
   };
 
   const handleLinkUpdate = (updatedLink: LinkType) => {
-    const updatedLinks = links.map((link) =>
+    const linkToUpdate = links?.map((link) =>
       link.id === updatedLink.id ? updatedLink : link,
     );
-    setLinks(updatedLinks);
+
+    if (linkToUpdate) {
+      setLinks(linkToUpdate);
+    }
   };
 
   const handleRemoveLink = (linkId: string) => {
-    const updatedLinks = links.filter((link) => link.id !== linkId);
+    const updatedLinks = links?.filter(
+      (link) => link.id !== linkId,
+    ) as LinkType[];
+
     setLinks(updatedLinks);
   };
 
+  // SAVE LINKS TO DB (THIS IS THE TRUE SAVE THE REST ARE TO UPDATE THE LOCAL STATE)
   const handleSaveLinks = () => {
-    const validLinks = links.filter((link) => link.url && link.title);
-    if (validLinks.length === links.length) {
+    const validLinks = links?.filter((link) => link.url && link.title);
+    if (validLinks && validLinks?.length === links?.length) {
       saveLinks(validLinks);
     } else {
       toast.warning("Please fill in all fields or remove incomplete links");
     }
-    };
-    
-     if (!user || loading) {
-       return (
-         <div className="grid h-[80vh] w-full place-content-center rounded-t-xl bg-white">
-           <Loading />
-         </div>
-       );
-     }
+  };
+
+  if (!user || loading) {
+    return (
+      <div className="grid h-[80vh] w-full place-content-center rounded-t-xl bg-white">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
-    <div className="">
+    <div className="" ref={containerRef}>
       <div className="rounded-t-xl bg-white p-6 md:p-10">
         <div className="space-y-2">
           <Heading variant="h1">Customize your links</Heading>
@@ -89,7 +91,7 @@ const LinkTab = ({
         </div>
 
         {/* links */}
-        {links.length > 0 ? (
+        {links && links?.length > 0 ? (
           <div className="space-y-6">
             {links.map((link, index) => (
               <LinkCard
@@ -120,4 +122,4 @@ const LinkTab = ({
   );
 };
 
-export default LinkTab;
+export default Dashboard;

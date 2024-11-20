@@ -11,14 +11,11 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Heading from "@/components/text/Heading";
+import { ClickTrendData } from "@/types/types";
 const ClickTrendsChart = ({
   clickTrendData,
 }: {
-  clickTrendData?: {
-    month: string;
-    year: number;
-    count: number;
-  }[];
+  clickTrendData?: ClickTrendData[]
 }) => {
   const data = clickTrendData
     ? clickTrendData
@@ -37,7 +34,7 @@ const ClickTrendsChart = ({
   }));
 
   return (
-    <Card className="w-full border-none rounded-xl">
+    <Card className="w-full min-w-full border-none rounded-xl">
       <CardHeader>
         <Heading variant="h2" className="text-xl md:text-xl font-semibold xl:text-xl">
           Monthly Click Trends
