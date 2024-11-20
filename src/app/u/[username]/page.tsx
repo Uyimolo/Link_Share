@@ -12,9 +12,14 @@ interface PublicProfileData {
 }
 
 const UserProfileAndLinks = () => {
-  const [profileData, setProfileData] = useState<PublicProfileData | null>(
-    null,
-  );
+  const [profileData, setProfileData] = useState<PublicProfileData>({
+    profileInfo: {
+      profilePicture: "",
+      firstName: "",
+      lastName: "",
+    },
+    links: [],
+  });
   const [userId, setUserId] = useState("");
   const params = useParams();
 
@@ -40,7 +45,7 @@ const UserProfileAndLinks = () => {
     fetchProfileAndLinks();
   }, [username]);
 
-  const { profileInfo, links } = profileData || {};
+  const { profileInfo, links } = profileData;
 
   return (
     <PreviewLinksAndProfile
