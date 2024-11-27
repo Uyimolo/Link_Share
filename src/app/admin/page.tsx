@@ -11,9 +11,12 @@ import useConfirmPageLeave from "@/custom-hooks/useConfirmPageLeave";
 import LinkCard from "@/components/admin/links/linkcard/LinkCard";
 import Intro from "@/components/admin/links/Intro";
 import { areLinksEqual, useLinkContext } from "@/context/LinkContext";
+import { Reorder } from "motion/react";
+import LinkCardContainer from "@/components/admin/links/LinkCardContainer";
 
 const Dashboard = () => {
-  const { links, setLinks, linksFromDb, saveLinks, loading } = useLinkContext();
+  const { links, setLinks, linksFromDb, saveLinks, loading, isLinksSaving } =
+    useLinkContext();
 
   const { user } = useAuthContext();
   // Ask for user confirmation before reloading or leaving page if there are unsaved link changes.
@@ -84,24 +87,35 @@ const Dashboard = () => {
           </Paragraph>
         </div>
 
-        <div className="sticky top-0 z-20 bg-white py-6">
+        <div className="stick top-0 z-20 bg-white py-6">
           <Button variant="secondary" className="" onClick={handleAddNewLink}>
             + Add new link
           </Button>
         </div>
 
         {/* links */}
+
         {links && links?.length > 0 ? (
           <div className="space-y-6">
-            {links.map((link, index) => (
-              <LinkCard
-                index={index}
-                key={link.id}
-                link={link}
-                updateLink={handleLinkUpdate}
-                deleteLink={handleRemoveLink}
-              />
-            ))}
+            {/* <Reorder.Group values={links} onReorder={setLinks}>
+              {links.map((link, index) => (
+                <Reorder.Item key={link} value={link} className="my-4 relative">
+                  <LinkCard
+                    index={index}
+                    key={link.id}
+                    link={link}
+                    updateLink={handleLinkUpdate}
+                    deleteLink={handleRemoveLink}
+                  />
+                </Reorder.Item>
+              ))}
+            </Reorder.Group> */}
+            <LinkCardContainer
+              links={links}
+              setLinks={setLinks}
+              updateLink={handleLinkUpdate}
+              deleteLink={handleRemoveLink}
+            />
           </div>
         ) : (
           <Intro />
@@ -112,10 +126,11 @@ const Dashboard = () => {
       <div className="sticky bottom-0 mt-1 flex w-full rounded-b-xl bg-white p-6 md:px-10">
         <Button
           className="ml-auto mr-0 md:w-fit"
-          disabled={areLinksEqual(links, linksFromDb)}
+          disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}
           onClick={handleSaveLinks}
+          loading={isLinksSaving}
         >
-          Save
+          Save links
         </Button>
       </div>
     </div>

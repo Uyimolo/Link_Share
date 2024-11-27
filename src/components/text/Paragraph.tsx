@@ -20,7 +20,7 @@ const Paragraph = ({
     <p
       className={cn(
         'text-gray',
-        variant === 'small' ? 'text-xs' : 'text-sm xl:text-base',
+        variant === 'small' ? 'text-xs' : 'text-sm',
         className
       )}
       onClick={onClick}

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans } from "next/font/google";
+import { Instrument_Sans, Montserrat } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "sonner";
@@ -15,6 +15,12 @@ const instrument_Sans = Instrument_Sans({
   display: "swap",
 });
 
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body
-          className={` ${instrument_Sans.className} bg-lightestGra mx-auto max-w-[1900px] overflow-x-hidden bg-[#eeeeee] antialiased`}
+          className={` ${montserrat.className} bg-lightestGra mx-auto max-w-[1900px] bg-[#eeeeee] antialiased`}
         >
           <Toaster position="top-center" />
           {children}

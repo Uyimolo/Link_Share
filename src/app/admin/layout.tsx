@@ -1,10 +1,11 @@
 "use client";
 import AdminRoutesHeader from "@/components/admin/AdminRoutesHeader";
 import MockupPreview from "@/components/mockup-preview/MockupPreview";
+import Paragraph from "@/components/text/Paragraph";
 import { LinkProvider } from "@/context/LinkContext";
 import cn from "@/utilities/cn";
 import { usePathname } from "next/navigation";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { FaEye } from "react-icons/fa6";
 
@@ -12,8 +13,13 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [showPreview, setShowPreview] = useState(false);
 
   const pathname = usePathname();
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, [pathname]);
+
   return (
-    <div className="">
+    <div>
       <LinkProvider>
         <AdminRoutesHeader />
         <div
@@ -45,13 +51,16 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
           <></>
         ) : (
           <div
-            className="fixed bottom-16 right-1 z-40 aspect-square cursor-pointer rounded-full bg-black p-2 lg:hidden"
+            className="fixed bottom-16 right-1 z-40 items-center shadow-md shadow-black/30 cursor-pointer rounded-full bg-black p-2 lg:hidden transition duration-500"
             onClick={() => setShowPreview(!showPreview)}
           >
             {showPreview ? (
               <FaTimes className="text-lg text-white" />
             ) : (
-              <FaEye className="text-lg text-white" />
+              <div className="flex gap-2">
+                <FaEye className="text-lg text-white" />
+                <Paragraph className="text-white">Preview</Paragraph>
+              </div>
             )}
           </div>
         )}

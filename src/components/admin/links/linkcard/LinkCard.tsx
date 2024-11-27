@@ -84,7 +84,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     };
   };
   return (
-    <div className="space-y-4 rounded-xl bg-lightestGray p-5">
+    <div className="space-y-4 relative hover:bg-gray/20 rounded-xl bg-lightestGray p-5">
       {/* Header: displays link index and delete option */}
       <div className="flex justify-between">
         <Paragraph className="font-semibold">{`Link #${index + 1}`}</Paragraph>

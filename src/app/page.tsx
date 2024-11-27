@@ -9,41 +9,21 @@ import previewScreenshot from "@/assets/images/preview-screenshot.png";
 import dashboardScreenshot from "@/assets/images/dashboard-screenshot.png";
 import logo from "@/assets/images/logo.svg";
 import Logo from "@/components/brand/Logo";
-
-// const features = [
-//   {
-//     title: "Simple Link Creation",
-//     content:
-//       "Easily add links to showcase your work, social profiles, or resources.",
-//   },
-//   // {
-//   //   title: 'Drag-and-Drop Organization',
-//   //   content:
-//   //     'Reorder your links instantly with a simple drag-and-drop interface.',
-//   // },
-//   {
-//     title: "Real-Time Preview",
-//     content:
-//       "See changes live as you edit, ensuring your profile looks perfect.",
-//   },
-//   {
-//     title: "Batch Updates",
-//     content:
-//       "Make multiple edits and save them all at once with a single click.",
-//   },
-//   {
-//     title: "Mobile-First Design",
-//     content: "Manage your links smoothly from any device, wherever you are.",
-//   },
-// ];
+import undrawImage from "@/assets/svgs/undraw4.svg";
+import Footer from "@/components/footer/Footer";
 
 const Home = () => {
   useProtectedRoute(false);
   const router = useRouter();
 
+  const paragraphStyle =
+    "w-fit sm:text-base md:text-2xl lg:max-w-none lg:text-base";
+
+  const headingStyle =
+    "font-bold text-4xl sm:text-5xl md:text-6xl leading-none lg:text-5xl xl:text-[4.2vw] 2xl:text-7xl";
   return (
-    <div className="w-full">
-      <div className="fixed left-1/2 top-4 z-10 flex w-[calc(100%-32px)] -translate-x-1/2 items-center justify-between rounded-xl bg-white p-4">
+    <div className="w-full bg-white">
+      <div className="fixed left-1/2 top-4 z-10 flex w-[calc(100%-32px)] -translate-x-1/2 items-center justify-between rounded-xl border border-gray/10 bg-white/80 p-4 shadow-lg outline-8 outline-white backdrop-blur-[2px]">
         <div className="hidden md:block">
           <Logo showFullLogo />
         </div>
@@ -69,33 +49,28 @@ const Home = () => {
           </Button>
         </div>
       </div>
+      <div className="px-4 md:px-12 lg:px-[5vw]">
+        {/* first section */}
+        <div className="grid gap-16 pt-36 md:items-center md:pt-48 lg:grid-cols-2">
+          <div className="space-y-6">
+            <Heading variant="h1" className={headingStyle}>
+              Effortlessly <span className="text-blue">share your story</span>{" "}
+              with a single link.
+            </Heading>
+            <Paragraph className={paragraphStyle}>
+              {`Whether you're a content creator, business owner, or organization enthusiast, simplify your digital presence by managing and sharing all your important links in one place. Save time, stay organized, and ensure your audience has easy access to everything they need with just a click!`}
+            </Paragraph>
 
-      {/* first section */}
-      <div className="space-y-10 bg-blue p-4 pt-32 md:grid md:grid-cols-2 md:items-center md:p-12 lg:space-y-0 lg:p-[5vw] lg:pt-48">
-        <div className="space-y-4">
-          <Heading
-            variant="h1"
-            className="max-w-md text-4xl leading-none text-white md:max-w-none lg:text-5xl xl:text-[4.15vw] 2xl:text-7xl"
-          >
-            Effortlessly Share Your Story with One Link.
-          </Heading>
-          <Paragraph className="w-fit max-w-sm leading-none text-lightestGray md:max-w-xl lg:max-w-lg lg:text-lg xl:max-w-xl xl:text-xl">
-            {`Whether you're a content creator, business owner, or just someone who
-          loves organization, easily manage and share all your important links
-          from one place.`}
-          </Paragraph>
+            <Button
+              variant="secondary"
+              className="w-fit"
+              onClick={() => router.push("/login")}
+            >
+              Get started for free
+            </Button>
+          </div>
 
-          <Button
-            variant="secondary"
-            className="w-fit lg:translate-y-6"
-            onClick={() => router.push("/login")}
-          >
-            Get started for free
-          </Button>
-        </div>
-
-        <div className="">
-          <div className="relative mx-auto ml-auto w-40 md:w-[50%] lg:mr-[5vw] lg:max-w-[500px] xl:w-[45%]">
+          <div className="relative mx-auto ml-auto w-1/2 max-w-sm sm:w-[40%] lg:mr-[5vw] lg:max-w-[500px] xl:w-[45%]">
             <div className="absolute left-1/2 top-1/2 grid aspect-square w-[180%] -translate-x-1/2 -translate-y-1/2 items-center rounded-full border-4 backdrop-blur-sm"></div>
 
             <div className="absolute left-1/2 top-1/2 aspect-square w-[170%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lightBlue/50 backdrop-blur-[1px]"></div>
@@ -103,7 +78,7 @@ const Home = () => {
             <Image
               alt="Mockup of preview page"
               src={previewScreenshot}
-              className="relative rounded-xl border shadow-xl shadow-black/50"
+              className="relative mx-auto rounded-xl border shadow-xl shadow-black/50"
             />
 
             <Image
@@ -113,56 +88,57 @@ const Home = () => {
             />
           </div>
         </div>
-      </div>
 
-      {/* second section */}
-      <div className="grid items-center space-y-6 p-4 md:p-12 lg:grid-cols-2 lg:gap-20 lg:space-y-0 lg:p-[5vw]">
-        <div className="space-y-6 rounded-xl p-4 lg:order-2">
-          <Heading
-            variant="h2"
-            className="max-w-md text-4xl leading-none md:max-w-none lg:text-5xl xl:text-[3.7vw] 2xl:text-7xl"
-          >
-            Manage your links with Unmatched Simplicity
-          </Heading>
+        {/* second section */}
+        <div className="grid items-center gap-16 pt-24 md:pt-48 lg:grid-cols-2 lg:gap-20 lg:space-y-0">
+          <div className="space-y-6 rounded-xl lg:order-2">
+            <Heading variant="h2" className={headingStyle}>
+              <span className="text-blue">Manage your links</span> with
+              unmatched simplicity
+            </Heading>
 
-          <Paragraph className="">{`Quickly add links to showcase your work, social profiles, or resources. Easily reorder with drag-and-drop, preview changes live, and save multiple updates with one click. Manage everything seamlessly from any device.`}</Paragraph>
+            <Paragraph
+              className={paragraphStyle}
+            >{`Quickly add links to showcase your work, social profiles, or resources. Easily reorder with drag-and-drop, preview changes live, and save multiple updates with one click. Manage everything seamlessly from any device.`}</Paragraph>
 
-          <Button className="w-fit" onClick={() => router.push("/login")}>
-            Get started for free
-          </Button>
+            <Button className="w-fit" onClick={() => router.push("/login")}>
+              Get started for free
+            </Button>
+          </div>
+
+          <Image
+            src={dashboardScreenshot}
+            alt="Mockup of dashboard page"
+            className="mx-auto w-full max-w-xl rounded-xl border shadow-xl shadow-black/50 md:w-full md:max-w-3xl lg:max-w-none xl:w-4/5"
+          />
         </div>
 
-        <Image
-          src={dashboardScreenshot}
-          alt="Mockup of dashboard page"
-          className="rounded-xl border shadow-xl shadow-black/50"
-        />
-      </div>
+        {/* third section  */}
+        <div className="grid items-center gap-16 py-24 md:pt-48 lg:grid-cols-2 lg:gap-20">
+          <div className="space-y-6">
+            <Heading variant="h2" className={headingStyle}>
+              <span className="text-blue">Track, analyze, and optimize</span>{" "}
+              your link performance
+            </Heading>
 
-      {/* third section  */}
-      <div className="grid items-center space-y-6 p-4 md:p-12 lg:grid-cols-2 lg:gap-20 lg:space-y-0 lg:p-[5vw]">
-        <div className="space-y-6 rounded-xl p-4">
-          <Heading
-            variant="h2"
-            className="max-w-md text-4xl leading-none md:max-w-none lg:text-5xl xl:text-[3.7vw] 2xl:text-7xl"
-          >
-            Track, Analyze, and Optimize Your Link Performance
-          </Heading>
+            <Paragraph
+              className={paragraphStyle}
+            >{`Grow with clear, actionable insights from our analytics. Track profile visits, monitor link clicks, and see real-time updates to understand what content resonates. With easy-to-read metrics, refine your strategy and connect better with your audience.`}</Paragraph>
 
-          <Paragraph className="">{`Grow with clear, actionable insights from our analytics. Track profile visits, monitor link clicks, and see real-time updates to understand what content resonates. With easy-to-read metrics, refine your strategy and connect better with your audience.`}</Paragraph>
+            <Button className="w-fit" onClick={() => router.push("/login")}>
+              Get started for free
+            </Button>
+          </div>
 
-          <Button className="w-fit" onClick={() => router.push("/login")}>
-            Get started for free
-          </Button>
+          <Image
+            src={undrawImage}
+            alt="image of analytics"
+            className="mx-auto xl:w-4/5"
+          />
         </div>
-
-        <Image
-          src={dashboardScreenshot}
-          alt="Mockup of dashboard page"
-          className="rounded-xl border shadow-xl shadow-black/50"
-        />
       </div>
-      {/*  */}
+      {/* footer */}
+      <Footer />
     </div>
   );
 };

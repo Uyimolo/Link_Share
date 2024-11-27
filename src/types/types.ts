@@ -125,3 +125,9 @@ export type LinkWithAnalytics = {
 //     };
 //     lastClickDate: number | undefined;
 // }[]
+
+export type NavItem = {
+  label: string;
+  icon: IconType;
+  link: string;
+};

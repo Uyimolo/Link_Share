@@ -40,6 +40,7 @@ type LinkContextType = {
   deleteLink: (linkId: string, userId: string) => void;
   isDirty: boolean;
   loading: boolean;
+  isLinksSaving: boolean;
 };
 const LinkContext = createContext<LinkContextType | undefined>(undefined);
 
@@ -57,6 +58,7 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
   const [links, setLinks] = useState<LinkType[] | null>([]);
   const [linksFromDb, setLinksFromDb] = useState<LinkType[] | null>([]);
   const [isDirty, setIsDirty] = useState(false);
+  const [isLinksSaving, setIsLinksSaving] = useState(false);
 
   useEffect(() => {
     // Compare offline links state to links saved database to update isDirty state
@@ -88,6 +90,7 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
   }, [user]);
 
   const saveLinks = async (updatedLinks: LinkType[]) => {
+    setIsLinksSaving(true);
     if (user) {
       // (isDirty) means there are unsaved changes
       if (isDirty) {
@@ -106,6 +109,7 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
         toast.warning("No changes detected");
       }
     }
+    setIsLinksSaving(false);
   };
 
   const deleteLink = async (linkId: string, userId: string) => {
@@ -134,6 +138,7 @@ export const LinkProvider = ({ children }: { children: ReactNode }) => {
         isDirty,
         loading,
         deleteLink,
+        isLinksSaving,
       }}
     >
       {children}

@@ -11,6 +11,7 @@ import Loading from "@/components/Loading";
 import Paragraph from "@/components/text/Paragraph";
 import FormGroup from "@/components/forms/FormGroup";
 import Button from "@/components/Button";
+import cn from "@/utilities/cn";
 
 /* ProfileInfoForm Component
  *
@@ -41,8 +42,18 @@ const validationSchema = yup.object({
       if (!value || !(value instanceof File)) return false;
       return value.size <= 1024 * 1024; // 1MB limit
     }),
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last Name is required"),
+  firstName: yup
+    .string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters")
+    .max(30, "First name must not exceed 30 characters")
+    .matches(/^[A-Za-z]+$/, "First name must contain only letters"),
+  lastName: yup
+    .string()
+    .required("Last name is required")
+    .min(2, "Last name must be at least 2 characters")
+    .max(30, "Last name must not exceed 30 characters")
+    .matches(/^[A-Za-z]+$/, "Last name must contain only letters"),
   email: yup.string().email("Invalid email format").optional(),
 });
 
@@ -89,7 +100,8 @@ const ProfileInfoForm = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [imageUploading, setImageUploading] = useState(false);
-  const { profileInfo, saveProfileInformation } = useProfileInfo();
+  const { profileInfo, saveProfileInformation, isProfileDetailsSaving } =
+    useProfileInfo();
   // dummy file to serve as initial value for file state
   const dummyFile = new File([""], "dummy.txt", { type: "text/plain" });
   const [initialProfileInfo, setInitialProfileInfo] = useState<ProfileFormData>(
@@ -131,17 +143,15 @@ const ProfileInfoForm = () => {
             profileInfo.profilePicture,
             "profile-image.jpg",
           );
-          setValue("profilePicture", file); // Register file with react-hook-form
-          // setInitialFile(file);
+
+          setValue("profilePicture", file); // Register file with react-hook-form as initial value for the file input
+
           setInitialProfileInfo({
             profilePicture: file,
             firstName: profileInfo.firstName,
             lastName: profileInfo.lastName,
             email: profileInfo.email,
           });
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(file);
-          fileInputRef.current!.files = dataTransfer.files; // Set file input manually
         }
         setLoading(false); // Set loading to false once data is loaded
       }
@@ -166,15 +176,10 @@ const ProfileInfoForm = () => {
   };
 
   // Creates a preview URL from a selected file and updates the file input’s state manually.
-  const handleFileSelect = (file: File) => {
+  const handleFilePreview = (file: File) => {
     const objectUrl = URL.createObjectURL(file); // Create a URL for the file
 
     setPreviewImage(objectUrl); // Set the image URL for file preview
-
-    // Manually set the file input value
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(file);
-    fileInputRef.current!.files = dataTransfer.files;
   };
 
   // Processes file selection for direct file input changes and stores the file.
@@ -183,8 +188,8 @@ const ProfileInfoForm = () => {
   ) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      handleFileSelect(files[0]);
-      setValue("profilePicture", files[0]); // Register the file with react-hook-form
+      handleFilePreview(files[0]);
+      setValue("profilePicture", files[0], { shouldValidate: true }); // Register the file with react-hook-form
     }
   };
 
@@ -223,7 +228,8 @@ const ProfileInfoForm = () => {
     setImageUploading(false);
   };
 
-  const saveButtonState = areProfilesEqual(watch(), initialProfileInfo);
+  const saveButtonState =
+    areProfilesEqual(watch(), initialProfileInfo) && !isProfileDetailsSaving;
 
   if (loading) {
     return (
@@ -253,22 +259,29 @@ const ProfileInfoForm = () => {
 
             {/* profile picture preview */}
             <div
-              className="absolut grid aspect-square w-[193px] cursor-pointer place-content-center space-y-2 overflow-hidden rounded-xl bg-veryLightBlue bg-cover md:w-[220px]"
+              className={cn(
+                "grid aspect-square w-[193px] cursor-pointer place-content-center space-y-2 overflow-hidden rounded-xl bg-veryLightBlue bg-cover md:w-[220px]",
+                errors.profilePicture ? "border border-red" : "",
+              )}
               style={{
                 backgroundImage: previewImage ? `url(${previewImage})` : "none",
               }}
               onClick={handleCustomUploadClick}
             >
               <CiImageOn className="mx-auto w-fit text-4xl text-blue" />
-              <Paragraph className="mx-auto text-nowrap font-semibold text-blue">
+              <div className="">
                 {imageUploading ? (
                   <Loading />
                 ) : previewImage ? (
-                  "click to change"
+                  <Paragraph className="mx-auto text-nowrap font-semibold text-blue">
+                    Click to change
+                  </Paragraph>
                 ) : (
-                  fileInputField.placeholder
+                  <Paragraph className="mx-auto text-nowrap font-semibold text-blue">
+                    {fileInputField.placeholder}
+                  </Paragraph>
                 )}
-              </Paragraph>
+              </div>
             </div>
 
             <input
@@ -282,11 +295,20 @@ const ProfileInfoForm = () => {
             />
           </div>
 
-          <Paragraph variant="small">
-            Image must be below 1024x1024px. Use PNG or JPG format.
-          </Paragraph>
+          <div className="space-y-4">
+            <Paragraph variant="small">
+              Image must be below 1024x1024px. Use PNG or JPG format.
+            </Paragraph>
+
+            {errors.profilePicture && (
+              <Paragraph variant="small" className="text-red">
+                {errors.profilePicture.message}
+              </Paragraph>
+            )}
+          </div>
         </div>
       )}
+
       {/* text info */}
       <div className="space-y-2 rounded-xl bg-lightestGray p-4">
         {profileInfoFormFields
@@ -303,9 +325,14 @@ const ProfileInfoForm = () => {
       </div>
 
       {/* logout and save buttons */}
-      <div className="md: sticky bottom-0 mt-1 flex w-full  rounded-b-xl bg-white py-4 justify-end">
-        <Button className="md:w-fit" type="submit" disabled={saveButtonState}>
-          Save
+      <div className="md: sticky bottom-0 mt-1 flex w-full justify-end rounded-b-xl bg-white py-4">
+        <Button
+          className="md:w-fit"
+          type="submit"
+          disabled={saveButtonState}
+          loading={isProfileDetailsSaving}
+        >
+          Save profile details
         </Button>
       </div>
     </form>

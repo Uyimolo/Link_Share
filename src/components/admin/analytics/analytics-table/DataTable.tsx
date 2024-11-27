@@ -47,11 +47,11 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-xl space-y-4 border border-white py-4">
+    <>
       <TableHeader>
         <Heading
           variant="h2"
-          className="pl-4 text-xl font-semibold md:text-xl xl:text-xl"
+          className="pl-4 py-4 text-xl font-semibold md:text-xl xl:text-xl"
         >
          All links
         </Heading>
@@ -120,6 +120,6 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
-    </div>
+    </>
   );
 }

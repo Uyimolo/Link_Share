@@ -19,6 +19,8 @@ type FormGroupProps<TFormValues extends FieldValues> = {
   error?: string;
   responsive?: boolean; // Determines whether the component should adapt to a grid layout on medium screens
   options?: { label: string; value: string }[]; // For select fields, an array of options with label and value
+  labelClassName?: string
+  inputClassName?: string; 
 };
 
 const FormGroup = <TFormValues extends FieldValues>({
@@ -26,6 +28,8 @@ const FormGroup = <TFormValues extends FieldValues>({
   formField,
   error,
   responsive = false,
+  labelClassName = '',
+  inputClassName = ''
   // options,
 }: FormGroupProps<TFormValues>) => {
   const { name, type, label, placeholder, icon } = formField;
@@ -42,7 +46,7 @@ const FormGroup = <TFormValues extends FieldValues>({
       )}
     >
       <label
-        className={cn("text-xs text-gray", error && "text-red")}
+        className={cn("text-xs text-gray", error && "text-red" , labelClassName)}
         htmlFor={name}
       >
         {label}
@@ -51,9 +55,9 @@ const FormGroup = <TFormValues extends FieldValues>({
       <div className="relative">
         <input
           className={cn(
-            "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue xl:text-base xl:placeholder:text-base",
+            "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue",
             error && "border-red",
-            responsive ? "pl-4" : "",
+            responsive ? "pl-4" : "", inputClassName
           )}
           type={type !== "password" ? type : showPassword ? "text" : "password"}
           {...register}
