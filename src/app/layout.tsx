@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 export const metadata: Metadata = {
   title: "Link Share",
@@ -10,16 +11,10 @@ export const metadata: Metadata = {
     "Link share is a full stack link sharing web app. It allows users to create a personal hub for sharing multiple links.",
 };
 
-const instrument_Sans = Instrument_Sans({
-  subsets: ["latin"],
-  display: "swap",
-});
-
 const montserrat = Montserrat({
   subsets: ["latin"],
   display: "swap",
 });
-
 
 export default function RootLayout({
   children,
@@ -28,14 +23,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AuthProvider>
-        <body
-          className={` ${montserrat.className} bg-lightestGra mx-auto max-w-[1900px] bg-[#eeeeee] antialiased`}
-        >
-          <Toaster position="top-center" />
-          {children}
-        </body>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <body
+            className={` ${montserrat.className} mx-auto bg-[#eeeeee] antialiased `}
+          >
+            <Toaster position="top-center" />
+            {children}
+          </body>
+        </AuthProvider>
+      </ThemeProvider>
     </html>
   );
 }

@@ -242,17 +242,17 @@ const ProfileInfoForm = () => {
   return (
     <form
       action=""
-      className="space-y-4 bg-white"
+      className="space-y-4 bg-white dark:bg-gray lg:dark:bg-darkGray"
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* Profile picture preview and upload. */}
       {fileInputField && (
-        <div className="gap-6 space-y-4 rounded-xl bg-lightestGray p-4 md:flex md:items-center md:justify-between md:space-y-0">
-          <label className="basis-[50%] text-sm text-gray xl:text-base">
+        <div className="mx-6 gap-6 space-y-4 rounded-xl border border-lightestGray lg:border-none bg-lightestGray p-4 dark:bg-gray md:flex md:items-center md:justify-between md:space-y-0">
+          <label className="basis-[50%] text-sm text-gray dark:text-white xl:text-base">
             {fileInputField.label}
           </label>
 
-          <div className="relative h-fit p-2">
+          <div className="relative h-fit">
             {/*
              * the main file input is positioned below the profile picture preview div and is triggered when the profile preview is clicked
              */}
@@ -310,7 +310,7 @@ const ProfileInfoForm = () => {
       )}
 
       {/* text info */}
-      <div className="space-y-2 rounded-xl bg-lightestGray p-4">
+      <div className="mx-6 space-y-2 lg:border-none rounded-xl border border-lightestGray bg-lightestGray p-4 dark:bg-gray">
         {profileInfoFormFields
           .filter((field) => field.name !== "profilePicture")
           .map((field, index) => (
@@ -325,15 +325,17 @@ const ProfileInfoForm = () => {
       </div>
 
       {/* logout and save buttons */}
-      <div className="md: sticky bottom-0 mt-1 flex w-full justify-end rounded-b-xl bg-white py-4">
-        <Button
-          className="md:w-fit"
-          type="submit"
-          disabled={saveButtonState}
-          loading={isProfileDetailsSaving}
-        >
-          Save profile details
-        </Button>
+      <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-darkGray lg:border-none lg:bg-white lg:dark:bg-darkGray">
+        <div className="flex w-full justify-end rounded-b-xl bg-white p-6 dark:bg-gray lg:dark:bg-darkGray">
+          <Button
+            className="md:w-fit"
+            type="submit"
+            disabled={saveButtonState}
+            loading={isProfileDetailsSaving}
+          >
+            Save profile details
+          </Button>
+        </div>
       </div>
     </form>
   );

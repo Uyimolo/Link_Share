@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -12,11 +12,19 @@ import {
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Heading from "@/components/text/Heading";
 import { ClickTrendData } from "@/types/types";
+import { useThemeContext } from "@/context/ThemeContext";
+import { getFillColor, getGridStrokeColor } from "@/utilities/analyticsChartsColors";
+
+
+
 const ClickTrendsChart = ({
   clickTrendData,
 }: {
-  clickTrendData?: ClickTrendData[]
+  clickTrendData?: ClickTrendData[];
 }) => {
+  const { theme } = useThemeContext();
+  useEffect(() => console.log(theme), [theme]);
+  console.log(theme);
   const data = clickTrendData
     ? clickTrendData
     : [
@@ -28,43 +36,57 @@ const ClickTrendsChart = ({
         { year: 2025, month: "April", count: 25 },
         { year: 2025, month: "May", count: 20 },
       ];
+
   const trendData = data.map((item) => ({
     ...item,
     month: `${item.month} ${item.year}`, // Combine month and year for X-axis labeling
   }));
 
+  // Utility to determine grid stroke color
+ 
+
   return (
-    <Card className="w-full min-w-full border-none rounded-xl">
+    <Card className="w-full rounded-xl border-none dark:bg-gray">
       <CardHeader>
-        <Heading variant="h2" className="text-xl md:text-xl font-semibold xl:text-xl">
+        <Heading
+          variant="h2"
+          className="text-xl font-semibold md:text-xl xl:text-xl"
+        >
           Monthly Click Trends
         </Heading>
       </CardHeader>
-      <CardContent>
+      <CardContent className="dark:text-white">
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
+            className="dark:text-white"
             data={trendData}
             margin={{ top: 20, right: 0, left: 0, bottom: 20 }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke={getGridStrokeColor(theme)} // Use the utility function
+            />
             <XAxis
+              tick={{ fill: getFillColor(theme), fontSize: 14 }}
               dataKey="month"
               label={{
                 value: "Links",
                 position: "insideBottom",
                 offset: -10,
-                fill: "#6B7280",
+                fill: getFillColor(theme),
               }}
             />
             <YAxis
+              tick={{ fill: getFillColor(theme), fontSize: 14 }}
               label={{
                 value: "Clicks",
                 angle: -90,
                 position: "insideLeft",
-                fill: "#6B7280",
+                fill: getFillColor(theme),
               }}
             />
-            <Tooltip />
+
+            <Tooltip labelClassName="dark:text-black" />
             <Line
               type="monotone"
               dataKey="count"

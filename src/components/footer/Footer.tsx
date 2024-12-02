@@ -2,7 +2,6 @@ import React from "react";
 import Paragraph from "../text/Paragraph";
 import Logo from "../brand/Logo";
 import Link from "next/link";
-import FormGroup from "../forms/FormGroup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -123,11 +122,9 @@ const Footer = () => {
   };
 
   return (
-    <footer className="border-t bg-blue px-4 py-10 md:px-12 lg:px-[5vw]">
+    <footer className="border-t dark:bg-black bg-blue px-4 py-10 md:px-12 lg:px-[5vw]">
       <div className="space-y-10 border-t border-white py-10">
-        <div className="w-fit rounded-xl bg-white py-1 pl-1 pr-2">
-          <Logo showFullLogo className="" />
-        </div>
+          <Logo showFullLogo variant="white" />
 
         <div className="grid gap-10 md:flex md:justify-between">
           {/* footer links and news letter */}

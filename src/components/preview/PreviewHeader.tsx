@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useAuthContext } from "@/context/AuthContext";
+import Logo from "../brand/Logo";
 
 const PreviewHeader = () => {
   const router = useRouter();
@@ -40,7 +41,7 @@ const PreviewHeader = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1900px] ">
+    <div className="mx-auto w-full">
       {user ? (
         <div className="flex justify-between gap-4">
           <Button
@@ -51,21 +52,26 @@ const PreviewHeader = () => {
           </Button>
         </div>
       ) : (
-        <div className="flex justify-between md:rounded-xl md:bg-white md:p-4">
-          <Button
-            variant="secondary"
-            className="w-fit"
-            onClick={() => router.push("/register")}
-          >
-            Create account
-          </Button>
-          <Button className="w-fit" onClick={() => router.push("/login")}>
-            Sign in
-          </Button>
+        <div className="flex justify-between border border-white/20 p-4 shadow-xl backdrop-blur-sm rounded-xl bg-white/90">
+          <Logo className="md:hidden" />
+          <Logo showFullLogo className="hidden md:flex" />
+
+          <div className="flex items-center gap-4">
+            <Button
+              variant="secondary"
+              className="hidden w-fit md:block"
+              onClick={() => router.push("/register")}
+            >
+              Create account
+            </Button>
+            <Button className="w-fit" onClick={() => router.push("/login")}>
+              Sign in
+            </Button>
+          </div>
         </div>
       )}
     </div>
-  );
+  ); 
 };
 
 export default PreviewHeader;

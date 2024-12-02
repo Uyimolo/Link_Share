@@ -33,7 +33,7 @@ const Button = ({
       disabled={disabled}
       onClick={onClick}
       className={cn(
-        "w-full rounded-lg px-7 text-sm py-[11px] font-semibold flex items-center justify-center gap-2",
+        "w-full rounded-md px-7 text-sm py-3 font-semibold flex items-center justify-center gap-2",
         typeStyles,
         className,
       )}

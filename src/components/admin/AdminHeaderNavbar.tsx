@@ -1,38 +1,27 @@
 import { NavItem as NavItemType } from "@/types/types";
 import React from "react";
 import NavItem from "./navigation/NavItem";
-import { FaGear } from "react-icons/fa6";
 import cn from "@/utilities/cn";
+
+import ThemeSelector from "../ThemeSelector";
 
 const AdminHeaderNavbar = ({
   navItems,
-  setShowSettings,
   setShowNavigation,
   showNavigation,
 }: {
   navItems: NavItemType[];
-  setShowSettings: (showSettings: boolean) => void;
   setShowNavigation: (showNavigation: boolean) => void;
   showNavigation: boolean;
 }) => {
   return (
     <>
-      {" "}
-      <div className="hidden items-center gap-1 lg:flex">
-        {navItems
-          // .filter((item) => item.label !== "Settings")
-          .map((item, index) => (
-            <NavItem key={index} isLink={!!item.link} navItem={item} />
-          ))}
-      </div>
-      <div className="hidden lg:flex" onClick={() => setShowSettings(true)}>
-        <NavItem isLink={false} navItem={{ icon: FaGear, label: "Settings" }} />
-      </div>
-      {/* Mobile Navbar (Sidebar) */}
       <div
         className={cn(
-          "fixed right-0 top-0 z-40 h-screen w-4/5 space-y-4 max-w-[250px] bg-white px-4 pt-28 transition duration-500 lg:hidden",
-          showNavigation ? "translate-x-0" : "translate-x-full",
+          "lg: fixed right-0 top-0 z-40 h-screen w-4/5 max-w-[250px] space-y-2 bg-blue dark:bg-darkGray px-4 pt-28 transition duration-500 lg:relative lg:w-full lg:max-w-none lg:space-y-4 lg:overflow-x-hidden lg:bg-transparent lg:px-0",
+          showNavigation
+            ? "translate-x-0 lg:translate-x-0"
+            : "translate-x-full lg:translate-x-0",
         )}
       >
         {navItems.map((item, index) => (
@@ -42,16 +31,10 @@ const AdminHeaderNavbar = ({
             navItem={item}
             onClick={() => setShowNavigation(false)}
           />
-        ))}
-        <div onClick={() => setShowSettings(true)}>
-          <NavItem
-            isLink={false}
-            navItem={{ icon: FaGear, label: "Settings" }}
-            onClick={() => setShowNavigation(false)}
-          />
-        </div>
+        ))}{" "}
+        <ThemeSelector />
+        {/* <div className="mt-10 h-40 w-full rounded-xl border border-white"></div> */}
       </div>
-      {/* curtain */}
       <div
         className={cn(
           "fixed left-0 top-0 z-30 h-screen w-full bg-veryLightBlue/50 transition duration-1000",

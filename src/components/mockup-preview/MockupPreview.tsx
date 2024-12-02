@@ -19,9 +19,7 @@ const MockupPreview = () => {
     email: "",
   };
 
-  const { firstName, lastName, profilePicture, email } =
-    profileInfo || emptyProfileObject;
-  const name = firstName && lastName ? `${firstName} ${lastName}` : "";
+  const { profilePicture } = profileInfo || emptyProfileObject;
   const { username } = useAuthContext();
 
   return (
@@ -40,25 +38,18 @@ const MockupPreview = () => {
         </>
 
         {/* Mockup screen */}
-        <div className="h-full overflow-hidden rounded-[25px] border-gray bg-white px-3 py-10 lg:border lg:p-3">
+        <div className="h-full overflow-hidden rounded-[25px] border-gray bg-white px-3 py-10 dark:bg-lighterGray lg:border lg:p-3">
           {/* camera notch */}
           <div className="mx-auto mb-6 hidden h-4 w-2/6 rounded-full border border-black bg-black lg:block"></div>
 
           {/* profile information */}
           <div className="mx-auto w-3/4 space-y-1">
-            {name ? (
-              <Paragraph className="text-center font-semibold capitalize text-darkGray lg:text-sm">
-                {name}
-              </Paragraph>
-            ) : (
-              <div className="h-2 w-full rounded bg-lighterGray"></div>
-            )}
             {/* profile image */}
             <div
               className={cn(
-                "mx-auto aspect-square w-20",
+                "mx-auto aspect-square w-20 overflow-hidden",
                 profilePicture
-                  ? "rounded-full border-4 border-blue bg-cover bg-center"
+                  ? "rounded-full bg-cover bg-center"
                   : "grid place-content-center",
               )}
               style={{
@@ -68,27 +59,27 @@ const MockupPreview = () => {
               }}
             >
               {!profilePicture && (
-                <RxAvatar className="rounded-full bg-lightestGray text-[93px] text-gray" />
+                <RxAvatar className="rounded-full text-[80px] text-gray" />
               )}
             </div>
 
-            {/* name and email */}
+            {/* username */}
             <div className="">
               {username ? (
-                <Paragraph className="text-center text-xs leading-none lg:text-sm">
+                <Paragraph className="text-center text-xs leading-none dark:text-darkGray lg:text-sm">
                   @{username}
                 </Paragraph>
               ) : (
                 <div className="mx-auto h-2 w-1/2 rounded bg-lighterGray"></div>
               )}
 
-              {email ? (
+              {/* {email ? (
                 <Paragraph className="text-center text-xs xl:text-xs">
                   {email}
                 </Paragraph>
               ) : (
                 <div className="mx-auto h-2 w-1/2 rounded bg-lighterGray"></div>
-              )}
+              )} */}
             </div>
           </div>
 

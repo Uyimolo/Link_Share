@@ -1,6 +1,6 @@
-import React, { ReactNode, MouseEvent } from "react"; 
-import { FaTimesCircle } from "react-icons/fa"; 
-import Paragraph from "./text/Paragraph"; 
+import React, { ReactNode, MouseEvent } from "react";
+import { FaTimesCircle } from "react-icons/fa";
+import Reveal from "./animation/Reveal";
 /**
  * A modal component for displaying content in a centered and fixed position on the screen.
  *
@@ -14,10 +14,18 @@ const Modal = ({
   children,
   closeModal,
   className,
+  animationVariant = "scale up",
 }: {
   children: ReactNode;
-  closeModal: () => void;
+  closeModal?: () => void;
   className?: string;
+  animationVariant?:
+    | "slide left"
+    | "slide right"
+    | "slide up"
+    | "scale up"
+    | "rotate"
+    | "slide down";
 }) => {
   // Function to stop event propagation when clicking inside the modal content
   const handleContentClick = (event: MouseEvent) => {
@@ -26,25 +34,28 @@ const Modal = ({
 
   return (
     <div
-      className="fixed left-0 top-0 z-50 grid h-screen w-screen place-content-center bg-lighterGray/80 py-10 backdrop-blur-sm"
+      className="fixed left-0 top-0 z-50 grid h-screen w-screen place-content-center bg-black/70 py-10"
       onClick={closeModal} // Trigger closeModal when the overlay is clicked
     >
       {/* Close modal button */}
-      <div
-        className="group absolute right-6 top-5 z-10 flex cursor-pointer items-center gap-2"
-        onClick={closeModal}
-      >
-        <FaTimesCircle className="text-xl group-hover:text-red" />
-        <Paragraph className="group-hover:text-red">Close</Paragraph>
-      </div>
+      {closeModal && (
+        <div
+          className="group absolute right-6 top-5 z-10 flex cursor-pointer items-center gap-2"
+          onClick={closeModal}
+        >
+          <FaTimesCircle className="text-2xl text-white group-hover:text-blue" />
+        </div>
+      )}
 
       {/* Modal content */}
-      <div
-        className={`relative overflow-y-auto overflow-x-hidden ${className}`}
-        onClick={handleContentClick} // Prevent closeModal from firing when clicking inside the modal
-      >
-        {children}
-      </div>
+      <Reveal variants={animationVariant} className="overflow-y-auto">
+        <div
+          className={`relative overflow-y-auto overflow-x-hidden ${className}`}
+          onClick={handleContentClick} // Prevent closeModal from firing when clicking inside the modal
+        >
+          {children}
+        </div>
+      </Reveal>
     </div>
   );
 };

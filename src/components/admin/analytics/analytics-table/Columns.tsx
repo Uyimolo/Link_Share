@@ -16,7 +16,7 @@ export const Columns: ColumnDef<LinkWithAnalytics>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="border"
+          className="border dark:border-white dark:text-white"
         >
           Link Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -27,7 +27,6 @@ export const Columns: ColumnDef<LinkWithAnalytics>[] = [
       const link = row.original;
       const Icon = link.icon;
 
-      console.log(link);
       return (
         <div className="flex items-center gap-2">
           {Icon ? (
@@ -38,7 +37,7 @@ export const Columns: ColumnDef<LinkWithAnalytics>[] = [
               className="text-lg"
             />
           )}
-          <Paragraph className="capitalize">{link.title}</Paragraph>
+          <Paragraph className="dark capitalize">{link.title}</Paragraph>
         </div>
       );
     },
@@ -50,7 +49,7 @@ export const Columns: ColumnDef<LinkWithAnalytics>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="border"
+          className="border dark:border-white dark:text-white"
         >
           Address
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -65,7 +64,7 @@ export const Columns: ColumnDef<LinkWithAnalytics>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="border"
+          className="border dark:border-white dark:text-white"
         >
           Clicks
           <ArrowUpDown className="ml-2 h-4 w-4" />

@@ -19,8 +19,8 @@ type FormGroupProps<TFormValues extends FieldValues> = {
   error?: string;
   responsive?: boolean; // Determines whether the component should adapt to a grid layout on medium screens
   options?: { label: string; value: string }[]; // For select fields, an array of options with label and value
-  labelClassName?: string
-  inputClassName?: string; 
+  labelClassName?: string;
+  inputClassName?: string;
 };
 
 const FormGroup = <TFormValues extends FieldValues>({
@@ -28,8 +28,8 @@ const FormGroup = <TFormValues extends FieldValues>({
   formField,
   error,
   responsive = false,
-  labelClassName = '',
-  inputClassName = ''
+  labelClassName = "",
+  inputClassName = "",
   // options,
 }: FormGroupProps<TFormValues>) => {
   const { name, type, label, placeholder, icon } = formField;
@@ -46,7 +46,11 @@ const FormGroup = <TFormValues extends FieldValues>({
       )}
     >
       <label
-        className={cn("text-xs text-gray", error && "text-red" , labelClassName)}
+        className={cn(
+          "text-xs text-gray dark:text-white",
+          error && "text-red",
+          labelClassName,
+        )}
         htmlFor={name}
       >
         {label}
@@ -55,9 +59,10 @@ const FormGroup = <TFormValues extends FieldValues>({
       <div className="relative">
         <input
           className={cn(
-            "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue",
+            "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
             error && "border-red",
-            responsive ? "pl-4" : "", inputClassName
+            responsive ? "pl-4" : "",
+            inputClassName,
           )}
           type={type !== "password" ? type : showPassword ? "text" : "password"}
           {...register}
@@ -82,7 +87,10 @@ const FormGroup = <TFormValues extends FieldValues>({
         {error && (
           <Paragraph
             variant="small"
-            className="absolute -bottom-4 w-full text-right text-red md:bottom-0 md:right-4 md:top-1/2 md:w-fit md:-translate-y-1/2"
+            className={cn(
+              "absolute -bottom-4 w-full text-right text-red dark:text-red md:bottom-0 md:right-4 md:top-1/2 md:w-fit md:-translate-y-1/2",
+              type === "password" && "md:right-12",
+            )}
           >
             {error}
           </Paragraph>

@@ -19,7 +19,7 @@ const Paragraph = ({
   return (
     <p
       className={cn(
-        'text-gray',
+        'text-gray dark:text-white',
         variant === 'small' ? 'text-xs' : 'text-sm',
         className
       )}
