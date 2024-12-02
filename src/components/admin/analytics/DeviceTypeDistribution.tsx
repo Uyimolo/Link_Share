@@ -14,7 +14,7 @@ const DeviceTypeDistributionChart = ({
   }[];
 }) => {
   return (
-    <Card className={cn("rounded-xl border-none bg-white", className)}>
+    <Card className={cn("rounded-xl border-none dark:bg-gray bg-white", className)}>
       <CardHeader>
         <Heading
           variant="h2"

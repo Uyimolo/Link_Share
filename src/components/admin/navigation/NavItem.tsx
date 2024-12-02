@@ -33,7 +33,7 @@ const NavItem = ({
       <div
         onClick={onClick}
         className={cn(
-          "flex cursor-pointer items-center gap-2 rounded-lg p-2 md:px-7",
+          "flex w-full cursor-pointer items-center gap-2 rounded-lg border border-transparent p-3 hover:border-lightBlue md:pr-7",
           isTabActive ? "bg-veryLightBlue" : "",
           label === "Preview" && "border border-blue",
         )}
@@ -45,12 +45,7 @@ const NavItem = ({
             label === "Preview" && "text-blue",
           )}
         />
-        <Paragraph
-          className={cn(
-            "hidden lg:block",
-            isTabActive ? "text-blue" : "text-gray",
-          )}
-        >
+        <Paragraph className={cn("", isTabActive ? "text-blue" : "text-gray")}>
           {label}
         </Paragraph>
       </div>
@@ -63,23 +58,22 @@ const NavItem = ({
         <Link
           href={link}
           className={cn(
-            "flex items-center gap-2 rounded-lg px-4 py-3 md:px-7",
-            isActive(link) ? "bg-veryLightBlue" : "",
+            "group flex items-center gap-2 rounded-lg border border-transparent px-3 py-3 dark:hover:bg-gray hover:border-white md:w-full md:pr-7",
+            isActive(link) ? "bg-white dark:bg-gray" : "",
+
             // label === "Preview" && "border border-blue",
           )}
+          onClick={onClick}
         >
           <Icon
             className={cn(
               "text-lg",
-              isActive(link) ? "text-blue" : "text-gray",
+              isActive(link) ? "text-blue" : "text-white",
               // label === "Preview" && "text-blue",
             )}
           />
           <Paragraph
-            className={cn(
-              "hidden lg:block",
-              isActive(link) ? "text-blue" : "text-gray",
-            )}
+            className={cn("", isActive(link) ? "text-blue" : "text-white")}
           >
             {label}
           </Paragraph>

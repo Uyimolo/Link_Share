@@ -47,13 +47,13 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-xl space-y-4 border border-white py-4">
-      <TableHeader>
+    <div className="rounded-xl bg-white dark:bg-gray">
+      <TableHeader className="">
         <Heading
           variant="h2"
-          className="pl-4 text-xl font-semibold md:text-xl xl:text-xl"
+          className="py-4 pl-4 text-xl font-semibold md:text-xl xl:text-xl"
         >
-         All links
+          All links
         </Heading>
       </TableHeader>
       <Table>
@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className={cn(
-                  "text-sm text-gray xl:text-base",
+                  "text-sm text-gray dark:text-white",
                   index % 2 === 0 ? "bg-lighterGray/10" : "",
                 )}
               >

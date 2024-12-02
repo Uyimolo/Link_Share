@@ -21,7 +21,7 @@ const Heading = ({
   return (
     <HeadingTag
       className={cn(
-        'text-2xl md:text-[32px] font-bold text-darkGray',
+        'text-2xl md:text-[32px]  dark:text-white font-bold text-darkGray',
         className
       )}
       style={style}

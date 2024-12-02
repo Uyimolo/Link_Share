@@ -1,6 +1,5 @@
-import Button from "@/components/Button";
+import Confirm from "@/components/Confirm";
 import FormGroup from "@/components/forms/FormGroup";
-import Modal from "@/components/Modal";
 import Paragraph from "@/components/text/Paragraph";
 import { LinkCardProps } from "@/types/types";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -84,9 +83,9 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     };
   };
   return (
-    <div className="space-y-4 rounded-xl bg-lightestGray p-5">
+    <div className="relative rounded-xl border border-lightestGray cursor-move bg-lightestGray p-5 hover:border-blue dark:bg-gray lg:border-none">
       {/* Header: displays link index and delete option */}
-      <div className="flex justify-between">
+      <div className="flex justify-between pb-2">
         <Paragraph className="font-semibold">{`Link #${index + 1}`}</Paragraph>
 
         <Paragraph
@@ -97,7 +96,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         </Paragraph>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
         {linkCardFields.map((field) => (
           <FormGroup
             key={field.name}
@@ -108,38 +107,20 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             }}
             formField={field}
             error={errors[field.name]?.message}
+            // responsive
+            // inputClassName="py-2 pl-10"
+            labelClassName="text-sm"
           />
         ))}
       </div>
 
       {showDeleteConfirmation && (
-        <Modal closeModal={() => setShowDeleteConfirmation(false)} className="">
-          <div className="w-fit max-w-xs space-y-6 rounded-xl bg-white p-4 shadow-2xl shadow-black/50 lg:max-w-sm">
-            <Paragraph className="text-red-600 text-lg font-semibold">
-              Confirm Deletion
-            </Paragraph>
-            <Paragraph>
-              Are you sure you want to delete this link?
-              <br />
-              <strong className="text-red">
-                This action cannot be undone,
-              </strong>{" "}
-              and you will lose any data associated with it.
-            </Paragraph>
-
-            <div className="flex justify-end space-x-4">
-              <Button variant="danger" onClick={handleDeleteLink}>
-                Delete
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => setShowDeleteConfirmation(false)}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </Modal>
+        <Confirm
+          acceptAction={handleDeleteLink}
+          rejectAction={() => setShowDeleteConfirmation(false)}
+          header="Are you absolutely sure?"
+          content="This action cannot be undone, and you will lose any data associated with this link."
+        />
       )}
     </div>
   );

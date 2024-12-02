@@ -29,6 +29,7 @@ const useProfileInfo = () => {
   const [downloadProgress, setDownloadProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
+  const [isProfileDetailsSaving, setIsProfileDetailsSaving] = useState(false);
 
   // monitor and fetch profile info from firebase
   useEffect(() => {
@@ -50,6 +51,8 @@ const useProfileInfo = () => {
    * This function deletes the existing profile picture (if there is any), uploads the new file,
    * saves the profile details to Firestore, and updates the profile information.
    */
+
+  // NOTE REFACTOR TO CHECK IF PROFILE PICTURE WAS CHANGED BEFORE UPLOADING, IF NOT GO STRAIGHT TO SAVING THE INFO IN FIRESTORE. THIS HELPS PREVENT UNNECESSARY STORAGE WRITES AND REWRITES
   const saveProfileInformation = async (
     file: File,
     firstName: string,
@@ -64,6 +67,7 @@ const useProfileInfo = () => {
     }
 
     if (user) {
+      setIsProfileDetailsSaving(true);
       try {
         // Wait for the new file upload and URL retrieval
         const { fileURL, downloadProgress } = await saveProfilePicture(
@@ -82,10 +86,11 @@ const useProfileInfo = () => {
         console.error("Error updating profile information", error);
         toast.error("Error updating profile information");
       }
+      setIsProfileDetailsSaving(false);
     }
   };
 
-  return { profileInfo, downloadProgress, saveProfileInformation };
+  return { profileInfo, downloadProgress, saveProfileInformation, isProfileDetailsSaving };
 };
 
 export default useProfileInfo;

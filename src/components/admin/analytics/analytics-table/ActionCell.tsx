@@ -3,7 +3,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -39,8 +38,8 @@ const ActionsCell: FC<ActionsCellProps> = ({ link }) => {
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="dark:bg-darkGray">
+        {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
         <DropdownMenuItem onClick={() => deleteLink(link.id, user!.uid)}>
           Delete Link
         </DropdownMenuItem>
@@ -51,7 +50,7 @@ const ActionsCell: FC<ActionsCellProps> = ({ link }) => {
         <DropdownMenuItem>Make link private</DropdownMenuItem>
       </DropdownMenuContent>
       {showAnalyticsModal && (
-        <Modal closeModal={() => setShowAnalyticsModal(false)} className="p-4">
+        <Modal closeModal={() => setShowAnalyticsModal(false)} className="px-4">
           <LinkAnalytics
             mobilePercentage={mobilePercentage}
             desktopPercentage={desktopPercentage}

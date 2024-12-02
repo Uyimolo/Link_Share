@@ -9,41 +9,31 @@ import { FaEarthOceania } from "react-icons/fa6";
 const MockPreviewCard = ({
   link,
   onClick,
+  className,
 }: {
   link: LinkType;
   onClick?: () => void;
+  className?: string;
 }) => {
   // Find the corresponding icon and color for the link title from the options array.
   const linkIndex = options.findIndex((option) => option.value === link.title);
   const Icon = options[linkIndex]?.icon;
-  const color = options[linkIndex]?.color || "#000000";
   return (
     <div
       onClick={onClick}
-      style={{ backgroundColor: color }}
       className={cn(
-        "flex w-full cursor-pointer items-center gap-2 rounded-md p-4",
-        color === "#FFFFFF" && "border border-black",
+        "flex w-full cursor-pointer bg-darkGray items-center gap-2 rounded-md p-4",
+        className,
       )}
     >
       {Icon ? (
-        <Icon
-          className={cn(
-            "text-xl",
-            color === "#FFFFFF" ? "text-black" : "text-white",
-          )}
-        />
+        <Icon className={cn("text-xl text-white dark:text-white")} />
       ) : (
-        <FaEarthOceania
-          className={cn(
-            "text-xl",
-            color === "#FFFFFF" ? "text-black" : "text-white",
-          )}
-        />
+        <FaEarthOceania className={cn("text-xl text-white dark:text-white")} />
       )}
       <Paragraph
         variant="small"
-        className={cn(color === "#FFFFFF" ? "text-black" : "text-white")}
+        className='text-white capitalize w-full text-center'
       >
         {link.title}
       </Paragraph>

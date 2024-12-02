@@ -18,6 +18,11 @@ const OverviewSection = ({
   const mobilePercentage = Math.round((mobile / totalClicks) * 100);
   const desktopPercentage = Math.round((desktop / totalClicks) * 100);
 
+  const overviewContentClassName =
+    " grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4 dark:bg-gray";
+  
+  const headerText = 'dark:text-gray'
+
   return (
     <div className="bg-whit rounded-xl">
       {/* metric card */}
@@ -25,10 +30,10 @@ const OverviewSection = ({
         {/* metrics */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {/* views */}
-          <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
+          <div className={overviewContentClassName}>
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
               <FaEye className="text-lg text-gray" />
-              <Paragraph>Total views</Paragraph>
+              <Paragraph className={headerText}>Total views</Paragraph>
             </div>
             <Paragraph className="pl-2 leading-none text-gray">
               {" "}
@@ -38,10 +43,10 @@ const OverviewSection = ({
           </div>
 
           {/* number of links */}
-          <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
+          <div className={overviewContentClassName}>
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
               <FaLink className="text-lg text-gray" />
-              <Paragraph>Total links</Paragraph>
+              <Paragraph className={headerText}>Total links</Paragraph>
             </div>
             <Paragraph className="pl-2 text-gray">
               {" "}
@@ -50,10 +55,10 @@ const OverviewSection = ({
           </div>
 
           {/* total clicks */}
-          <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
+          <div className={overviewContentClassName}>
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
               <FaHandPointer className="text-lg text-gray" />
-              <Paragraph>Total clicks</Paragraph>
+              <Paragraph className={headerText}>Total clicks</Paragraph>
             </div>
             <Paragraph className="pl-2 text-gray">
               {" "}
@@ -62,16 +67,16 @@ const OverviewSection = ({
           </div>
 
           {/* devices */}
-          <div className="grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4">
+          <div className={overviewContentClassName}>
             <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
               <PiDevices className="text-lg text-gray" />
-              <Paragraph>Devices</Paragraph>
+              <Paragraph className={headerText}>Devices</Paragraph>
             </div>
-            <Paragraph className="pl-2 text-gray lg:flex lg:gap-2">
+            <Paragraph className="pl-2 text-gray xl:flex xl:gap-2">
               {" "}
               <strong>{mobilePercentage ? mobilePercentage : 0}%</strong> mobile
-              <br className="lg:hidden" />
-              <span className="hidden lg:block">|</span>
+              <br className="xl:hidden" />
+              <span className="hidden xl:block">|</span>
               <strong>
                 {" "}
                 {desktopPercentage ? desktopPercentage : 0}%

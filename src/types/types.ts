@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { IconType } from "react-icons";
 
 export type LinkType = {
@@ -125,3 +126,32 @@ export type LinkWithAnalytics = {
 //     };
 //     lastClickDate: number | undefined;
 // }[]
+
+export type NavItem = {
+  label: string;
+  icon: IconType;
+  link: string;
+};
+
+export type RevealProps = {
+  children: ReactNode;
+  className?: string;
+  variants:
+    | "slide left"
+    | "slide right"
+    | "slide up"
+    | "scale up"
+    | "rotate"
+    | "slide down"
+    | "fade in";
+
+  delay?: number;
+};
+
+export type ConfirmProps = {
+  rejectAction: (shouldClose: boolean) => void;
+  acceptAction: () => void;
+  header: string;
+  content: string;
+  variant?: "serious" | "normal";
+};
