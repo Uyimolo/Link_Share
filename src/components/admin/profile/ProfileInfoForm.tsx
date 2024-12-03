@@ -242,12 +242,12 @@ const ProfileInfoForm = () => {
   return (
     <form
       action=""
-      className="space-y-4 bg-white dark:bg-gray lg:dark:bg-darkGray"
+      className="space-y-4 bg-white dark:bg-black "
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* Profile picture preview and upload. */}
       {fileInputField && (
-        <div className="mx-6 gap-6 space-y-4 rounded-xl border border-lightestGray lg:border-none bg-lightestGray p-4 dark:bg-gray md:flex md:items-center md:justify-between md:space-y-0">
+        <div className="mx-6 gap-6 space-y-4 rounded-xl bg-lightestGray p-4 dark:bg-darkGray md:flex md:items-center md:justify-between md:space-y-0 lg:border-none">
           <label className="basis-[50%] text-sm text-gray dark:text-white xl:text-base">
             {fileInputField.label}
           </label>
@@ -310,7 +310,7 @@ const ProfileInfoForm = () => {
       )}
 
       {/* text info */}
-      <div className="mx-6 space-y-2 lg:border-none rounded-xl border border-lightestGray bg-lightestGray p-4 dark:bg-gray">
+      <div className="mx-6 space-y-2 rounded-xl bg-lightestGray p-4 dark:bg-darkGray lg:border-none">
         {profileInfoFormFields
           .filter((field) => field.name !== "profilePicture")
           .map((field, index) => (
@@ -325,8 +325,8 @@ const ProfileInfoForm = () => {
       </div>
 
       {/* logout and save buttons */}
-      <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-darkGray lg:border-none lg:bg-white lg:dark:bg-darkGray">
-        <div className="flex w-full justify-end rounded-b-xl bg-white p-6 dark:bg-gray lg:dark:bg-darkGray">
+      <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-black lg:border-none lg:bg-white">
+        <div className="flex w-full justify-end rounded-b-xl bg-white p-6 dark:bg-black dark:border dark:border-lighterGray/50 lg:border-none">
           <Button
             className="md:w-fit"
             type="submit"

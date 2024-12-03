@@ -26,7 +26,7 @@ const MockupPreview = () => {
     <>
       <div
         className={cn(
-          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[600px] w-[calc(100vw-32px)] max-w-[300px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:max-w-[270px] lg:bg-gradient-to-tr lg:shadow-black/70 2xl:max-w-[300px]",
+          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[600px] w-[calc(100vw-32px)] max-w-[300px] rounded-[30px] from-black to-black/70 dark:from-deepBlue dark:to-blue p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:max-w-[270px] lg:bg-gradient-to-tr lg:shadow-black/70 2xl:max-w-[300px]",
         )}
       >
         {/* bezels */}

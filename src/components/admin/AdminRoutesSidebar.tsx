@@ -43,7 +43,7 @@ const AdminRoutesSidebar = () => {
   ];
 
   return (
-    <div className="relative mb-4 flex items-center justify-between bg-white lg:dark:bg-darkGray dark:bg-gray p-4 md:m-4 md:rounded-xl lg:fixed lg:top-0 lg:m-0 lg:h-screen lg:w-[20%] lg:flex-col lg:items-start lg:justify-normal lg:rounded-none lg:bg-[#4A32C4] xl:w-[calc(20%)] xl:border-r z-50">
+    <div className="relative z-50 mb-4 flex items-center justify-between bg-white p-4 dark:bg-black dark:border-b dark:border-lightestGray/50 md:m-4 md:rounded-xl lg:fixed lg:top-0 lg:m-0 lg:h-screen lg:bg-deepBlue lg:w-[20%] lg:flex-col lg:items-start lg:justify-normal lg:rounded-none lg:bg-deepblue xl:w-[calc(20%)] xl:border-r">
       <>
         {/* <Logo className="lg:hidden" onClick={() => router.push("/")} /> */}
         <Logo
@@ -68,7 +68,7 @@ const AdminRoutesSidebar = () => {
       <RxHamburgerMenu
         className={cn(
           "z-40 text-xl lg:hidden",
-          showNavigation ? "text-white " : "dark:text-white text-darkGray",
+          showNavigation ? "text-white" : "text-darkGray dark:text-white",
         )}
         onClick={() => setShowNavigation(!showNavigation)}
       />

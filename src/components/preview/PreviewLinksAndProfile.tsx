@@ -75,7 +75,7 @@ const PreviewLinksAndProfile = ({
         "w-full space-y-4 px-4 lg:min-h-screen",
         isPublic
           ? "min-h-screen bg-gradient-to-r from-blue/70 via-purple-500 to-pink-400 bg-[length:200%_200%] pt-4 lg:bg-[length:300%_300%]"
-          : "min-h-[80vh] rounded-xl bg-white pt-4 dark:bg-gray lg:pt-10 lg:dark:bg-darkGray",
+          : "min-h-[80vh] rounded-xl bg-white pt-4 dark:bg-black lg:pt-10",
       )}
     >
       {/* top section */}
@@ -124,7 +124,7 @@ const PreviewLinksAndProfile = ({
                   link={link}
                   className={cn(
                     "rounded-2xl p-5",
-                    !isPublic && "lg:dark:bg-gray",
+                    !isPublic && "lg:dark:bg-darkGray",
                   )}
                 />
               </StaggeredReveal>

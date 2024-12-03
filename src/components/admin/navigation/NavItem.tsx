@@ -59,7 +59,7 @@ const NavItem = ({
           href={link}
           className={cn(
             "group flex items-center gap-2 rounded-lg border border-transparent px-3 py-3 dark:hover:bg-gray hover:border-white md:w-full md:pr-7",
-            isActive(link) ? "bg-white dark:bg-gray" : "",
+            isActive(link) ? "bg-white dark:bg-darkGray" : "",
 
             // label === "Preview" && "border border-blue",
           )}
