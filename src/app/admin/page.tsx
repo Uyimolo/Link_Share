@@ -70,7 +70,7 @@ const Dashboard = () => {
   if (!user || loading) {
     return (
       <div className="px-4 lg:p-0">
-        <div className="grid h-[80vh] w-full place-content-center rounded-xl bg-white lg:h-screen lg:rounded-none">
+        <div className="grid h-[80vh] w-full place-content-center rounded-xl dark:bg-black bg-white lg:h-screen lg:rounded-none">
           <Loading />
         </div>
       </div>
@@ -79,7 +79,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen px-4 lg:p-0" ref={containerRef}>
-      <div className="min-h-screen rounded-t-xl bg-white p-6 dark:bg-gray lg:rounded-none lg:pt-14 lg:dark:bg-darkGray">
+      <div className="min-h-screen rounded-t-xl bg-white p-6 dark:bg-black border-transparent border dark:border-lightestGray/50 lg:border-none lg:rounded-none lg:pt-14">
         <div className="space-y-2">
           <Heading variant="h1">Customize your links</Heading>
           <Paragraph>
@@ -87,7 +87,7 @@ const Dashboard = () => {
           </Paragraph>
         </div>
 
-        <div className="sticky top-0 z-20 bg-white py-6 dark:bg-gray lg:dark:bg-darkGray">
+        <div className="sticky top-0 z-20 bg-white py-6 dark:bg-black border-b border-blue dark:border-lightestGray/50">
           <Button variant="secondary" className="" onClick={handleAddNewLink}>
             + Add new link
           </Button>
@@ -109,7 +109,7 @@ const Dashboard = () => {
         )}
 
         <div className="sticky bottom-0 hidden lg:block lg:pb-0">
-          <div className="w-full border-t bg-white p-6 pr-0 dark:bg-gray lg:dark:bg-darkGray">
+          <div className="w-full border-t bg-white p-6 pr-0 dark:bg-black">
             <Button
               className="ml-auto mr-0 md:w-fit"
               disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}
@@ -123,8 +123,8 @@ const Dashboard = () => {
       </div>
 
       {/* save button */}
-      <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-darkGray lg:hidden lg:border-none lg:bg-white">
-        <div className="mt-1 w-full rounded-b-xl bg-white p-6 dark:bg-gray md:px-10 lg:px-6">
+      <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-black lg:hidden lg:border-none lg:bg-white">
+        <div className="mt-1 border border-transparent dark:border-lightestGray/50 w-full rounded-b-xl bg-white p-6 dark:bg-black md:px-10 lg:px-6">
           <Button
             className="ml-auto mr-0 md:w-fit"
             disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}

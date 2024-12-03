@@ -5,7 +5,7 @@ import React from "react";
 const Settings = () => {
   return (
     <div className="px-4 lg:px-0">
-      <div className="min-h-[80vh] w-full space-y-4 rounded-xl bg-white p-6 dark:bg-gray lg:min-h-screen lg:rounded-none lg:pt-14 lg:dark:bg-darkGray">
+      <div className="min-h-[80vh] w-full lg:border-none space-y-4 rounded-xl bg-white p-6 dark:bg-black dark:border dark:border-lighterGray/50 lg:min-h-screen lg:rounded-none lg:pt-14">
         <Heading variant="h1">Settings</Heading>
 
         <div className="">

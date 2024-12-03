@@ -18,7 +18,7 @@ const AdminHeaderNavbar = ({
     <>
       <div
         className={cn(
-          "lg: fixed right-0 top-0 z-40 h-screen w-4/5 max-w-[250px] space-y-2 bg-blue dark:bg-darkGray px-4 pt-28 transition duration-500 lg:relative lg:w-full lg:max-w-none lg:space-y-4 lg:overflow-x-hidden lg:bg-transparent lg:px-0",
+          "lg: fixed right-0 top-0 z-40 h-screen w-4/5 max-w-[250px] space-y-2 bg-deepBlue dark:bg-black px-4 pt-28 transition duration-500 lg:relative lg:w-full lg:max-w-none lg:space-y-4 lg:overflow-x-hidden lg:px-0",
           showNavigation
             ? "translate-x-0 lg:translate-x-0"
             : "translate-x-full lg:translate-x-0",
@@ -35,9 +35,11 @@ const AdminHeaderNavbar = ({
         <ThemeSelector />
         {/* <div className="mt-10 h-40 w-full rounded-xl border border-white"></div> */}
       </div>
+
+      {/* overlay */}
       <div
         className={cn(
-          "fixed left-0 top-0 z-30 h-screen w-full bg-veryLightBlue/50 transition duration-1000",
+          "fixed left-0 top-0 z-30 h-screen w-full bg-veryLightBlue/50 dark:bg-darkGray/70 transition duration-1000",
           showNavigation ? "translate-x-0" : "translate-x-full",
         )}
         onClick={() => setShowNavigation(false)}

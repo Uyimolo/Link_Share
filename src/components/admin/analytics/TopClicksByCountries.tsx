@@ -16,7 +16,7 @@ const TopClicksByCountries = ({
   const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
 
   return (
-    <div className="space-y-6 rounded-xl bg-white p-4 dark:bg-gray">
+    <div className="space-y-6 rounded-xl bg-white p-4 dark:bg-darkGray">
       <Heading
         variant="h2"
         className="text-xl font-semibold md:text-xl xl:text-xl"
@@ -39,6 +39,8 @@ const TopClicksByCountries = ({
                 <Paragraph className="w-4">{index + 1}</Paragraph>
                 <Image
                   alt="country"
+                  width={32}
+                  height={16}
                   src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${country.countryCode}.svg`}
                   className="w-8 rounded-full shadow shadow-black/50"
                 />

@@ -46,7 +46,7 @@ const ClickTrendsChart = ({
  
 
   return (
-    <Card className="w-full rounded-xl border-none dark:bg-gray">
+    <Card className="w-full rounded-xl border-none dark:bg-darkGray">
       <CardHeader>
         <Heading
           variant="h2"

@@ -22,7 +22,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <LinkProvider>
-        <div className="min-h-screen dark:bg-darkGray lg:grid lg:grid-cols-[20%,1fr] xl:grid-cols-[20%,1fr]">
+        <div className="min-h-screen dark:bg-black lg:grid lg:grid-cols-[20%,1fr] xl:grid-cols-[20%,1fr]">
           <AdminRoutesSidebar />
           <div className=""></div>
           <div
@@ -43,8 +43,8 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
                 className={cn(
                   "",
                   showPreview
-                    ? "fixed bottom-0 left-0 top-0 z-30 grid w-screen place-content-center bg-lightestGray/50 pt-8 backdrop-blur transition duration-1000 dark:bg-darkGray lg:dark:bg-darkGray xl:relative xl:block xl:w-full xl:place-content-start xl:rounded-xl xl:bg-white xl:py-10 xl:backdrop-filter-none"
-                    : "hidden lg:bg-white lg:dark:bg-darkGray xl:block xl:py-10",
+                    ? "fixed bottom-0 left-0 top-0 z-30 grid w-screen place-content-center bg-lightestGray/50 pt-8 backdrop-blur transition duration-1000 dark:bg-black xl:relative xl:block xl:w-full xl:place-content-start xl:rounded-xl xl:bg-white xl:py-10 xl:backdrop-filter-none"
+                    : "hidden lg:bg-white dark:bg-black xl:block xl:py-10",
                 )}
                 >
                 <MockupPreview />
