@@ -55,6 +55,7 @@ const validationSchema = yup.object({
     .max(30, "Last name must not exceed 30 characters")
     .matches(/^[A-Za-z]+$/, "Last name must contain only letters"),
   email: yup.string().email("Invalid email format").optional(),
+  bio: yup.string().max(500, "Bio must not exceed 500 characters"),
 });
 
 const profileInfoFormFields: Array<{
@@ -69,7 +70,7 @@ const profileInfoFormFields: Array<{
     label: "Profile Picture",
     type: "file",
     placeholder: "+ Upload Image",
-    required: true,
+    required: false,
   },
   {
     name: "firstName",
@@ -92,6 +93,13 @@ const profileInfoFormFields: Array<{
     placeholder: "Enter email",
     required: true,
   },
+  {
+    name: "bio",
+    label: "Bio",
+    type: "textarea",
+    placeholder: "Enter bio",
+    required: false,
+  },
 ];
 
 const ProfileInfoForm = () => {
@@ -110,6 +118,7 @@ const ProfileInfoForm = () => {
       firstName: "",
       lastName: "",
       email: "",
+      bio: "",
     },
   );
 
@@ -134,6 +143,7 @@ const ProfileInfoForm = () => {
           firstName: profileInfo.firstName,
           lastName: profileInfo.lastName,
           email: profileInfo.email,
+          bio: profileInfo.bio,
         });
 
         if (profileInfo.profilePicture) {
@@ -151,6 +161,7 @@ const ProfileInfoForm = () => {
             firstName: profileInfo.firstName,
             lastName: profileInfo.lastName,
             email: profileInfo.email,
+            bio: profileInfo.bio,
           });
         }
         setLoading(false); // Set loading to false once data is loaded
@@ -210,7 +221,8 @@ const ProfileInfoForm = () => {
       profile1.firstName === profile2.firstName &&
       profile1.lastName === profile2.lastName &&
       profile1.email === profile2.email &&
-      profile1.profilePicture === profile2.profilePicture
+      profile1.profilePicture === profile2.profilePicture &&
+      profile1.bio === profile2.bio
     );
   };
 
@@ -222,8 +234,14 @@ const ProfileInfoForm = () => {
     }
 
     setImageUploading(true);
-    const { profilePicture, firstName, lastName, email } = data;
-    await saveProfileInformation(profilePicture, firstName, lastName, email);
+    const { profilePicture, firstName, lastName, email, bio } = data;
+    await saveProfileInformation(
+      profilePicture,
+      firstName,
+      lastName,
+      email,
+      bio,
+    );
     reset();
     setImageUploading(false);
   };
@@ -242,7 +260,7 @@ const ProfileInfoForm = () => {
   return (
     <form
       action=""
-      className="space-y-4 bg-white dark:bg-black "
+      className="space-y-4 bg-white dark:bg-black"
       onSubmit={handleSubmit(onSubmit)}
     >
       {/* Profile picture preview and upload. */}
@@ -326,7 +344,7 @@ const ProfileInfoForm = () => {
 
       {/* logout and save buttons */}
       <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-black lg:border-none lg:bg-white">
-        <div className="flex w-full justify-end rounded-b-xl bg-white p-6 dark:bg-black dark:border dark:border-lighterGray/50 lg:border-none">
+        <div className="flex w-full justify-end rounded-b-xl bg-white p-6 dark:border dark:border-lighterGray/50 dark:bg-black lg:border-none">
           <Button
             className="md:w-fit"
             type="submit"

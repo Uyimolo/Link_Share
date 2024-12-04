@@ -13,10 +13,10 @@ const Profile = () => {
   useProtectedRoute(true);
 
   return (
-    <div className="px-4 lg:h-screen lg:bg-white dark:bg-black lg:px-0">
+    <div className="px-4 lg:bg-white dark:bg-black lg:px-0">
       {/* Profile information */}
       <div className="space-y-6 rounded-b-xl rounded-t-xl border border-transparent lg:border-none bg-white pt-6 dark:border-lighterGray/50  dark:bg-black md:pt-14 lg:rounded-none">
-        <div className="space-y-2 px-6">
+        <div className="space-y-2 px-6 ">
           <Heading variant="h1">Profile details</Heading>
           <Paragraph>
             Add your details to create a personal touch to your profile

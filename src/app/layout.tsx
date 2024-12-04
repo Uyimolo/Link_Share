@@ -26,7 +26,7 @@ export default function RootLayout({
       <ThemeProvider>
         <AuthProvider>
           <body
-            className={` ${montserrat.className} mx-auto bg-[#eeeeee] antialiased `}
+            className={` ${montserrat.className} mx-auto bg-[#eeeeee] antialiased`}
           >
             <Toaster position="top-center" />
             {children}
