@@ -83,7 +83,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     };
   };
   return (
-    <div className="relative rounded-xl border border-lightestGray dark:border-transparent cursor-move bg-lightestGray p-5 hover:border-blue dark:bg-darkGray ">
+    <div className="relative cursor-move rounded-xl border border-lightestGray bg-lightestGray p-5 hover:border-blue dark:border-transparent dark:bg-darkGray">
       {/* Header: displays link index and delete option */}
       <div className="flex justify-between pb-2">
         <Paragraph className="font-semibold">{`Link #${index + 1}`}</Paragraph>
@@ -114,14 +114,13 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         ))}
       </div>
 
-      {showDeleteConfirmation && (
-        <Confirm
-          acceptAction={handleDeleteLink}
-          rejectAction={() => setShowDeleteConfirmation(false)}
-          header="Are you absolutely sure?"
-          content="This action cannot be undone, and you will lose any data associated with this link."
-        />
-      )}
+      <Confirm
+        isOpen={showDeleteConfirmation}
+        acceptAction={handleDeleteLink}
+        rejectAction={() => setShowDeleteConfirmation(false)}
+        header="Are you absolutely sure?"
+        content="This action cannot be undone, and you will lose any data associated with this link."
+      />
     </div>
   );
 };

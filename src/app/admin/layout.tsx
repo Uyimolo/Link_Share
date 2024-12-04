@@ -56,7 +56,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             <></>
           ) : (
             <div
-              className="fixed bottom-16 right-1 z-40 cursor-pointer items-center rounded-full bg-black p-2 shadow-md shadow-black/30 transition duration-500 xl:hidden"
+              className="fixed bottom-16 right-1 z-40 cursor-pointer items-center rounded-full bg-black p-2 shadow-md shadow-black/30 dark:bg-deepBlue transition duration-500 xl:hidden"
               onClick={() => setShowPreview(!showPreview)}
             >
               {showPreview ? (

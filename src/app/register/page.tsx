@@ -121,7 +121,7 @@ const Register = () => {
   }
 
   return (
-    <div className="grid min-h-screen dark:bg-darkGray bg-white p-6 md:bg-transparent md:py-20">
+    <div className="grid min-h-screen dark:bg-black bg-white p-6 md:bg-transparent md:py-20">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-16">
         <Logo
           showFullLogo
@@ -129,7 +129,7 @@ const Register = () => {
           onClick={() => router.push("/")}
         />
 
-        <div className="space-y-8 dark:bg-gray bg-white md:mx-auto md:w-[476px] md:p-10">
+        <div className="space-y-8 dark:bg-transparent md:dark:bg-gray bg-white md:mx-auto md:w-[476px] md:p-10">
           <div className="space-y-2">
             <Heading variant="h1">Create account</Heading>
             <Paragraph className="text-base">{`Let's get you started sharing your links!`}</Paragraph>

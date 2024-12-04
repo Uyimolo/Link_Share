@@ -98,7 +98,7 @@ const Login = () => {
   }
 
   return (
-    <div className="grid min-h-screen dark:bg-darkGray bg-white p-6 md:bg-transparent md:py-20">
+    <div className="grid min-h-screen dark:bg-black bg-white p-6 md:bg-transparent md:py-20">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-16">
         <Logo
           showFullLogo
@@ -106,7 +106,7 @@ const Login = () => {
           onClick={() => router.push("/")}
         />
 
-        <div className="space-y-8 dark:bg-gray bg-white md:mx-auto md:w-[476px] md:p-10">
+        <div className="space-y-8 md:dark:bg-darkGray dark:bg-transparent bg-white md:mx-auto md:w-[476px] md:p-10">
           <div className="space-y-2">
             <Heading variant="h1">Login</Heading>
             <Paragraph>{`Add your details to get back into the app`}</Paragraph>

@@ -87,7 +87,7 @@ const Dashboard = () => {
           </Paragraph>
         </div>
 
-        <div className="sticky top-0 z-20 bg-white py-6 dark:bg-black border-b border-blue dark:border-lightestGray/50">
+        <div className="sticky top-0 z-20 bg-white py-6 dark:bg-black">
           <Button variant="secondary" className="" onClick={handleAddNewLink}>
             + Add new link
           </Button>

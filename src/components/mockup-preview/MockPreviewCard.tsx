@@ -16,13 +16,18 @@ const MockPreviewCard = ({
   className?: string;
 }) => {
   // Find the corresponding icon and color for the link title from the options array.
-  const linkIndex = options.findIndex((option) => option.value === link.title);
+  const linkIndex = options.findIndex(
+    (option) =>
+      option.value.toLowerCase() === link.title.toLowerCase() ||
+      link.url.toLowerCase().includes(option.value.toLowerCase()),
+  );
+
   const Icon = options[linkIndex]?.icon;
   return (
     <div
       onClick={onClick}
       className={cn(
-        "flex w-full cursor-pointer bg-darkGray items-center gap-2 rounded-md p-4",
+        "flex w-full cursor-pointer items-center gap-2 rounded-md bg-darkGray p-4",
         className,
       )}
     >
@@ -33,7 +38,7 @@ const MockPreviewCard = ({
       )}
       <Paragraph
         variant="small"
-        className='text-white capitalize w-full text-center'
+        className="w-full text-center capitalize text-white"
       >
         {link.title}
       </Paragraph>

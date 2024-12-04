@@ -1,6 +1,10 @@
 "use client";
 import {
+  AuthCredential,
   createUserWithEmailAndPassword,
+  EmailAuthCredential,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   User,
 } from "firebase/auth";
@@ -41,6 +45,10 @@ type AuthContextType = {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   handleAccountDeletion: (profileInfo: ProfileDetails) => Promise<void>;
+  reAuthenticateUser: (
+    user: User,
+    providedPassword: string,
+  ) => Promise<boolean | undefined>;
   username: string;
 };
 
@@ -58,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [username, setUsername] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
   // Monitors auth state changes and sets current user
   useEffect(() => {
@@ -176,12 +184,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await auth.signOut();
       setUser(null);
       toast.success("Logged out successfully");
-      router.push('/login')
+      router.push("/login");
     } catch (error) {
       console.error("Error while logging out", error);
       toast.error("Failed to log out");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const reAuthenticateUser = async (user: User, providedPassword: string) => {
+    if (!user.email) {
+      return false;
+    }
+
+    try {
+      const credential = EmailAuthProvider.credential(
+        user?.email,
+        providedPassword,
+      );
+      const userAuthenticated = await reauthenticateWithCredential(
+        user,
+        credential,
+      );
+      if (userAuthenticated) {
+        return true;
+      }
+    } catch (error) {
+      console.error("Error while re-authenticating user:", error);
+      return false;
+      // Handle the error appropriately, such as showing an error message
     }
   };
 
@@ -201,8 +233,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       // Step 2: Delete Firestore user document
-      const documentRef = doc(db, "users", userId);
-      deleteDoc(documentRef);
+      const linksRef = doc(db, "links", userId);
+      const analyticsRef = doc(db, "analytics", userId);
+      const usersRef = doc(db, "users", userId);
+      await Promise.all([
+        deleteDoc(analyticsRef),
+        deleteDoc(linksRef),
+        deleteDoc(usersRef),
+      ]);
+
       console.log("User document deleted.");
       toast.success("Data deleted successfully");
 
@@ -211,11 +250,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log("User account deleted.");
       toast.success("Account deleted successfully.");
       setUser(null);
-
-      // Redirect or show success message as needed
     } catch (error) {
       console.error("Error during account deletion:", error);
-      // Optional: Show error message to user or retry mechanism
     }
   };
 
@@ -228,6 +264,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         handleAccountDeletion,
+        reAuthenticateUser,
         username,
       }}
     >

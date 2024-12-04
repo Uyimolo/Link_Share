@@ -154,4 +154,5 @@ export type ConfirmProps = {
   header: string;
   content: string;
   variant?: "serious" | "normal";
+  isOpen: boolean;
 };

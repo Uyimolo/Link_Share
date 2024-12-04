@@ -25,7 +25,7 @@ const Home = () => {
   const headingStyle =
     "font-bold text-4xl sm:text-5xl md:text-6xl leading-none lg:text-5xl xl:text-[4.2vw] 2xl:text-7xl";
   return (
-    <div className="w-full overflow-x-hidden bg-white dark:bg-darkGray">
+    <div className="w-full overflow-x-hidden bg-white dark:bg-black">
       <div className="fixed left-1/2 top-4 z-10 flex w-[calc(100%-32px)] -translate-x-1/2 items-center justify-between rounded-xl border border-gray/10 bg-white/80 p-4 shadow-lg outline-8 dark:bg-gray/50 outline-white backdrop-blur-[2px]">
         <div className="hidden md:block">
           <Logo showFullLogo />
