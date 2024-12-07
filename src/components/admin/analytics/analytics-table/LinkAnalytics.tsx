@@ -1,10 +1,9 @@
-import Paragraph from "@/components/text/Paragraph";
 import React from "react";
-import { FaEye } from "react-icons/fa6";
-import { PiDevices } from "react-icons/pi";
 import ClickTrendsChart from "../ClickTrendsChart";
 import TopClicksByCountries from "../TopClicksByCountries";
-import { ClickTrendData } from "@/types/types";
+import { ClickTrendData, LinkWithAnalytics } from "@/types/types";
+import OverviewSection from "../OverviewSection";
+import DeviceTypeDistributionChart from "../DeviceTypeDistribution";
 
 type LinkAnalytics = {
   mobilePercentage: number;
@@ -15,57 +14,51 @@ type LinkAnalytics = {
     clicks: number;
   }[];
   clickTrendChartData: ClickTrendData[] | undefined;
+  dailyClickTrendData: ClickTrendData[] | undefined;
 };
 
-const LinkAnalytics = ({
-  mobilePercentage,
-  desktopPercentage,
-  uniqueVisitorsCount,
-  clickLocations,
-  clickTrendChartData,
-}: LinkAnalytics) => {
+const LinkAnalytics = ({ link }: { link: LinkWithAnalytics }) => {
+  const {
+    clickLocations,
+    clickTrendsChartData,
+    dailyClickTrendsChartData,
+    deviceType,
+    clickCount,
+    uniqueVisitors,
+  } = link;
+
+  const deviceData = Object.entries(deviceType).map(([deviceType, count]) => ({
+    name: deviceType,
+    value: count,
+  }));
+
   return (
-    <div className="grid gap-4 md:w-[calc(100vw-36px)] lg:w-[800px]">
-      <div className="grid w-[calc(100vw-36px)] gap-4 md:w-full">
-        <div className="gap-4 grid-cols-2 grid">
-          {/* devices info */}
-          <div className="md:p- grid items-start gap-2 rounded-xl bg-white p-2 md:items-center">
-            <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <PiDevices className="text-lg text-gray" />
-              <Paragraph>Devices</Paragraph>
-            </div>
-            <Paragraph className="pl-2 text-gray lg:flex lg:gap-2">
-              {" "}
-              <strong>{mobilePercentage ? mobilePercentage : 0}%</strong> mobile
-              <br className="lg:hidden" />
-              <span className="hidden lg:block">|</span>
-              <strong>
-                {" "}
-                {desktopPercentage ? desktopPercentage : 0}%
-              </strong>{" "}
-              {" " + "desktop"}
-            </Paragraph>
-          </div>
+    <div className="grid w-full gap-4 lg:max-w-screen-xl">
+      <OverviewSection
+        totalClicks={clickCount}
+        mobile={deviceType.mobile}
+        desktop={deviceType.desktop}
+        uniqueImpressions={uniqueVisitors.length}
+        numberOfLinks={1}
+      />
 
-          {/* views info */}
-          <div className="md:fle grid items-start gap-2 rounded-xl bg-white p-2 md:items-center">
-            <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <FaEye className="text-lg text-gray" />
-              <Paragraph>Total views</Paragraph>
-            </div>
-            <Paragraph className="pl-2 leading-none text-gray">
-              {" "}
-              <strong>{uniqueVisitorsCount}</strong>{" "}
-              {uniqueVisitorsCount === 1 ? "view" : "unique views"}
-            </Paragraph>
-          </div>
-        </div>
+      <ClickTrendsChart
+        clickTrendData={clickTrendsChartData}
+        dailyClickTrendData={dailyClickTrendsChartData}
+      />
 
-        {/* Top countries */}
+      <div className="grid gap-4 lg:min-w-[900px] lg:grid-cols-2">
+        {/* Top countries  */}
+
         <TopClicksByCountries countriesInfo={clickLocations} />
-      </div>
 
-      <ClickTrendsChart clickTrendData={clickTrendChartData} />
+        {/* Device type distribution */}
+        <DeviceTypeDistributionChart
+          deviceData={deviceData}
+          totalClicks={clickCount}
+          className="hidden lg:block"
+        />
+      </div>
     </div>
   );
 };

@@ -16,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
-import { Button } from "../ui/button";
 import Confirm from "../Confirm";
 
 const AdminHeaderNavbar = ({
@@ -47,7 +46,7 @@ const AdminHeaderNavbar = ({
     <>
       <div
         className={cn(
-          "lg: fixed right-0 top-0 z-40 h-screen w-4/5 max-w-[250px] space-y-1 bg-deepBlue px-4 pt-10 transition duration-500 dark:bg-black lg:relative lg:w-full lg:max-w-none lg:overflow-x-hidden lg:px-0",
+          "custom-scrollbar fixed right-0 top-0 z-40 h-screen w-4/5 max-w-[250px] space-y-1 overflow-auto bg-deepBlue px-4 pt-20 transition duration-500 dark:bg-black lg:relative lg:w-full lg:max-w-none lg:overflow-x-hidden",
           showNavigation
             ? "translate-x-0 lg:translate-x-0"
             : "translate-x-full lg:translate-x-0",
@@ -65,9 +64,9 @@ const AdminHeaderNavbar = ({
         {/* <div className="mt-10 h-40 w-full rounded-xl border border-white"></div> */}
         {username && (
           <div className="pt-10">
-            <div className="w-full rounded-xl border p-4">
+            <div className="w-full border border-lightestGray/50 rounded-xl p-2">
               {/* profile picture and username */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 lg:flex-col xl:flex-row">
                 {profileInfo.profilePicture !== "" && (
                   <Image
                     src={profileInfo.profilePicture}
@@ -78,13 +77,13 @@ const AdminHeaderNavbar = ({
                   />
                 )}
 
-                <div className="w-4/5">
-                  <Paragraph className="truncate text-white dark:text-white">
+                <div className="w-fit xl:w-4/5">
+                  <Paragraph className="truncate text-white dark:text-white w-fit lg:mx-auto xl:mx-0">
                     {`${profileInfo.firstName && profileInfo.firstName} ${profileInfo.lastName && profileInfo.lastName}`}
                   </Paragraph>
 
                   {username && (
-                    <Paragraph className="overflow-ellipsis text-white dark:text-white">
+                    <Paragraph className="w-fit overflow-ellipsis text-white dark:text-white lg:mx-auto xl:mx-0">
                       @{username}
                     </Paragraph>
                   )}

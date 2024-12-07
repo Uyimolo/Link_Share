@@ -28,7 +28,7 @@ const useProfileInfo = () => {
     bio: "",
   });
 
-  const [downloadProgress, setDownloadProgress] = useState(0);
+  // const [downloadProgress, setDownloadProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
   const [isProfileDetailsSaving, setIsProfileDetailsSaving] = useState(false);
@@ -94,7 +94,7 @@ const useProfileInfo = () => {
 
   return {
     profileInfo,
-    downloadProgress,
+    // downloadProgress,
     saveProfileInformation,
     isProfileDetailsSaving,
   };

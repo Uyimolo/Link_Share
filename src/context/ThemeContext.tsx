@@ -46,9 +46,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       const userPrefersDark = window.matchMedia(
         "(prefers-color-scheme: dark)",
       ).matches;
-      document.body.classList.toggle("dark", userPrefersDark);
+      document.documentElement.classList.toggle("dark", userPrefersDark);
     } else {
-      document.body.classList.toggle("dark", theme === "dark");
+      document.documentElement.classList.toggle("dark", theme === "dark");
     }
   };
 

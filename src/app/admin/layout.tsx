@@ -1,13 +1,12 @@
 "use client";
 import AdminRoutesSidebar from "@/components/admin/AdminRoutesSidebar";
+import FloatingMockupPreviewToggler from "@/components/mockup-preview/FloatingMockupPreviewToggler";
 import MockupPreview from "@/components/mockup-preview/MockupPreview";
-import Paragraph from "@/components/text/Paragraph";
+import Modal from "@/components/Modal";
 import { LinkProvider } from "@/context/LinkContext";
 import cn from "@/utilities/cn";
 import { usePathname } from "next/navigation";
 import React, { ReactNode, useEffect, useState } from "react";
-import { FaTimes } from "react-icons/fa";
-import { FaEye } from "react-icons/fa6";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   const [showPreview, setShowPreview] = useState(false);
@@ -16,13 +15,13 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     scrollTo(0, 0);
-    setShowPreview(false)
+    setShowPreview(false);
   }, [pathname]);
 
   return (
     <>
       <LinkProvider>
-        <div className="min-h-screen dark:bg-black lg:grid lg:grid-cols-[20%,1fr] xl:grid-cols-[20%,1fr]">
+        <div className="min-h-screen lg:grid lg:grid-cols-[20%,1fr]">
           <AdminRoutesSidebar />
           <div className=""></div>
           <div
@@ -30,45 +29,32 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
               "",
               pathname === "/admin/preview" || pathname === "/admin/analytics"
                 ? ""
-                : "lg:grid xl:grid-cols-[1fr,30%]",
+                : "lg:grid lg:grid-cols-[1fr,33%] xl:grid-cols-[1fr,35%] 2xl:grid-cols-[1fr,35%]",
             )}
           >
             <div className="">{children}</div>
 
-            {pathname === "/admin/analytics" ||
-            pathname === "/admin/preview" ? (
-              <div className=""> </div>
-            ) : (
-              <div
-                className={cn(
-                  "",
-                  showPreview
-                    ? "fixed bottom-0 left-0 top-0 z-30 grid w-screen place-content-center bg-lightestGray/50 pt-8 backdrop-blur transition duration-1000 xl:bg-white dark:bg-black "
-                    : "hidden   dark:bg-black xl:block xl:bg-white xl:py-10",
-                )}
-                >
+            {/* Show mockup preview as a modal in screens less than 1280px wide */}
+            <div className="lg:hidden">
+              <Modal
+                isOpen={showPreview}
+                animationVariant="slideUp"
+                className="w-full"
+              >
                 <MockupPreview />
-              </div>
-            )}
+              </Modal>
+            </div>
+
+            {/* Show mockup preview as part of page main content in wider screens */}
+            <div className="hidden bg-white dark:bg-black lg:block">
+              <MockupPreview />
+            </div>
           </div>
 
-          {pathname === "/admin/analytics" || pathname === "/admin/preview" ? (
-            <></>
-          ) : (
-            <div
-              className="fixed bottom-16 right-1 z-40 cursor-pointer items-center rounded-full bg-black p-2 shadow-md shadow-black/30 dark:bg-deepBlue transition duration-500 xl:hidden"
-              onClick={() => setShowPreview(!showPreview)}
-            >
-              {showPreview ? (
-                <FaTimes className="text-lg text-white" />
-              ) : (
-                <div className="flex gap-2">
-                  <FaEye className="text-lg text-white" />
-                  <Paragraph className="text-white">Preview</Paragraph>
-                </div>
-              )}
-            </div>
-          )}
+          <FloatingMockupPreviewToggler
+            showPreview={showPreview}
+            setShowPreview={setShowPreview}
+          />
         </div>
       </LinkProvider>
     </>

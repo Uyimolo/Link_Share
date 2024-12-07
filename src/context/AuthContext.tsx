@@ -1,8 +1,6 @@
 "use client";
 import {
-  AuthCredential,
   createUserWithEmailAndPassword,
-  EmailAuthCredential,
   EmailAuthProvider,
   reauthenticateWithCredential,
   signInWithEmailAndPassword,

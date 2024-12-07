@@ -50,7 +50,7 @@ export function DataTable<TData, TValue>({
     <div className="rounded-xl bg-white dark:bg-darkGray">
       <Heading
         variant="h2"
-        className="py-4 pl-4 text-xl font-semibold md:text-xl xl:text-xl"
+        className="py-4 pl-4 text-base font-semibold sm:text-xl md:text-xl xl:text-xl"
       >
         All links
       </Heading>

@@ -33,11 +33,11 @@ const PreviewLinksAndProfile = ({
       if (userId && isPublic) {
         await saveAnalyticsData(userId, link.id);
         if (isPublic) {
-          window.open(link.url, "_blank");
+          // window.open(link.url, "_blank");
         }
       } else {
         if (isPublic) {
-          window.open(link.url, "_blank");
+          // window.open(link.url, "_blank");
         }
       }
     } catch (error) {

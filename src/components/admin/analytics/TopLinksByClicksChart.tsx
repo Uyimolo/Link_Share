@@ -27,18 +27,18 @@ const TopLinksByClicksChart = ({
   const { theme } = useThemeContext();
 
   return (
-    <Card className="rounded-xl border-none bg-white dark:bg-darkGray">
-      <CardHeader>
+    <Card className="rounded-xl space-y-0 border-none bg-white dark:bg-darkGray">
+      <CardHeader className="px-4 py-3">
         <Heading
           variant="h2"
-          className="text-xl font-semibold md:text-xl xl:text-xl"
+          className="text-base font-semibold sm:text-xl md:text-xl xl:text-xl"
         >
           Top 5 Links by Clicks
         </Heading>
       </CardHeader>
 
-      <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
+      <CardContent className="px-4 pt-0 py-2">
+        <ResponsiveContainer width="100%" height={250}>
           <BarChart
             className="hover:bg-transparent"
             data={topLinks}
@@ -67,12 +67,15 @@ const TopLinksByClicksChart = ({
                 fontSize: 14,
               }}
             />
-            <Tooltip formatter={(value) => `${value} clicks`} labelClassName="dark:text-black" />
+            <Tooltip
+              formatter={(value) => `${value} clicks`}
+              labelClassName="dark:text-black"
+            />
             <Bar
               dataKey="clickCount"
-              fill="#633CFF" // Neutral color from ShadCN for bars
+              fill="#3B82F6"
               radius={[5, 5, 0, 0]}
-              barSize={80}
+              barSize={60}
             />
           </BarChart>
         </ResponsiveContainer>

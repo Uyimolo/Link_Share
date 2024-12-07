@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { IconType } from "react-icons";
-import { FaEarthOceania, FaLink } from "react-icons/fa6";
+import { FaEarthOceania, FaLink, FaTrashCan } from "react-icons/fa6";
 import * as yup from "yup";
 
 type LinkCardForm = {
@@ -83,17 +83,20 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     };
   };
   return (
-    <div className="relative cursor-move rounded-xl border border-lightestGray bg-lightestGray p-5 hover:border-blue dark:border-transparent dark:bg-darkGray">
+    <div className="relative cursor-grabbing rounded-xl border border-lightestGray bg-lightestGray p-5 hover:border-blue dark:border-transparent dark:bg-darkGray">
       {/* Header: displays link index and delete option */}
       <div className="flex justify-between pb-2">
         <Paragraph className="font-semibold">{`Link #${index + 1}`}</Paragraph>
 
-        <Paragraph
-          className="cursor-pointer text-gray hover:text-blue"
+        <button
+          className="rounded border border-transparent p-2 hover:border-orange"
           onClick={() => setShowDeleteConfirmation(true)}
         >
-          Remove
-        </Paragraph>
+          <FaTrashCan
+            title="Delete link"
+            className="text-sm text-gray dark:text-white"
+          />
+        </button>
       </div>
 
       <div className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
@@ -107,9 +110,6 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             }}
             formField={field}
             error={errors[field.name]?.message}
-            // responsive
-            // inputClassName="py-2 pl-10"
-            labelClassName="text-sm"
           />
         ))}
       </div>
@@ -118,8 +118,8 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         isOpen={showDeleteConfirmation}
         acceptAction={handleDeleteLink}
         rejectAction={() => setShowDeleteConfirmation(false)}
-        header="Are you absolutely sure?"
-        content="This action cannot be undone, and you will lose any data associated with this link."
+        header="Delete Link"
+        content="Deleting this link will also remove all associated analytics data. Are you sure you want to proceed? You can undo this action before saving."
       />
     </div>
   );

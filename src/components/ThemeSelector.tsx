@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { FaCaretDown, FaThermometer } from "react-icons/fa6";
+import { FaThermometer } from "react-icons/fa6";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +9,7 @@ import {
 } from "./ui/dropdown-menu";
 
 import { useThemeContext } from "@/context/ThemeContext";
+import { RxCaretDown } from "react-icons/rx";
 
 const ThemeSelector = () => {
   const { updateTheme } = useThemeContext();
@@ -21,7 +22,7 @@ const ThemeSelector = () => {
         >
           <FaThermometer className="text-xl" />
           <span className="text-sm text-white">Theme</span>
-          <FaCaretDown className="absolute right-3 h-4 w-4" />
+          <RxCaretDown className="absolute right-3 text-lg" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="px-2 dark:bg-darkGray">

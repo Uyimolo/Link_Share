@@ -43,12 +43,11 @@ const AdminRoutesSidebar = () => {
   ];
 
   return (
-    <div className="relative z-50 mb-4 flex items-center justify-between bg-white p-4 dark:bg-black dark:border-b dark:border-lightestGray/50 md:m-4 md:rounded-xl lg:fixed lg:top-0 lg:m-0 lg:h-screen lg:bg-deepBlue lg:w-[20%] lg:flex-col lg:items-start lg:justify-normal lg:rounded-none lg:bg-deepblue xl:w-[calc(20%)] xl:border-r">
+    <div className="relative z-50 mb-4 flex items-center justify-between bg-white p-4 border-b dark:border-lightestGray/50 border-transparent dark:bg-black md:m-4 md:rounded-xl md:border lg:fixed lg:top-0 lg:h-screen lg:w-[20%] lg:flex-col lg:items-start lg:justify-normal lg:rounded-none lg:border-r lg:border-none lg:bg-deepBlue lg:m-0 lg:px-0">
       <>
-        {/* <Logo className="lg:hidden" onClick={() => router.push("/")} /> */}
         <Logo
           showFullLogo
-          className="hidden cursor-pointer lg:flex"
+          className="hidden cursor-pointer lg:flex lg:px-3"
           variant="white"
           onClick={() => router.push("/")}
         />

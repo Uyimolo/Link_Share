@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   LineChart,
   Line,
@@ -13,19 +13,23 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Heading from "@/components/text/Heading";
 import { ClickTrendData } from "@/types/types";
 import { useThemeContext } from "@/context/ThemeContext";
-import { getFillColor, getGridStrokeColor } from "@/utilities/analyticsChartsColors";
-
-
+import {
+  getFillColor,
+  getGridStrokeColor,
+} from "@/utilities/analyticsChartsColors";
+import Button from "@/components/Button";
 
 const ClickTrendsChart = ({
   clickTrendData,
+  dailyClickTrendData,
 }: {
   clickTrendData?: ClickTrendData[];
+  dailyClickTrendData?: ClickTrendData[] | null;
 }) => {
+  const [isMonthlyData, setIsMonthlyData] = useState(false);
   const { theme } = useThemeContext();
-  useEffect(() => console.log(theme), [theme]);
-  console.log(theme);
-  const data = clickTrendData
+
+  const monthlyData = clickTrendData
     ? clickTrendData
     : [
         { year: 2024, month: "November", count: 25 },
@@ -37,29 +41,75 @@ const ClickTrendsChart = ({
         { year: 2025, month: "May", count: 20 },
       ];
 
-  const trendData = data.map((item) => ({
+  const dailyData = dailyClickTrendData
+    ? dailyClickTrendData
+    : [
+        { year: 2024, month: "April", day: 3, count: 20 },
+        {
+          year: 2024,
+          month: "April",
+          day: 4,
+          count: 25,
+        },
+        {
+          year: 2024,
+          month: "April",
+          day: 12,
+          count: 25,
+        },
+        {
+          year: 2024,
+          month: "December",
+          day: 12,
+          count: 25,
+        },
+      ];
+
+  const monthlyTrendData = monthlyData.map((item) => ({
     ...item,
     month: `${item.month} ${item.year}`, // Combine month and year for X-axis labeling
   }));
 
+  const dailyTrendData = dailyData?.map((item) => ({
+    ...item,
+    day: `${item.day} ${item.month} ${item.year}`, // Combine day and month for X-axis labeling
+  }));
+
+  console.log(dailyTrendData);
+
   // Utility to determine grid stroke color
- 
 
   return (
     <Card className="w-full rounded-xl border-none dark:bg-darkGray">
-      <CardHeader>
+      <CardHeader className="grid w-full grid-cols-1 items-start justify-between px-4 py-3 sm:grid-cols-2">
         <Heading
           variant="h2"
-          className="text-xl font-semibold md:text-xl xl:text-xl"
+          className="relative text-base font-semibold sm:text-xl md:text-xl xl:text-xl"
         >
-          Monthly Click Trends
+          {isMonthlyData ? "Monthly" : "Daily"} Click Trends
         </Heading>
+
+        <div className="flex w-full items-center justify-end gap-2 justify-self-end sm:w-fit">
+          <Button
+            className="w-fit px-3 py-2"
+            onClick={() => setIsMonthlyData(true)}
+          >
+            Monthly
+          </Button>
+          <Button
+            variant="secondary"
+            className="w-fit px-3 py-2"
+            onClick={() => setIsMonthlyData(false)}
+          >
+            Daily
+          </Button>
+        </div>
       </CardHeader>
-      <CardContent className="dark:text-white">
-        <ResponsiveContainer width="100%" height={300}>
+      <CardContent className="pb-2 pt-0 dark:text-white">
+        <ResponsiveContainer width="100%" height={280}>
           <LineChart
             className="dark:text-white"
-            data={trendData}
+            data={isMonthlyData ? monthlyTrendData : dailyTrendData}
             margin={{ top: 20, right: 0, left: 0, bottom: 20 }}
           >
             <CartesianGrid
@@ -68,7 +118,7 @@ const ClickTrendsChart = ({
             />
             <XAxis
               tick={{ fill: getFillColor(theme), fontSize: 14 }}
-              dataKey="month"
+              dataKey={isMonthlyData ? "month" : "day"}
               label={{
                 value: "Links",
                 position: "insideBottom",

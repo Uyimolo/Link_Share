@@ -29,10 +29,7 @@ const Confirm = ({
         <div className="flex justify-end space-x-2">
           <Button
             className="w-fit px-4 py-2"
-            onClick={() => {
-              acceptAction;
-              rejectAction(true);
-            }}
+            onClick={acceptAction}
           >
             Confirm
           </Button>

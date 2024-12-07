@@ -63,6 +63,7 @@ export type AnalyticsData = {
 export type ClickTrendData = {
   year: number;
   month: string;
+  day?: number;
   count: number;
 };
 
@@ -98,6 +99,7 @@ export type LinkWithAnalytics = {
   }[];
   lastClickDate?: string;
   clickTrendsChartData?: ClickTrendData[];
+  dailyClickTrendsChartData?: ClickTrendData[];
 };
 
 export type NavItem = {

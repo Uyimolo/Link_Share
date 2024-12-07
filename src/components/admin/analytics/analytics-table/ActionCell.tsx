@@ -23,13 +23,6 @@ const ActionsCell: FC<ActionsCellProps> = ({ link }) => {
   const { deleteLink } = useLinkContext();
   const [showAnalyticsModal, setShowAnalyticsModal] = useState(false);
 
-  const mobilePercentage = Math.round(
-    (link.deviceType.mobile / link.clickCount) * 100,
-  );
-  const desktopPercentage = Math.round(
-    (link.deviceType.desktop / link.clickCount) * 100,
-  );
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -49,17 +42,13 @@ const ActionsCell: FC<ActionsCellProps> = ({ link }) => {
         </DropdownMenuItem>
         <DropdownMenuItem>Make link private</DropdownMenuItem>
       </DropdownMenuContent>
-      {showAnalyticsModal && (
-        <Modal closeModal={() => setShowAnalyticsModal(false)} className="px-4">
-          <LinkAnalytics
-            mobilePercentage={mobilePercentage}
-            desktopPercentage={desktopPercentage}
-            uniqueVisitorsCount={link.uniqueVisitors.length}
-            clickLocations={link.clickLocations}
-            clickTrendChartData={link.clickTrendsChartData}
-          />
-        </Modal>
-      )}
+      <Modal
+        isOpen={showAnalyticsModal}
+        closeModal={() => setShowAnalyticsModal(false)}
+        className="w-full px-4"
+      >
+        <LinkAnalytics link={link} />
+      </Modal>
     </DropdownMenu>
   );
 };
