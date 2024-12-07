@@ -15,7 +15,7 @@ const config: Config = {
       },
       colors: {
         blue: "#633CFF",
-        deepBlue: '#4A32C4',
+        deepBlue: "#4A32C4",
         lightBlue: "#BEADFF",
         lighterBlue: "#D4CAFB",
         veryLightBlue: "#EFEBFF",
@@ -25,6 +25,8 @@ const config: Config = {
         lightestGray: "#F1f1f1",
         white: "#FFFFFF",
         red: "#FF3939",
+        orange: "#FF8C42",
+        pink: "#FFC0CB",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

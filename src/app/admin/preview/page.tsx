@@ -11,7 +11,7 @@ import { motion } from "motion/react";
 const Preview = () => {
   const { profileInfo } = useProfileInfo();
   const { loading } = useAuthContext();
-  const { links } = useLinkContext();
+  const { linksFromDb } = useLinkContext();
   useProtectedRoute(true);
 
   const gradientVariants = {
@@ -36,7 +36,7 @@ const Preview = () => {
 
       <PreviewLinksAndProfile
         isPublic={false}
-        links={links}
+        links={linksFromDb}
         loading={loading}
         profileInfo={profileInfo}
       />

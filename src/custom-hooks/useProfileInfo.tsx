@@ -25,8 +25,10 @@ const useProfileInfo = () => {
     firstName: "",
     lastName: "",
     email: "",
+    bio: "",
   });
-  const [downloadProgress, setDownloadProgress] = useState(0);
+
+  // const [downloadProgress, setDownloadProgress] = useState(0);
   const [loading, setLoading] = useState(true);
   const { user } = useAuthContext();
   const [isProfileDetailsSaving, setIsProfileDetailsSaving] = useState(false);
@@ -58,6 +60,7 @@ const useProfileInfo = () => {
     firstName: string,
     lastName: string,
     email?: string,
+    bio?: string,
   ) => {
     if (loading) {
       toast.error(
@@ -69,16 +72,15 @@ const useProfileInfo = () => {
     if (user) {
       setIsProfileDetailsSaving(true);
       try {
-        // Wait for the new file upload and URL retrieval
-        const { fileURL, downloadProgress } = await saveProfilePicture(
-          file,
-          user.uid,
-        );
-        setDownloadProgress(downloadProgress);
+        // if no file is a dummy file, dont upload (get download url from the profileInfo object instead)
+        const { fileURL } =
+          file.name === "dummy.txt"
+            ? await saveProfilePicture(file, user.uid)
+            : { fileURL: profileInfo.profilePicture };
 
         // Save profile details to Firestore
         await saveProfileDetails(
-          { profilePicture: fileURL, firstName, lastName, email },
+          { profilePicture: fileURL, firstName, lastName, email, bio },
           user.uid,
         );
         toast.success("Profile information updated successfully");
@@ -90,7 +92,12 @@ const useProfileInfo = () => {
     }
   };
 
-  return { profileInfo, downloadProgress, saveProfileInformation, isProfileDetailsSaving };
+  return {
+    profileInfo,
+    // downloadProgress,
+    saveProfileInformation,
+    isProfileDetailsSaving,
+  };
 };
 
 export default useProfileInfo;

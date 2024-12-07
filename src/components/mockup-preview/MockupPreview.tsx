@@ -6,9 +6,10 @@ import cn from "@/utilities/cn";
 import { RxAvatar } from "react-icons/rx";
 import { useAuthContext } from "@/context/AuthContext";
 import { useLinkContext } from "@/context/LinkContext";
+import { usePathname } from "next/navigation";
 
 const MockupPreview = () => {
-  const { linksFromDb } = useLinkContext();
+  const { linksFromDb, loading } = useLinkContext();
   const { profileInfo } = useProfileInfo();
 
   // provides fallback incase no profile info is returned
@@ -19,14 +20,25 @@ const MockupPreview = () => {
     email: "",
   };
 
-  const { profilePicture } = profileInfo || emptyProfileObject;
+  const { profilePicture, bio } = profileInfo || emptyProfileObject;
   const { username } = useAuthContext();
+
+  const pathname = usePathname();
+
+  // if loading links or the admin is accessing the analytics or preview pages, do not render the mockup
+  if (
+    pathname === "/admin/analytics" ||
+    pathname === "/admin/preview" ||
+    loading
+  ) {
+    return;
+  }
 
   return (
     <>
       <div
         className={cn(
-          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[600px] w-[calc(100vw-32px)] max-w-[300px] rounded-[30px] from-black to-black/70 dark:from-deepBlue dark:to-blue p-1 shadow-xl shadow-black/40 lg:sticky lg:top-20 lg:max-w-[270px] lg:bg-gradient-to-tr lg:shadow-black/70 2xl:max-w-[300px]",
+          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[500px] w-[calc(100vw-32px)] max-w-[260px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 dark:from-deepBlue dark:to-blue lg:sticky lg:top-20 lg:max-w-[240px] lg:bg-gradient-to-tr lg:shadow-black/70 xl:max-h-[550px] xl:max-w-[260px] 2xl:max-w-[280px]",
         )}
       >
         {/* bezels */}
@@ -38,12 +50,12 @@ const MockupPreview = () => {
         </>
 
         {/* Mockup screen */}
-        <div className="h-full overflow-hidden rounded-[25px] border-gray bg-white px-3 py-10 dark:bg-lighterGray lg:border lg:p-3">
+        <div className="h-full overflow-hidden rounded-[25px] border-gray bg-white px-2 py-10 dark:bg-lighterGray lg:border lg:p-2">
           {/* camera notch */}
           <div className="mx-auto mb-6 hidden h-4 w-2/6 rounded-full border border-black bg-black lg:block"></div>
 
           {/* profile information */}
-          <div className="mx-auto w-3/4 space-y-1">
+          <div className="mx-auto space-y-2">
             {/* profile image */}
             <div
               className={cn(
@@ -64,7 +76,7 @@ const MockupPreview = () => {
             </div>
 
             {/* username */}
-            <div className="">
+            <div className="space-y-1">
               {username ? (
                 <Paragraph className="text-center text-xs leading-none dark:text-darkGray lg:text-sm">
                   @{username}
@@ -73,18 +85,18 @@ const MockupPreview = () => {
                 <div className="mx-auto h-2 w-1/2 rounded bg-lighterGray"></div>
               )}
 
-              {/* {email ? (
-                <Paragraph className="text-center text-xs xl:text-xs">
-                  {email}
+              {bio ? (
+                <Paragraph className="rounded p-2 px-0 text-xs dark:text-darkGray xl:text-xs">
+                  {bio}
                 </Paragraph>
               ) : (
                 <div className="mx-auto h-2 w-1/2 rounded bg-lighterGray"></div>
-              )} */}
+              )}
             </div>
           </div>
 
           {/* links */}
-          <div className="pt-10">
+          <div className="pt-5">
             {linksFromDb && linksFromDb.length > 0 ? (
               <div className="custom-scrollbar h-[40vh] max-h-[500px] space-y-2 overflow-y-auto">
                 {linksFromDb.map((link, index) => (

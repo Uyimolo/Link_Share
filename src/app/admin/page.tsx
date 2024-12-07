@@ -70,7 +70,7 @@ const Dashboard = () => {
   if (!user || loading) {
     return (
       <div className="px-4 lg:p-0">
-        <div className="grid h-[80vh] w-full place-content-center rounded-xl dark:bg-black bg-white lg:h-screen lg:rounded-none">
+        <div className="grid h-[80vh] w-full place-content-center rounded-xl bg-white dark:bg-black lg:h-screen lg:rounded-none">
           <Loading />
         </div>
       </div>
@@ -79,7 +79,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen px-4 lg:p-0" ref={containerRef}>
-      <div className="min-h-screen rounded-t-xl bg-white p-6 dark:bg-black border-transparent border dark:border-lightestGray/50 lg:border-none lg:rounded-none lg:pt-14">
+      <div className="min-h-screen rounded-t-xl border border-transparent bg-white p-6 dark:border-lightestGray/50 dark:bg-black lg:rounded-none lg:border-none lg:pt-14">
         <div className="space-y-2">
           <Heading variant="h1">Customize your links</Heading>
           <Paragraph>
@@ -87,7 +87,7 @@ const Dashboard = () => {
           </Paragraph>
         </div>
 
-        <div className="sticky top-0 z-20 bg-white py-6 dark:bg-black border-b border-blue dark:border-lightestGray/50">
+        <div className="sticky top-0 z-20 bg-white py-6 dark:bg-black">
           <Button variant="secondary" className="" onClick={handleAddNewLink}>
             + Add new link
           </Button>
@@ -96,7 +96,7 @@ const Dashboard = () => {
         {/* links */}
 
         {links && links?.length > 0 ? (
-          <div className="mt-1 space-y-6">
+          <div className="mt-1 space-y-6 lg:max-w-[700px] mx-auto">
             <LinkCardContainer
               links={links}
               setLinks={setLinks}
@@ -109,7 +109,16 @@ const Dashboard = () => {
         )}
 
         <div className="sticky bottom-0 hidden lg:block lg:pb-0">
-          <div className="w-full border-t bg-white p-6 pr-0 dark:bg-black">
+          <div className="flex w-full border-t bg-white p-6 px-0 dark:bg-black">
+            {!areLinksEqual(links, linksFromDb) && linksFromDb && (
+              <Button
+                variant="secondary"
+                className="md:w-fit"
+                onClick={() => setLinks(linksFromDb)}
+              >
+                Undo changes
+              </Button>
+            )}
             <Button
               className="ml-auto mr-0 md:w-fit"
               disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}
@@ -124,7 +133,13 @@ const Dashboard = () => {
 
       {/* save button */}
       <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-black lg:hidden lg:border-none lg:bg-white">
-        <div className="mt-1 border border-transparent dark:border-lightestGray/50 w-full rounded-b-xl bg-white p-6 dark:bg-black md:px-10 lg:px-6">
+        <div className="mt-1 w-full space-y-2 rounded-b-xl border border-transparent bg-white p-6 dark:border-lightestGray/50 dark:bg-black md:flex md:px-6 lg:px-6">
+          {!areLinksEqual(links, linksFromDb) && linksFromDb && (
+            <Button variant="secondary" className="md:w-fit" onClick={() => setLinks(linksFromDb)}>
+              Undo changes
+            </Button>
+          )}
+
           <Button
             className="ml-auto mr-0 md:w-fit"
             disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}

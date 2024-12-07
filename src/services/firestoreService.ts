@@ -137,6 +137,7 @@ export const saveProfilePicture = async (
  * @param profileInfo - Profile details to save.
  * @param userId - The ID of the user whose profile details are being saved.
  */
+
 export const saveProfileDetails = async (
   profileInfo: ProfileDetails,
   userId: string,

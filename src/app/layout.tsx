@@ -23,12 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Toaster position="top-center" />
+
       <ThemeProvider>
         <AuthProvider>
           <body
-            className={` ${montserrat.className} mx-auto bg-[#eeeeee] antialiased `}
+            className={` ${montserrat.className} mx-auto bg-[#eeeeee] dark:bg-black antialiased`}
           >
-            <Toaster position="top-center" />
             {children}
           </body>
         </AuthProvider>

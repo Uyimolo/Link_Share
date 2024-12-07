@@ -6,6 +6,7 @@ import { ConfirmProps } from "@/types/types";
 import cn from "@/utilities/cn";
 
 const Confirm = ({
+  isOpen = false,
   rejectAction,
   acceptAction,
   header,
@@ -13,8 +14,8 @@ const Confirm = ({
   variant = "normal",
 }: ConfirmProps) => {
   return (
-    <Modal>
-      <div className="w-fit max-w-md space-y-6 rounded-md dark:bg-gray bg-white p-4 shadow-2xl shadow-black/50">
+    <Modal isOpen={isOpen}>
+      <div className="w-fit max-w-md space-y-6 rounded-md bg-white p-4 shadow-2xl shadow-black/50 dark:bg-gray">
         <Paragraph
           className={cn(
             "text-lg font-semibold",
@@ -26,7 +27,10 @@ const Confirm = ({
         <Paragraph>{content}</Paragraph>
 
         <div className="flex justify-end space-x-2">
-          <Button className="w-fit px-4 py-2" onClick={acceptAction}>
+          <Button
+            className="w-fit px-4 py-2"
+            onClick={acceptAction}
+          >
             Confirm
           </Button>
           <Button

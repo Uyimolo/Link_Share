@@ -36,6 +36,33 @@ const FormGroup = <TFormValues extends FieldValues>({
   const [showPassword, setShowPassword] = useState(false);
   const Icon = icon;
 
+  // if (type === "textarea") {
+  //   return (
+  //     <div className="flex w-full flex-col space-y-2">
+  //       <label
+  //         className={cn(
+  //           "text-xs text-gray dark:text-white",
+  //           error && "text-red",
+  //           labelClassName,
+  //         )}
+  //         htmlFor={name}
+  //       >
+  //         {label}
+  //       </label>
+
+  //       <textarea
+  //         className={cn(
+  //           "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
+  //           error && "border-red",
+  //           responsive ? "pl-4" : "",
+  //           inputClassName,
+  //         )}
+  //         {...register}
+  //       />
+  //     </div>
+  //   );
+  // }
+
   return (
     <div
       className={cn(
@@ -57,17 +84,32 @@ const FormGroup = <TFormValues extends FieldValues>({
       </label>
 
       <div className="relative">
-        <input
-          className={cn(
-            "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
-            error && "border-red",
-            responsive ? "pl-4" : "",
-            inputClassName,
-          )}
-          type={type !== "password" ? type : showPassword ? "text" : "password"}
-          {...register}
-          placeholder={placeholder}
-        />
+        {type === "textarea" ? (
+          <textarea
+            className={cn(
+              "w-full rounded-lg border border-lighterGray h-20 lg:h-28 py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
+              error && "border-red",
+              responsive ? "pl-4" : "",
+              inputClassName,
+            )}
+            {...register}
+            placeholder={placeholder}
+          ></textarea>
+        ) : (
+          <input
+            className={cn(
+              "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
+              error && "border-red",
+              responsive ? "pl-4" : "",
+              inputClassName,
+            )}
+            type={
+              type !== "password" ? type : showPassword ? "text" : "password"
+            }
+            {...register}
+            placeholder={placeholder}
+          />
+        )}
 
         {Icon && (
           <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray" />

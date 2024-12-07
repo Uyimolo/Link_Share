@@ -48,14 +48,13 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="rounded-xl bg-white dark:bg-darkGray">
-      <TableHeader className="">
-        <Heading
-          variant="h2"
-          className="py-4 pl-4 text-xl font-semibold md:text-xl xl:text-xl"
-        >
-          All links
-        </Heading>
-      </TableHeader>
+      <Heading
+        variant="h2"
+        className="py-4 pl-4 text-base font-semibold sm:text-xl md:text-xl xl:text-xl"
+      >
+        All links
+      </Heading>
+
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

@@ -19,6 +19,7 @@ export type ProfileFormData = {
   firstName: string;
   lastName: string;
   email?: string;
+  bio?: string;
 };
 
 export type ProfileDetails = {
@@ -26,6 +27,7 @@ export type ProfileDetails = {
   firstName: string;
   lastName: string;
   email?: string;
+  bio?: string;
 };
 
 export type GeolocationResponse = {
@@ -61,6 +63,7 @@ export type AnalyticsData = {
 export type ClickTrendData = {
   year: number;
   month: string;
+  day?: number;
   count: number;
 };
 
@@ -96,36 +99,8 @@ export type LinkWithAnalytics = {
   }[];
   lastClickDate?: string;
   clickTrendsChartData?: ClickTrendData[];
+  dailyClickTrendsChartData?: ClickTrendData[];
 };
-
-// Type '{ id: string;
-// url: string;
-// title: string;
-// icon: IconType | undefined;
-// clickCount: number;
-// clickTrends: FirestoreTimestamp[];
-// deviceType: { }; uniqueVisitors: string[];
-// clickLocations: { ...; };
-// lastClickDate: number | undefined; }[]
-// ' is not assignable to type 'LinkWithAnalytics[]'.
-//     Type '{ id: string; url: string; title: string; icon: IconType | undefined; clickCount: number; clickTrends: FirestoreTimestamp[]; deviceType: {}; uniqueVisitors: string[]; clickLocations: { ...; }; lastClickDate: number | undefined; }' is not assignable to type 'LinkWithAnalytics'.
-//       Types of property 'lastClickDate' are incompatible.
-//         Type 'number | undefined' is not assignable to type 'FirestoreTimestamp | undefined'.
-//           Type 'number' is not assignable to type 'FirestoreTimestamp'.ts(2345)
-// const linksWithAnalytics: {
-//     id: string;
-//     url: string;
-//     title: string;
-//     icon: IconType | undefined;
-//     clickCount: number;
-//     clickTrends: FirestoreTimestamp[];
-//     deviceType: {};
-//     uniqueVisitors: string[];
-//     clickLocations: {
-//         ...;
-//     };
-//     lastClickDate: number | undefined;
-// }[]
 
 export type NavItem = {
   label: string;
@@ -154,4 +129,5 @@ export type ConfirmProps = {
   header: string;
   content: string;
   variant?: "serious" | "normal";
+  isOpen: boolean;
 };

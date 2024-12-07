@@ -1,5 +1,6 @@
 import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
+import { Card } from "@/components/ui/card";
 import cn from "@/utilities/cn";
 import Image from "next/image";
 
@@ -16,10 +17,10 @@ const TopClicksByCountries = ({
   const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
 
   return (
-    <div className="space-y-6 rounded-xl bg-white p-4 dark:bg-darkGray">
+    <Card className="space-y-4 rounded-xl bg-white border-none px-4 py-2 dark:bg-darkGray">
       <Heading
         variant="h2"
-        className="text-xl font-semibold md:text-xl xl:text-xl"
+        className="text-base font-semibold sm:text-xl md:text-xl xl:text-xl"
       >
         Countries by clicks
       </Heading>
@@ -53,7 +54,7 @@ const TopClicksByCountries = ({
             </div>
           ))}
       </div>
-    </div>
+    </Card>
   );
 };
 

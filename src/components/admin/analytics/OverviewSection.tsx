@@ -19,9 +19,40 @@ const OverviewSection = ({
   const desktopPercentage = Math.round((desktop / totalClicks) * 100);
 
   const overviewContentClassName =
-    " grid items-start gap-2 rounded-xl bg-white p-2 md:items-center md:p-4 dark:bg-darkGray";
-  
-  const headerText = 'dark:text-gray'
+    " grid items-start gap-2 rounded-xl bg-white p-2 md:items-center xl:p-4 dark:bg-darkGray";
+
+  const headerText = "dark:text-white text-white";
+
+  const headerClass =
+    "flex items-center gap-2 rounded-md  p-1 md:p-2";
+
+  const overviewData = [
+    {
+      title: "Total views",
+      value: `${uniqueImpressions} ${uniqueImpressions > 1 ? "views" : "view"}`,
+      icon: FaEye,
+      accent: "bg-blue",
+    },
+    {
+      title: "Total links",
+      value: `${numberOfLinks} ${numberOfLinks > 1 ? "links" : "link"}`,
+      icon: FaLink,
+      accent: "bg-orange",
+    },
+    {
+      title: "Total clicks",
+      value: `${totalClicks} ${totalClicks > 1 ? "clicks" : "click"}`,
+      icon: FaHandPointer,
+      accent: "bg-purple-400",
+    },
+    {
+      title: "Devices",
+      value: `${mobilePercentage}% mobile`,
+      value2: `${desktopPercentage}% desktop`,
+      icon: PiDevices,
+      accent: "bg-lime-600",
+    },
+  ];
 
   return (
     <div className="bg-whit rounded-xl">
@@ -29,61 +60,27 @@ const OverviewSection = ({
       <div className="grid gap-4 rounded-xl">
         {/* metrics */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {/* views */}
-          <div className={overviewContentClassName}>
-            <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <FaEye className="text-lg text-gray" />
-              <Paragraph className={headerText}>Total views</Paragraph>
-            </div>
-            <Paragraph className="pl-2 leading-none text-gray">
-              {" "}
-              <strong>{uniqueImpressions}</strong>{" "}
-              {uniqueImpressions === 1 ? "view" : "unique views"}
-            </Paragraph>
-          </div>
-
-          {/* number of links */}
-          <div className={overviewContentClassName}>
-            <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <FaLink className="text-lg text-gray" />
-              <Paragraph className={headerText}>Total links</Paragraph>
-            </div>
-            <Paragraph className="pl-2 text-gray">
-              {" "}
-              <strong>{numberOfLinks}</strong> links
-            </Paragraph>
-          </div>
-
-          {/* total clicks */}
-          <div className={overviewContentClassName}>
-            <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <FaHandPointer className="text-lg text-gray" />
-              <Paragraph className={headerText}>Total clicks</Paragraph>
-            </div>
-            <Paragraph className="pl-2 text-gray">
-              {" "}
-              <strong>{totalClicks}</strong> total clicks
-            </Paragraph>
-          </div>
-
-          {/* devices */}
-          <div className={overviewContentClassName}>
-            <div className="flex items-center gap-2 rounded-md border bg-veryLightBlue p-1 md:p-2">
-              <PiDevices className="text-lg text-gray" />
-              <Paragraph className={headerText}>Devices</Paragraph>
-            </div>
-            <Paragraph className="pl-2 text-gray xl:flex xl:gap-2">
-              {" "}
-              <strong>{mobilePercentage ? mobilePercentage : 0}%</strong> mobile
-              <br className="xl:hidden" />
-              <span className="hidden xl:block">|</span>
-              <strong>
-                {" "}
-                {desktopPercentage ? desktopPercentage : 0}%
-              </strong>{" "}
-              {" " + "desktop"}
-            </Paragraph>
-          </div>
+          {overviewData.map((data, index) => {
+            const { title, value, value2, icon, accent } = data;
+            const Icon = icon;
+            return (
+              <div key={index} className={overviewContentClassName}>
+                <div className={`${headerClass} ${accent}`}>
+                  <Icon className="text-lg text-white" />
+                  <Paragraph className={headerText}>{title}</Paragraph>
+                </div>
+                <Paragraph className="pl-2 leading-none text-gray">
+                  {" "}
+                  <strong>{value}</strong>
+                </Paragraph>
+                {value2 && (
+                  <Paragraph className="pl-2 leading-none text-gray">
+                    <strong>{value2}</strong>
+                  </Paragraph>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
