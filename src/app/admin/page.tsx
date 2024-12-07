@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   const handleAddNewLink = () => {
     const uniqueId = `${Math.floor(Date.now() + Math.random() * 10000)}`;
-    const newLink = { id: uniqueId, url: "", title: "" };
+    const newLink = { id: uniqueId, url: "", title: "", isVisible: true };
     if (links) {
       setLinks([...links, newLink]);
     }
@@ -96,7 +96,7 @@ const Dashboard = () => {
         {/* links */}
 
         {links && links?.length > 0 ? (
-          <div className="mt-1 space-y-6 lg:max-w-[700px] mx-auto">
+          <div className="mx-auto mt-1 space-y-6 lg:max-w-[700px]">
             <LinkCardContainer
               links={links}
               setLinks={setLinks}
@@ -135,7 +135,11 @@ const Dashboard = () => {
       <div className="sticky bottom-0 border-t-2 bg-lightestGray pb-4 dark:bg-black lg:hidden lg:border-none lg:bg-white">
         <div className="mt-1 w-full space-y-2 rounded-b-xl border border-transparent bg-white p-6 dark:border-lightestGray/50 dark:bg-black md:flex md:px-6 lg:px-6">
           {!areLinksEqual(links, linksFromDb) && linksFromDb && (
-            <Button variant="secondary" className="md:w-fit" onClick={() => setLinks(linksFromDb)}>
+            <Button
+              variant="secondary"
+              className="md:w-fit"
+              onClick={() => setLinks(linksFromDb)}
+            >
               Undo changes
             </Button>
           )}

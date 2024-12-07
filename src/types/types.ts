@@ -5,6 +5,7 @@ export type LinkType = {
   id: string;
   url: string;
   title: string;
+  isVisible: boolean;
 };
 
 export type LinkCardProps = {

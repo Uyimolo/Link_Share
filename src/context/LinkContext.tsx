@@ -26,7 +26,8 @@ export const areLinksEqual = (
       return (
         link1.id === link2.id &&
         link1.url === link2.url &&
-        link1.title === link2.title
+        link1.title === link2.title &&
+        link1.isVisible === link2.isVisible
       );
     });
   }
