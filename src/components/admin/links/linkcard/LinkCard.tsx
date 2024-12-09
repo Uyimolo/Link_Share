@@ -95,8 +95,22 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     },
   });
 
+  const isVisibleCheckboxRef = useRef<HTMLInputElement>(null);
+
+  // find isVisible field to use in checkbox registration with hook form
+  const visibilityField = linkCardFields.find(
+    (field) => field.name === "isVisible",
+  );
+
   const [searchTerm, setSearchTerm] = useState("");
+
   const [showIconModal, setShowIconModal] = useState<boolean>(false);
+
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+  // dedicated drag control
+  const controls = useDragControls();
+
   const searchedIcons = useMemo(() => {
     if (!searchTerm) return thumbnailIcons;
 
@@ -104,10 +118,6 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       thumbnail.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [searchTerm]);
-
-  const isVisibleCheckboxRef = useRef<HTMLInputElement>(null);
-
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleDeleteLink = () => {
     deleteLink(link.id);
@@ -123,10 +133,6 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       handleDeleteLink();
     }
   };
-
-  const visibilityField = linkCardFields.find(
-    (field) => field.name === "isVisible",
-  );
 
   const handleFieldChange = (name: keyof LinkCardForm) => {
     return async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,6 +152,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         title: updatedData.title,
         isVisible:
           name === "isVisible" ? updatedData.isVisible : link.isVisible,
+        icon: link.icon,
       });
     };
   };
@@ -163,7 +170,10 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     }
   };
 
-  const controls = useDragControls();
+  const handleIconSelection = (icon: IconType) => {
+    updateLink({ ...link, icon });
+    setShowIconModal(false);
+  };
 
   return (
     <Reorder.Item
@@ -279,6 +289,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
           searchTerm={searchTerm}
           searchedIcons={searchedIcons}
           showSearchedIcons={showIconModal}
+          handleIconSelection={handleIconSelection}
         />
       </>
     </Reorder.Item>

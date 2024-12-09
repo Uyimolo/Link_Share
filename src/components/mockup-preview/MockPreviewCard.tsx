@@ -22,7 +22,7 @@ const MockPreviewCard = ({
       link.url.toLowerCase().includes(option.name.toLowerCase()),
   );
 
-  const Icon = thumbnailIcons[linkIndex]?.icon;
+  const Icon = link.icon || thumbnailIcons[linkIndex]?.icon;
   return (
     <div
       onClick={onClick}

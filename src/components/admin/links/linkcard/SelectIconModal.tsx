@@ -8,7 +8,10 @@ import {
 } from "@/components/ui/tooltip";
 import { thumbnailIcons } from "@/data/thumbnailIcons";
 import { ThumbnailIcon } from "@/types/types";
-import { FaMagnifyingGlassArrowRight } from "react-icons/fa6";
+import { FaEarthOceania, FaMagnifyingGlassArrowRight } from "react-icons/fa6";
+import { IconType } from "react-icons";
+import { RxReset } from "react-icons/rx";
+import Button from "@/components/Button";
 
 const SelectIconModal = ({
   setSearchTerm,
@@ -16,12 +19,14 @@ const SelectIconModal = ({
   searchedIcons,
   showSearchedIcons,
   closeModal,
+  handleIconSelection,
 }: {
   setSearchTerm: (searchTerm: string) => void;
   searchTerm: string;
   searchedIcons: ThumbnailIcon[];
   showSearchedIcons: boolean;
   closeModal: () => void;
+  handleIconSelection: (icon: IconType) => void;
 }) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.value)
@@ -58,6 +63,15 @@ const SelectIconModal = ({
           />
         </div>
 
+        <Button
+          variant="ghost"
+          className="d ml-4 flex w-fit items-center gap-2 rounded p-2"
+          onClick={() => handleIconSelection(FaEarthOceania)}
+        >
+          <RxReset />
+          Reset link icon
+        </Button>
+
         {/* icons */}
         <div className="h-[60vh] overflow-auto rounded-xl p-4">
           {Object.entries(groupedByCategories).map(([category, items]) => (
@@ -65,13 +79,16 @@ const SelectIconModal = ({
               <Paragraph>{category}</Paragraph>
 
               <div className="grid grid-cols-5 md:grid-cols-10">
-                {items.map((item, index) => {
+                {items.map((item) => {
                   const Icon = item.icon;
 
                   return (
-                    <TooltipProvider key={index}>
+                    <TooltipProvider key={item.name}>
                       <Tooltip>
-                        <TooltipTrigger className="grid aspect-square w-10 place-content-center rounded-xl hover:bg-lightestGray dark:hover:bg-black md:w-14">
+                        <TooltipTrigger
+                          className="grid aspect-square w-10 place-content-center rounded-xl hover:bg-lightestGray dark:hover:bg-black md:w-14"
+                          onClick={() => handleIconSelection(item.icon)}
+                        >
                           <Icon className="text-xl text-darkGray dark:text-lightestGray md:text-2xl" />
                         </TooltipTrigger>
                         <TooltipContent>
