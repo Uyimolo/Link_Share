@@ -35,7 +35,7 @@ export const areLinksEqual = (
 
 type LinkContextType = {
   links: LinkType[] | null;
-  setLinks: (links: LinkType[]) => void;
+  setLinks: React.Dispatch<React.SetStateAction<LinkType[] | null>>;
   linksFromDb: LinkType[] | null;
   saveLinks: (links: LinkType[]) => void;
   deleteLink: (linkId: string, userId: string) => void;

@@ -4,7 +4,7 @@ import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
 import { useAuthContext } from "@/context/AuthContext";
 import { LinkType } from "@/types/types";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import Loading from "@/components/Loading";
 import useConfirmPageLeave from "@/custom-hooks/useConfirmPageLeave";

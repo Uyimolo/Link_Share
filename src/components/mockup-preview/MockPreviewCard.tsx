@@ -1,4 +1,4 @@
-import { options } from "@/data/options";
+import { thumbnailIcons } from "@/data/thumbnailIcons";
 import { LinkType } from "@/types/types";
 import React from "react";
 import Paragraph from "../text/Paragraph";
@@ -16,13 +16,13 @@ const MockPreviewCard = ({
   className?: string;
 }) => {
   // Find the corresponding icon and color for the link title from the options array.
-  const linkIndex = options.findIndex(
+  const linkIndex = thumbnailIcons.findIndex(
     (option) =>
-      option.value.toLowerCase() === link.title.toLowerCase() ||
-      link.url.toLowerCase().includes(option.value.toLowerCase()),
+      option.name.toLowerCase() === link.title.toLowerCase() ||
+      link.url.toLowerCase().includes(option.name.toLowerCase()),
   );
 
-  const Icon = options[linkIndex]?.icon;
+  const Icon = thumbnailIcons[linkIndex]?.icon;
   return (
     <div
       onClick={onClick}
