@@ -186,10 +186,10 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
           <div className="flex items-center justify-between pb-2">
             <div className="flex items-center gap-2">
               <div
-                className="reorder-handle"
+                className="reorder-handle "
                 onPointerDown={(e) => controls.start(e)}
               >
-                <FaGripLines />
+                <FaGripLines className=""/>
               </div>
               <Paragraph className="font-semibold">{`Link #${index + 1}`}</Paragraph>
             </div>

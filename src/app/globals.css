@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.reorder-handle {
+  touch-action: none; /* Disable browser's default touch scrolling */
+}
+
 @media (min-width: 1024px) {
   /* width */
   /* ::-webkit-scrollbar {
