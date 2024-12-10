@@ -26,7 +26,9 @@ export const areLinksEqual = (
       return (
         link1.id === link2.id &&
         link1.url === link2.url &&
-        link1.title === link2.title
+        link1.title === link2.title &&
+        link1.isVisible === link2.isVisible &&
+        link1.icon === link2.icon
       );
     });
   }
@@ -34,7 +36,7 @@ export const areLinksEqual = (
 
 type LinkContextType = {
   links: LinkType[] | null;
-  setLinks: (links: LinkType[]) => void;
+  setLinks: React.Dispatch<React.SetStateAction<LinkType[] | null>>;
   linksFromDb: LinkType[] | null;
   saveLinks: (links: LinkType[]) => void;
   deleteLink: (linkId: string, userId: string) => void;

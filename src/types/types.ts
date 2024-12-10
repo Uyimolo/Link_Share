@@ -5,6 +5,8 @@ export type LinkType = {
   id: string;
   url: string;
   title: string;
+  isVisible: boolean;
+  icon: string;
 };
 
 export type LinkCardProps = {
@@ -12,6 +14,8 @@ export type LinkCardProps = {
   link: LinkType;
   updateLink: (link: LinkType) => void;
   deleteLink: (linkId: string) => void;
+  setLinks: React.Dispatch<React.SetStateAction<LinkType[] | null>>;
+  links: LinkType[];
 };
 
 export type ProfileFormData = {
@@ -86,7 +90,6 @@ export type LinkWithAnalytics = {
   url: string;
   title: string;
   icon?: IconType;
-  color: string;
   clickCount: number;
   clickTrends: FirestoreTimestamp[];
   deviceType: {
@@ -130,4 +133,10 @@ export type ConfirmProps = {
   content: string;
   variant?: "serious" | "normal";
   isOpen: boolean;
+};
+
+export type ThumbnailIcon = {
+  name: string;
+  icon: IconType;
+  category: string;
 };

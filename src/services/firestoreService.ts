@@ -83,9 +83,7 @@ export const saveUserLinks = async (userId: string, links: LinkType[]) => {
       },
       { merge: true },
     );
-    // console.log('Links saved successfully');
   } catch {
-    // console.error('Error saving links:', error);
     toast.error("Error saving links");
   }
 };

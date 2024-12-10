@@ -9,7 +9,7 @@ import { useLinkContext } from "@/context/LinkContext";
 import { usePathname } from "next/navigation";
 
 const MockupPreview = () => {
-  const { linksFromDb, loading } = useLinkContext();
+  const { links, loading } = useLinkContext();
   const { profileInfo } = useProfileInfo();
 
   // provides fallback incase no profile info is returned
@@ -97,11 +97,13 @@ const MockupPreview = () => {
 
           {/* links */}
           <div className="pt-5">
-            {linksFromDb && linksFromDb.length > 0 ? (
+            {links && links.length > 0 ? (
               <div className="custom-scrollbar h-[40vh] max-h-[500px] space-y-2 overflow-y-auto">
-                {linksFromDb.map((link, index) => (
-                  <MockPreviewCard key={index} link={link} />
-                ))}
+                {links
+                  .filter((link) => link.isVisible && link.title && link.url)
+                  .map((link) => (
+                    <MockPreviewCard key={link.id} link={link} />
+                  ))}
               </div>
             ) : (
               <div className="space-y-2 pt-5">

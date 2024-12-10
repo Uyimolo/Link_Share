@@ -235,6 +235,7 @@ const ProfileInfoForm = () => {
 
     setImageUploading(true);
     const { profilePicture, firstName, lastName, email, bio } = data;
+
     await saveProfileInformation(
       profilePicture,
       firstName,
@@ -242,6 +243,8 @@ const ProfileInfoForm = () => {
       email,
       bio,
     );
+
+    toast.success("Profile information saved successfully");
     reset();
     setImageUploading(false);
   };
@@ -272,11 +275,12 @@ const ProfileInfoForm = () => {
 
           <div className="relative h-fit">
             {/*
-             * the main file input is positioned below the profile picture preview div and is triggered when the profile preview is clicked
+             * the main file input is set to screen reader only to make it invisible and is triggered when the profile preview is clicked
              */}
 
             {/* profile picture preview */}
             <div
+              role="file input"
               className={cn(
                 "grid aspect-square w-[193px] cursor-pointer place-content-center space-y-2 overflow-hidden rounded-xl bg-veryLightBlue bg-cover md:w-[220px]",
                 errors.profilePicture ? "border border-red" : "",
@@ -302,6 +306,7 @@ const ProfileInfoForm = () => {
               </div>
             </div>
 
+            {/* invisible file input */}
             <input
               {...register(fileInputField.name)}
               type={fileInputField.type}
@@ -327,7 +332,7 @@ const ProfileInfoForm = () => {
         </div>
       )}
 
-      {/* text info */}
+      {/* text inputs*/}
       <div className="mx-6 space-y-2 rounded-xl bg-lightestGray p-4 dark:bg-darkGray lg:border-none">
         {profileInfoFormFields
           .filter((field) => field.name !== "profilePicture")

@@ -11,7 +11,7 @@ import {
   DeviceData,
   LinkWithAnalytics,
 } from "@/types/types";
-import { options } from "@/data/options";
+import { thumbnailIcons } from "@/data/thumbnailIcons";
 import { useLinkContext } from "@/context/LinkContext";
 
 type TopFiveLinks = {
@@ -159,10 +159,10 @@ export const useAnalytics = () => {
         (data) => data.id === link.id,
       );
       // get the options (social media platforms) associated with the current link being iterated over
-      const relatedOptions = options.find(
-        (option) =>
-          option.value.toLowerCase() === link.title.toLowerCase() ||
-          link.url.includes(option.value.toLowerCase()),
+      const relatedOptions = thumbnailIcons.find(
+        (icon) =>
+          icon.name.toLowerCase() === link.title.toLowerCase() ||
+          link.url.includes(icon.name.toLowerCase()),
       );
 
       const trendsPerLink = new Map<string, ClickTrendData[]>();
@@ -206,12 +206,15 @@ export const useAnalytics = () => {
           )
         : [];
 
+      const linkIcon = thumbnailIcons.find(
+        (thumbnail) => thumbnail.name === link.icon,
+      )?.icon;
+
       return {
         id: link.id,
         url: link.url,
         title: link.title,
-        icon: relatedOptions?.icon,
-        color: relatedOptions?.color ?? "",
+        icon: linkIcon || relatedOptions?.icon,
         clickCount: relatedAnalyticsData?.clickCount ?? 0,
         clickTrends: relatedAnalyticsData?.clickTrends ?? [],
         deviceType: relatedAnalyticsData?.deviceType ?? {},

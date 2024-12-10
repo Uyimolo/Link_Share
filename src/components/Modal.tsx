@@ -2,6 +2,7 @@ import React, { ReactNode, useState, MouseEvent, useEffect } from "react";
 import { FaTimesCircle } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react";
 import cn from "@/utilities/cn";
+import TooltipComponent from "./TooltipComponent";
 
 const animationVariants = {
   fade: {
@@ -69,12 +70,14 @@ const Modal = ({
           transition={{ duration: 0.5 }}
         >
           {closeModal && (
-            <div
-              className="group absolute right-6 top-5 z-10 flex cursor-pointer items-center gap-2"
+            <TooltipComponent
+              className="group absolute right-6 top-5 z-10 cursor-pointer dark:hover:bg-lighterGray"
               onClick={closeModal}
-            >
-              <FaTimesCircle className="text-2xl text-white group-hover:text-blue" />
-            </div>
+              triggerChildren={
+                <FaTimesCircle className="text-2xl text-white group-hover:text-black" />
+              }
+              content="Close modal"
+            />
           )}
 
           <div
