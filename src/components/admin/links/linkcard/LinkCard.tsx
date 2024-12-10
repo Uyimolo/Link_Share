@@ -1,20 +1,10 @@
 import Confirm from "@/components/Confirm";
 import FormGroup from "@/components/forms/FormGroup";
 import Paragraph from "@/components/text/Paragraph";
-
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-} from "@/components/ui/select";
 import { thumbnailIcons } from "@/data/thumbnailIcons";
-import { LinkCardProps, ThumbnailIcon } from "@/types/types";
+import { LinkCardProps } from "@/types/types";
 import cn from "@/utilities/cn";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IconType } from "react-icons";
@@ -23,14 +13,13 @@ import {
   FaEarthOceania,
   FaEye,
   FaGripLines,
-  FaGripLinesVertical,
   FaLink,
-  FaMagnifyingGlass,
   FaTrashCan,
 } from "react-icons/fa6";
 import * as yup from "yup";
 import SelectIconModal from "./SelectIconModal";
 import { Reorder, useDragControls } from "motion/react";
+import TooltipComponent from "@/components/TooltipComponent";
 
 type LinkCardForm = {
   title: string;
@@ -51,6 +40,7 @@ type LinkCardFieldTypes = {
   required: boolean;
   placeholder: string;
   icon: IconType;
+  autoFocus?: boolean;
 };
 
 const linkCardFields: LinkCardFieldTypes[] = [
@@ -61,6 +51,7 @@ const linkCardFields: LinkCardFieldTypes[] = [
     required: true,
     placeholder: "Enter the title",
     icon: FaEarthOceania,
+    autoFocus: true,
   },
   {
     label: "Address",
@@ -161,18 +152,17 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     isVisibleCheckboxRef.current?.click();
   };
 
-  const handleCustomCheckboxKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-  ) => {
+  const handleCustomCheckboxKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();
       handleCustomCheckboxClick();
     }
   };
 
-  const handleIconSelection = (icon: IconType) => {
+  const handleIconSelection = (icon: string) => {
     updateLink({ ...link, icon });
     setShowIconModal(false);
+    setSearchTerm("");
   };
 
   return (
@@ -205,24 +195,21 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             </div>
 
             <div className="flex items-center">
-              <div className="">
-                <div
-                  className="cursor-pointer p-2"
-                  onClick={() => setShowIconModal(true)}
-                >
-                  <FaImages />
-                </div>
-              </div>
+              <TooltipComponent
+                onClick={() => setShowIconModal(true)}
+                triggerChildren={
+                  <FaImages className="text-sm text-gray dark:text-white" />
+                }
+                content="Select link icon"
+              />
 
-              <button
-                className="justify-self-end rounded border border-transparent p-2 hover:border-orange"
+              <TooltipComponent
                 onClick={handleDeleteConfirmation}
-              >
-                <FaTrashCan
-                  title="Delete link"
-                  className="text-sm text-gray dark:text-white"
-                />
-              </button>
+                triggerChildren={
+                  <FaTrashCan className="text-sm text-gray dark:text-white" />
+                }
+                content="Remove link"
+              />
 
               {/* checkbox is set to screen reader only and can only be clicked through the custom checkbox below */}
               {visibilityField && (
@@ -238,22 +225,29 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
                 />
               )}
 
-              {/* custom checkbox for controlling the real checkbox input */}
-              <div
-                role="checkbox"
-                aria-checked={link.isVisible}
-                className="flex h-4 w-8 cursor-pointer items-center rounded-xl border border-gray p-[1px] focus:ring-2"
+              <TooltipComponent
                 onClick={handleCustomCheckboxClick}
                 onKeyDown={handleCustomCheckboxKeyDown}
-                tabIndex={0}
-              >
-                <div
-                  className={cn(
-                    "aspect-square h-3 rounded-full bg-blue transition duration-500",
-                    link.isVisible ? "translate-x-4 bg-blue" : "bg-gray",
-                  )}
-                ></div>
-              </div>
+                // custom checkbox for controlling the real checkbox input
+                triggerChildren={
+                  <div
+                    role="checkbox"
+                    aria-checked={link.isVisible}
+                    className="flex h-4 w-7 cursor-pointer items-center rounded-xl border border-gray p-[1px] focus:ring-2"
+                    tabIndex={0}
+                  >
+                    <div
+                      className={cn(
+                        "aspect-square h-3 rounded-full transition duration-500",
+                        link.isVisible
+                          ? "translate-x-3 bg-green-600 dark:bg-white"
+                          : "bg-gray/60 dark:bg-gray",
+                      )}
+                    ></div>
+                  </div>
+                }
+                content={<Paragraph>Toggle link visibility</Paragraph>}
+              />
             </div>
           </div>
 
@@ -284,7 +278,10 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         </div>
 
         <SelectIconModal
-          closeModal={() => setShowIconModal(false)}
+          closeModal={() => {
+            setShowIconModal(false);
+            setSearchTerm("");
+          }}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
           searchedIcons={searchedIcons}

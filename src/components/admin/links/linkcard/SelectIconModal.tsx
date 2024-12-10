@@ -1,17 +1,10 @@
 import Modal from "@/components/Modal";
 import Paragraph from "@/components/text/Paragraph";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { thumbnailIcons } from "@/data/thumbnailIcons";
 import { ThumbnailIcon } from "@/types/types";
-import { FaEarthOceania, FaMagnifyingGlassArrowRight } from "react-icons/fa6";
-import { IconType } from "react-icons";
+import { FaMagnifyingGlassArrowRight } from "react-icons/fa6";
 import { RxReset } from "react-icons/rx";
 import Button from "@/components/Button";
+import TooltipComponent from "@/components/TooltipComponent";
 
 const SelectIconModal = ({
   setSearchTerm,
@@ -26,7 +19,7 @@ const SelectIconModal = ({
   searchedIcons: ThumbnailIcon[];
   showSearchedIcons: boolean;
   closeModal: () => void;
-  handleIconSelection: (icon: IconType) => void;
+  handleIconSelection: (icon: string) => void;
 }) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // console.log(event.target.value)
@@ -66,7 +59,7 @@ const SelectIconModal = ({
         <Button
           variant="ghost"
           className="d ml-4 flex w-fit items-center gap-2 rounded p-2"
-          onClick={() => handleIconSelection(FaEarthOceania)}
+          onClick={() => handleIconSelection("default")}
         >
           <RxReset />
           Reset link icon
@@ -75,27 +68,22 @@ const SelectIconModal = ({
         {/* icons */}
         <div className="h-[60vh] overflow-auto rounded-xl p-4">
           {Object.entries(groupedByCategories).map(([category, items]) => (
-            <div className="">
+            <div className="" key={category}>
               <Paragraph>{category}</Paragraph>
 
-              <div className="grid grid-cols-5 md:grid-cols-10">
+              <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-10">
                 {items.map((item) => {
                   const Icon = item.icon;
 
                   return (
-                    <TooltipProvider key={item.name}>
-                      <Tooltip>
-                        <TooltipTrigger
-                          className="grid aspect-square w-10 place-content-center rounded-xl hover:bg-lightestGray dark:hover:bg-black md:w-14"
-                          onClick={() => handleIconSelection(item.icon)}
-                        >
-                          <Icon className="text-xl text-darkGray dark:text-lightestGray md:text-2xl" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <Paragraph>{item.name}</Paragraph>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <TooltipComponent key={item.name}
+                      className="w-10 p-0 sm:w-14"
+                      triggerChildren={
+                        <Icon className="text-2xl text-darkGray dark:text-lightestGray" />
+                      }
+                      content={item.name}
+                      onClick={() => handleIconSelection(item.name)}
+                    />
                   );
                 })}
               </div>

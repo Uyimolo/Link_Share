@@ -15,6 +15,7 @@ type FormGroupProps<TFormValues extends FieldValues> = {
     required: boolean;
     placeholder?: string;
     icon?: IconType;
+    autoFocus?: boolean;
   };
   error?: string;
   responsive?: boolean; // Determines whether the component should adapt to a grid layout on medium screens
@@ -32,36 +33,9 @@ const FormGroup = <TFormValues extends FieldValues>({
   inputClassName = "",
   // options,
 }: FormGroupProps<TFormValues>) => {
-  const { name, type, label, placeholder, icon } = formField;
+  const { name, type, label, placeholder, icon, autoFocus = false } = formField;
   const [showPassword, setShowPassword] = useState(false);
   const Icon = icon;
-
-  // if (type === "textarea") {
-  //   return (
-  //     <div className="flex w-full flex-col space-y-2">
-  //       <label
-  //         className={cn(
-  //           "text-xs text-gray dark:text-white",
-  //           error && "text-red",
-  //           labelClassName,
-  //         )}
-  //         htmlFor={name}
-  //       >
-  //         {label}
-  //       </label>
-
-  //       <textarea
-  //         className={cn(
-  //           "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
-  //           error && "border-red",
-  //           responsive ? "pl-4" : "",
-  //           inputClassName,
-  //         )}
-  //         {...register}
-  //       />
-  //     </div>
-  //   );
-  // }
 
   return (
     <div
@@ -87,13 +61,14 @@ const FormGroup = <TFormValues extends FieldValues>({
         {type === "textarea" ? (
           <textarea
             className={cn(
-              "w-full rounded-lg border border-lighterGray h-20 lg:h-28 py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
+              "h-20 w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray lg:h-28",
               error && "border-red",
               responsive ? "pl-4" : "",
               inputClassName,
             )}
             {...register}
             placeholder={placeholder}
+            autoFocus={autoFocus}
           ></textarea>
         ) : (
           <input
@@ -108,6 +83,7 @@ const FormGroup = <TFormValues extends FieldValues>({
             }
             {...register}
             placeholder={placeholder}
+            autoFocus={autoFocus}
           />
         )}
 

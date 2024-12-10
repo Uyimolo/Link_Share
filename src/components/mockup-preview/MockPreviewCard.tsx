@@ -22,7 +22,9 @@ const MockPreviewCard = ({
       link.url.toLowerCase().includes(option.name.toLowerCase()),
   );
 
-  const Icon = link.icon || thumbnailIcons[linkIndex]?.icon;
+  const iconFromDb = thumbnailIcons.find((thumbnail) => thumbnail.name === link.icon)?.icon
+
+  const Icon = iconFromDb ||  thumbnailIcons[linkIndex]?.icon;
   return (
     <div
       onClick={onClick}

@@ -4,7 +4,7 @@ import Heading from "@/components/text/Heading";
 import Paragraph from "@/components/text/Paragraph";
 import { useAuthContext } from "@/context/AuthContext";
 import { LinkType } from "@/types/types";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { toast } from "sonner";
 import Loading from "@/components/Loading";
 import useConfirmPageLeave from "@/custom-hooks/useConfirmPageLeave";
@@ -23,7 +23,13 @@ const Dashboard = () => {
 
   const handleAddNewLink = () => {
     const uniqueId = `${Math.floor(Date.now() + Math.random() * 10000)}`;
-    const newLink = { id: uniqueId, url: "", title: "", isVisible: true };
+    const newLink = {
+      id: uniqueId,
+      url: "",
+      title: "",
+      isVisible: true,
+      icon: "",
+    };
     if (links) {
       setLinks([...links, newLink]);
     }

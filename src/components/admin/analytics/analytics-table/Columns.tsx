@@ -30,12 +30,9 @@ export const Columns: ColumnDef<LinkWithAnalytics>[] = [
       return (
         <div className="flex items-center gap-2">
           {Icon ? (
-            <Icon style={{ color: link.color }} className="text-lg" />
+            <Icon className="text-lg" />
           ) : (
-            <FaEarthOceania
-              style={{ color: link.color ? link.color : "#633CFF" }}
-              className="text-lg"
-            />
+            <FaEarthOceania className="text-lg" />
           )}
           <Paragraph className="dark capitalize">{link.title}</Paragraph>
         </div>

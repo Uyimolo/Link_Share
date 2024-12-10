@@ -210,7 +210,7 @@ export const useAnalytics = () => {
         id: link.id,
         url: link.url,
         title: link.title,
-        icon: relatedOptions?.icon,
+        icon: link.icon || relatedOptions?.icon,
         clickCount: relatedAnalyticsData?.clickCount ?? 0,
         clickTrends: relatedAnalyticsData?.clickTrends ?? [],
         deviceType: relatedAnalyticsData?.deviceType ?? {},
