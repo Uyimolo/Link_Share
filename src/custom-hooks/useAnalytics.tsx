@@ -206,11 +206,15 @@ export const useAnalytics = () => {
           )
         : [];
 
+      const linkIcon = thumbnailIcons.find(
+        (thumbnail) => thumbnail.name === link.icon,
+      )?.icon;
+
       return {
         id: link.id,
         url: link.url,
         title: link.title,
-        icon: link.icon || relatedOptions?.icon,
+        icon: linkIcon || relatedOptions?.icon,
         clickCount: relatedAnalyticsData?.clickCount ?? 0,
         clickTrends: relatedAnalyticsData?.clickTrends ?? [],
         deviceType: relatedAnalyticsData?.deviceType ?? {},
