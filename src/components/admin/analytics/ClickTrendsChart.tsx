@@ -75,7 +75,6 @@ const ClickTrendsChart = ({
     day: `${item.day} ${item.month} ${item.year}`, // Combine day and month for X-axis labeling
   }));
 
-  console.log(dailyTrendData);
 
   // Utility to determine grid stroke color
 
@@ -105,7 +104,7 @@ const ClickTrendsChart = ({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="pb-2 pt-0 dark:text-white">
+      <CardContent className="pb-2 pt-0 dark:text-white text-sm">
         <ResponsiveContainer width="100%" height={280}>
           <LineChart
             className="dark:text-white"
@@ -117,17 +116,18 @@ const ClickTrendsChart = ({
               stroke={getGridStrokeColor(theme)} // Use the utility function
             />
             <XAxis
-              tick={{ fill: getFillColor(theme), fontSize: 14 }}
+              tick={{ fill: getFillColor(theme), fontSize: 12 }}
               dataKey={isMonthlyData ? "month" : "day"}
               label={{
                 value: "Links",
                 position: "insideBottom",
                 offset: -10,
                 fill: getFillColor(theme),
+                
               }}
             />
             <YAxis
-              tick={{ fill: getFillColor(theme), fontSize: 14 }}
+              tick={{ fill: getFillColor(theme), fontSize: 12 }}
               label={{
                 value: "Clicks",
                 angle: -90,

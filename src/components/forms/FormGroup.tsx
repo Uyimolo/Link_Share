@@ -5,21 +5,20 @@ import { IconType } from "react-icons";
 import Paragraph from "../text/Paragraph";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
-// Define the props type for the FormGroup component
 type FormGroupProps<TFormValues extends FieldValues> = {
   register: ReturnType<UseFormRegister<TFormValues>>;
   formField: {
     label: string;
-    name: Path<TFormValues>; // Ensures name is a valid key from TFormValues for type safety
+    name: Path<TFormValues>; // Ensures name matches a valid key in form values
     type: string;
     required: boolean;
     placeholder?: string;
     icon?: IconType;
     autoFocus?: boolean;
   };
-  error?: string;
-  responsive?: boolean; // Determines whether the component should adapt to a grid layout on medium screens
-  options?: { label: string; value: string }[]; // For select fields, an array of options with label and value
+  error?: string; // Error message for invalid input
+  responsive?: boolean; // Enables responsive grid layout
+  options?: { label: string; value: string }[];
   labelClassName?: string;
   inputClassName?: string;
 };
@@ -31,10 +30,9 @@ const FormGroup = <TFormValues extends FieldValues>({
   responsive = false,
   labelClassName = "",
   inputClassName = "",
-  // options,
 }: FormGroupProps<TFormValues>) => {
   const { name, type, label, placeholder, icon, autoFocus = false } = formField;
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Toggles password visibility
   const Icon = icon;
 
   return (
@@ -46,6 +44,7 @@ const FormGroup = <TFormValues extends FieldValues>({
           : "",
       )}
     >
+      {/* Input label */}
       <label
         className={cn(
           "text-xs text-gray dark:text-white",
@@ -58,8 +57,12 @@ const FormGroup = <TFormValues extends FieldValues>({
       </label>
 
       <div className="relative">
+        {/* Textarea field */}
         {type === "textarea" ? (
           <textarea
+            aria-invalid={!!error}
+            aria-describedby={error ? `${name}-error` : undefined}
+            id={name}
             className={cn(
               "h-20 w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray lg:h-28",
               error && "border-red",
@@ -71,7 +74,11 @@ const FormGroup = <TFormValues extends FieldValues>({
             autoFocus={autoFocus}
           ></textarea>
         ) : (
+          // Standard input field
           <input
+            aria-invalid={!!error}
+            aria-describedby={error ? `${name}-error` : undefined}
+            id={name}
             className={cn(
               "w-full rounded-lg border border-lighterGray py-3 pl-10 pr-4 text-sm text-gray placeholder:text-sm placeholder:text-gray hover:border-blue dark:bg-lighterGray",
               error && "border-red",
@@ -87,10 +94,12 @@ const FormGroup = <TFormValues extends FieldValues>({
           />
         )}
 
+        {/* Optional icon on the left of the input */}
         {Icon && (
           <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray" />
         )}
 
+        {/* Password visibility toggle */}
         {type === "password" && (
           <button
             type="button"
@@ -102,6 +111,7 @@ const FormGroup = <TFormValues extends FieldValues>({
           </button>
         )}
 
+        {/* Error message */}
         {error && (
           <Paragraph
             variant="small"

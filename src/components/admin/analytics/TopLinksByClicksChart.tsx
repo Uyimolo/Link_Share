@@ -37,7 +37,7 @@ const TopLinksByClicksChart = ({
         </Heading>
       </CardHeader>
 
-      <CardContent className="px-4 pt-0 py-2">
+      <CardContent className="px-4 pt-0 py-2 text-sm">
         <ResponsiveContainer width="100%" height={250}>
           <BarChart
             className="hover:bg-transparent"
@@ -48,7 +48,7 @@ const TopLinksByClicksChart = ({
 
             <XAxis
               dataKey="title"
-              tick={{ fill: getFillColor(theme), fontSize: 14 }} // ShadCN neutral color
+              tick={{ fill: getFillColor(theme), fontSize: 12 }}
               label={{
                 value: "Links",
                 position: "insideBottom",
@@ -58,7 +58,7 @@ const TopLinksByClicksChart = ({
               }}
             />
             <YAxis
-              tick={{ fill: getFillColor(theme), fontSize: 14 }}
+              tick={{ fill: getFillColor(theme), fontSize: 12 }}
               label={{
                 value: "Click Count",
                 angle: -90,

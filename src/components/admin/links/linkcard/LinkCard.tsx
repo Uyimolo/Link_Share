@@ -21,12 +21,43 @@ import SelectIconModal from "./SelectIconModal";
 import { Reorder, useDragControls } from "motion/react";
 import TooltipComponent from "@/components/TooltipComponent";
 
+/* LinkCard Component
+ *
+ * Purpose:
+ * - A reusable component that displays an editable card for managing individual links.
+ * - Allows users to update link details (title, URL, icon, and visibility).
+ * - Supports drag-and-drop functionality via `Reorder.Item` for rearranging links.
+ *
+ * Key Features:
+ * - Inline editing of title and URL with validation using `yup`.
+ * - Visibility toggle with an accessible custom checkbox.
+ * - Icon selection modal for choosing a thumbnail icon for the link.
+ * - Confirmation modal for deleting links.
+ * - Integration with parent components for updating and deleting links.
+ *
+ * Example Usage:
+ * <LinkCard
+ *   index={index}
+ *   deleteLink={deleteLink}
+ *   updateLink={updateLink}
+ *   link={link}
+ * />
+ *
+ * Props:
+ * - `index`: The position of the link in the parent array.
+ * - `deleteLink`: Callback to delete the link.
+ * - `updateLink`: Callback to update the link's data.
+ * - `link`: The data object for the current link, containing properties like `title`, `url`, `icon`, and `isVisible`.
+ *
+ */
+
 type LinkCardForm = {
   title: string;
   link: string;
   isVisible: boolean;
 };
 
+// Schema for form validation with yup
 const validationSchema = yup.object({
   title: yup.string().required("Link title is required"),
   link: yup.string().url("Invalid URL").required("Address is required"),
@@ -43,6 +74,7 @@ type LinkCardFieldTypes = {
   autoFocus?: boolean;
 };
 
+// Array of form input fields
 const linkCardFields: LinkCardFieldTypes[] = [
   {
     label: "Title",
@@ -70,6 +102,7 @@ const linkCardFields: LinkCardFieldTypes[] = [
     icon: FaEye,
   },
 ];
+
 const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
   const {
     register,
@@ -88,15 +121,14 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
 
   const isVisibleCheckboxRef = useRef<HTMLInputElement>(null);
 
-  // find isVisible field to use in checkbox registration with hook form
-  const visibilityField = linkCardFields.find(
-    (field) => field.name === "isVisible",
-  );
+  const visibilityField = linkCardFields[2];
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Modal for icon search and selection
   const [showIconModal, setShowIconModal] = useState<boolean>(false);
 
+  // Modal for confirming deletion
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   // dedicated drag control
@@ -116,8 +148,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
   };
 
   const handleDeleteConfirmation = () => {
-    // if link is valid (has both title and address) confim before deletion else delete right away
-
+    // if link is valid (has both title and address) confirm before deletion else delete right away
     if (link.title && link.url) {
       setShowDeleteConfirmation(true);
     } else {
@@ -134,7 +165,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
 
       const updatedData = {
         ...getValues(),
-        [name]: name === "isVisible" ? checked : isValid ? value : "", // Set to empty string if validation fails
+        [name]: name === "isVisible" ? checked : isValid ? value : "", // if field is url or title set to empty string if validation fails
       };
 
       updateLink({
@@ -142,16 +173,19 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
         url: updatedData.link,
         title: updatedData.title,
         isVisible:
+          // if field name is isVisible set the value to updated data else set it to the value from the link state (to avoid it been set to undefined name of field been updated is not isVisible)
           name === "isVisible" ? updatedData.isVisible : link.isVisible,
         icon: link.icon,
       });
     };
   };
 
+  // click the checkbox when the custom checkbox is clicked
   const handleCustomCheckboxClick = () => {
     isVisibleCheckboxRef.current?.click();
   };
 
+  // space and enter keys (on the custom checkbox) triggers handleCustomCheckboxClick function
   const handleCustomCheckboxKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();
@@ -159,6 +193,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
     }
   };
 
+  // update link when user selects an icon then close the modal and reset the search term
   const handleIconSelection = (icon: string) => {
     updateLink({ ...link, icon });
     setShowIconModal(false);
@@ -170,10 +205,11 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       value={link}
       dragListener={false}
       dragControls={controls}
+      // animations for entry and exit of links (mounting/unmounting)
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -200 }}
-      transition={{ delay: 0.5 }}
+      transition={{ delay: 0.2 }}
     >
       <>
         <div
@@ -182,19 +218,22 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             link.isVisible ? "bg-lightestGray dark:bg-darkGray" : "",
           )}
         >
-          {/* Header: displays link index, delete icon and visibility toggle */}
+          {/* Header: Controls for drag, delete, visibility toggle, and icon selection */}
           <div className="flex items-center justify-between pb-2">
             <div className="flex items-center gap-2">
+              {/* Drag handle for re-arranging the linkcard */}
               <div
-                className="reorder-handle "
+                className="reorder-handle"
                 onPointerDown={(e) => controls.start(e)}
               >
-                <FaGripLines className=""/>
+                <FaGripLines className="" />
               </div>
+              {/* Display the index of the link */}
               <Paragraph className="font-semibold">{`Link #${index + 1}`}</Paragraph>
             </div>
 
             <div className="flex items-center">
+              {/* Icon selection trigger */}
               <TooltipComponent
                 onClick={() => setShowIconModal(true)}
                 triggerChildren={
@@ -202,7 +241,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
                 }
                 content="Select link icon"
               />
-
+              {/* Delete link trigger*/}
               <TooltipComponent
                 onClick={handleDeleteConfirmation}
                 triggerChildren={
@@ -210,8 +249,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
                 }
                 content="Remove link"
               />
-
-              {/* checkbox is set to screen reader only and can only be clicked through the custom checkbox below */}
+              {/* Toggle link visibility using a custom checkbox*/}
               {visibilityField && (
                 <input
                   className="sr-only justify-self-end"
@@ -225,10 +263,10 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
                 />
               )}
 
+              {/* Custom checkbox */}
               <TooltipComponent
                 onClick={handleCustomCheckboxClick}
                 onKeyDown={handleCustomCheckboxKeyDown}
-                // custom checkbox for controlling the real checkbox input
                 triggerChildren={
                   <div
                     role="checkbox"
@@ -251,6 +289,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
             </div>
           </div>
 
+          {/* Text inputs for title and URL fields */}
           <div className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
             {linkCardFields
               .filter((field) => field.name !== "isVisible")
@@ -268,6 +307,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
               ))}
           </div>
 
+          {/* Confirmation modal for link deletion */}
           <Confirm
             isOpen={showDeleteConfirmation}
             acceptAction={handleDeleteLink}
@@ -277,6 +317,7 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
           />
         </div>
 
+        {/* Modal for searching and selecting icons */}
         <SelectIconModal
           closeModal={() => {
             setShowIconModal(false);

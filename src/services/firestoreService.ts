@@ -112,17 +112,14 @@ export const saveProfilePicture = async (
         // Track upload progress as a percentage
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        // console.log('Upload is ' + progress + '% done');
         downloadProgress = progress;
       },
       (error) => {
-        // console.error('Upload error:', error);
+        console.error("Upload error:", error);
         reject(error);
       },
       async () => {
-        // Retrieve download URL on successful upload
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        // console.log('File available at', downloadURL);
 
         resolve({ fileURL: downloadURL, downloadProgress });
       },
@@ -150,9 +147,9 @@ export const saveProfileDetails = async (
       },
       { merge: true },
     );
-    // console.log('Profile details saved successfully');
-  } catch {
-    // console.error('Error saving profile details:', error);
+    toast.success("Profile details saved successfully");
+  } catch (error) {
+    console.error("Error saving profile details:", error);
     toast.error("Error saving profile details");
   }
 };
@@ -252,6 +249,8 @@ export const saveAnalyticsData = async (userId: string, linkId: string) => {
         clickTrends: arrayUnion(new Date()), // Adds recent click time
         uniqueVisitors: arrayUnion(visitorId),
       };
+
+      console.log(new Date());
 
       if (docSnap.exists()) {
         await updateDoc(docRef, analyticsUpdate);

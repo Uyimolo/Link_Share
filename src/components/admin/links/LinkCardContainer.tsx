@@ -20,12 +20,14 @@ const LinkCardContainer = ({
   };
 
   return (
+    // Reorder using framer motion (now motion) reorder component
     <Reorder.Group
       axis="y"
       values={links}
       onReorder={handleReorder}
       className="space-y-4"
     >
+      {/* Animate entry and exit for links */}
       <AnimatePresence>
         {links.map((link, index) => (
           <LinkCard
