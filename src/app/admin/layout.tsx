@@ -29,7 +29,7 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
               "",
               pathname === "/admin/preview" || pathname === "/admin/analytics"
                 ? ""
-                : "lg:grid lg:grid-cols-[1fr,33%] xl:grid-cols-[1fr,35%] 2xl:grid-cols-[1fr,35%]",
+                : "lg:grid lg:grid-cols-[1fr,40%] xl:grid-cols-[1fr,35%] 2xl:grid-cols-[1fr,35%]",
             )}
           >
             <div className="">{children}</div>
@@ -38,15 +38,19 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
             <div className="lg:hidden">
               <Modal
                 isOpen={showPreview}
-                animationVariant="slideUp"
+                // animationVariant="slideUp"
                 className="w-full"
               >
+                <FloatingMockupPreviewToggler
+                  showPreview={showPreview}
+                  setShowPreview={setShowPreview}
+                />
                 <MockupPreview />
               </Modal>
             </div>
 
             {/* Show mockup preview as part of page main content in wider screens */}
-            <div className="hidden bg-white dark:bg-black lg:block">
+            <div className="hidden bg-white border-l border-lighterGray dark:border-lighterGray/10 dark:bg-deepNavy lg:block">
               <MockupPreview />
             </div>
           </div>

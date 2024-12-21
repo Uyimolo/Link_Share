@@ -17,7 +17,7 @@ const TopClicksByCountries = ({
   const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
 
   return (
-    <Card className="space-y-4 rounded-xl bg-white border-none px-4 py-2 dark:bg-darkGray">
+    <Card className="space-y-4 rounded-xl bg-white border-none px-4 py-2 dark:bg-lighterNavy">
       <Heading
         variant="h2"
         className="text-base font-semibold sm:text-xl md:text-xl xl:text-xl"

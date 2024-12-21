@@ -13,6 +13,7 @@ import {
 } from "@/types/types";
 import { thumbnailIcons } from "@/data/thumbnailIcons";
 import { useLinkContext } from "@/context/LinkContext";
+import { format, fromUnixTime } from "date-fns";
 
 type TopFiveLinks = {
   clickCount: number;
@@ -25,21 +26,6 @@ type CountryInfo = {
   countryCode: string;
   clicks: number;
 }[];
-
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 
 export const useAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState<
@@ -104,7 +90,7 @@ export const useAnalytics = () => {
     }
   }, [links, user]);
 
-  // CALCULATE AND GENERATE CLICK TREND DATA
+  // Generate click trends data and total clicks
   useEffect(() => {
     if (analyticsData) {
       const aggregateClicks = (analyticsData: AnalyticsData[] | null) => {
@@ -113,25 +99,26 @@ export const useAnalytics = () => {
 
         analyticsData?.forEach((data) => {
           data.clickTrends.forEach((click) => {
-            const clickDate = new Date(click.seconds * 1000);
-            const year = clickDate.getUTCFullYear();
-            const month = monthNames[clickDate.getUTCMonth()];
-            const day = clickDate.getUTCDate();
+            // Convert Unix timestamp to Date object
+            const clickDate = fromUnixTime(click.seconds);
+
+            // Use date-fns to format and extract date components
+            const year = Number(format(clickDate, "yyyy"));
+            const month = format(clickDate, "MMM,");
+            const day = format(clickDate, "do");
 
             const monthKey = `${year}-${month}`;
             const dayKey = `${year}-${month}-${day}`;
 
             if (!aggregatedMonthData[monthKey]) {
               aggregatedMonthData[monthKey] = { year, month, count: 0 };
-            } else {
-              aggregatedMonthData[monthKey].count += 1;
             }
+            aggregatedMonthData[monthKey].count += 1;
 
             if (!aggregatedDayData[dayKey]) {
               aggregatedDayData[dayKey] = { year, month, day, count: 0 };
-            } else {
-              aggregatedDayData[dayKey].count += 1;
             }
+            aggregatedDayData[dayKey].count += 1;
           });
         });
 
@@ -147,6 +134,7 @@ export const useAnalytics = () => {
         setClickTrendData(monthData);
         setDailyClickTrendData(dayData);
       };
+
       aggregateClicks(analyticsData);
     }
   }, [analyticsData]);
@@ -176,10 +164,13 @@ export const useAnalytics = () => {
         const aggregatedData: { [key: string]: ClickTrendData } = {};
         const aggregatedDayData: { [key: string]: ClickTrendData } = {};
         data.clickTrends.forEach((click) => {
-          const clickDate = new Date(click.seconds * 1000);
-          const year = clickDate.getUTCFullYear();
-          const month = monthNames[clickDate.getUTCMonth()];
-          const day = clickDate.getUTCDate();
+          // Convert Unix timestamp to Date object
+          const clickDate = fromUnixTime(click.seconds);
+
+          // Use date-fns to format and extract date components
+          const year = Number(format(clickDate, "yyyy"));
+          const month = format(clickDate, "MMM,");
+          const day = format(clickDate, "do");
 
           const monthKey = `${year}-${month}`;
           const dayKey = `${year}-${month}-${day}`;
@@ -230,9 +221,6 @@ export const useAnalytics = () => {
       };
     });
 
-    // Set the state or perform any further actions with linksWithAnalytics here
-
-    console.log("linksWithAnalytics from merged array", linksWithAnalytics);
     if (linksWithAnalytics) {
       setLinksWithAnalytics((prev) => linksWithAnalytics || prev);
     }

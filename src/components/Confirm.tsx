@@ -15,7 +15,7 @@ const Confirm = ({
 }: ConfirmProps) => {
   return (
     <Modal isOpen={isOpen}>
-      <div className="w-fit max-w-md space-y-6 rounded-md bg-white p-4 shadow-2xl shadow-black/50 dark:bg-gray">
+      <div className="w-fit max-w-md space-y-6 rounded-md bg-white p-4 shadow-2xl shadow-black/50 dark:bg-lightNavy">
         <Paragraph
           className={cn(
             "text-lg font-semibold",

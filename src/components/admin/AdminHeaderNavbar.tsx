@@ -9,14 +9,12 @@ import useProfileInfo from "@/custom-hooks/useProfileInfo";
 import Image from "next/image";
 import Paragraph from "../text/Paragraph";
 import { useAuthContext } from "@/context/AuthContext";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
 import Confirm from "../Confirm";
+import { ScrollArea } from "../ui/scroll-area";
+import Button from "../Button";
+import { TbLogout } from "react-icons/tb";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { FaUser } from "react-icons/fa6";
 
 const AdminHeaderNavbar = ({
   navItems,
@@ -44,81 +42,104 @@ const AdminHeaderNavbar = ({
 
   return (
     <>
+      {/* overlay for slide in mobile navigation */}
       <div
         className={cn(
-          "custom-scrollbar fixed right-0 top-0 z-40 h-screen w-4/5 max-w-[250px] space-y-1 overflow-auto bg-deepBlue px-4 pt-20 transition duration-500 dark:bg-black lg:relative lg:w-full lg:max-w-none lg:overflow-x-hidden",
+          "fixed left-0 top-0 grid h-screen w-full bg-veryLightBlue/50 transition duration-1000 dark:bg-darkGray/70",
+          showNavigation
+            ? "translate-x-0 lg:hidden"
+            : "translate-x-full lg:hidden",
+        )}
+        onClick={() => setShowNavigation(false)}
+      />
+
+      <div
+        className={cn(
+          "fixed right-0 top-0 h-screen w-4/5 max-w-[250px] space-y-1 bg-deepBlue transition duration-500 dark:bg-deepNavy lg:relative lg:z-0 lg:w-full lg:max-w-none",
           showNavigation
             ? "translate-x-0 lg:translate-x-0"
             : "translate-x-full lg:translate-x-0",
         )}
       >
-        {navItems.map((item, index) => (
-          <NavItem
-            key={index}
-            isLink={!!item.link}
-            navItem={item}
-            onClick={() => setShowNavigation(false)}
+        <ScrollArea className="h-screen">
+          <RxHamburgerMenu
+            className={cn(
+              "absolute right-4 top-7 text-xl lg:hidden",
+              showNavigation ? "text-white" : "text-darkGray dark:text-white",
+            )}
+            onClick={() => setShowNavigation(!showNavigation)}
           />
-        ))}{" "}
-        <ThemeSelector />
-        {/* <div className="mt-10 h-40 w-full rounded-xl border border-white"></div> */}
-        {username && (
-          <div className="pt-10">
-            <div className="w-full border border-lightestGray/50 rounded-xl p-2">
-              {/* profile picture and username */}
-              <div className="flex items-center gap-2 lg:flex-col xl:flex-row">
-                {profileInfo.profilePicture !== "" && (
-                  <Image
-                    src={profileInfo.profilePicture}
-                    alt="display image"
-                    height={40}
-                    width={40}
-                    className="rounded-full"
-                  />
-                )}
 
-                <div className="w-fit xl:w-4/5">
-                  <Paragraph className="truncate text-white dark:text-white w-fit lg:mx-auto xl:mx-0">
-                    {`${profileInfo.firstName && profileInfo.firstName} ${profileInfo.lastName && profileInfo.lastName}`}
-                  </Paragraph>
-
-                  {username && (
-                    <Paragraph className="w-fit overflow-ellipsis text-white dark:text-white lg:mx-auto xl:mx-0">
-                      @{username}
-                    </Paragraph>
-                  )}
+          <div>
+            {/* profile picture and username */}
+            <div className="mb-4 flex items-center gap-2 border-b border-lighterGray/10 px-4 pb-4 pt-12">
+              {profileInfo && profileInfo.profilePicture !== "" ? (
+                <Image
+                  src={profileInfo?.profilePicture}
+                  alt="display image"
+                  height={40}
+                  width={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <div className="grid aspect-square h-10 w-10 place-content-center overflow-hidden rounded-full border">
+                  <FaUser className="text-2xl text-white" />
                 </div>
+              )}
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="rounded border border-transparent p-1 hover:border-white">
-                    <span className="sr-only">Open menu</span>
-                    <MoreHorizontal className="h-4 w-4 text-white" />
-                  </DropdownMenuTrigger>
-
-                  <DropdownMenuContent>
-                    <DropdownMenuItem
-                      onClick={() => setShowLogoutConfirmation(true)}
-                    >
-                      Logout @{username}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <div className="w-fit xl:w-4/5">
+                {profileInfo?.firstName || profileInfo?.lastName ? (
+                  <div className="">
+                    <Paragraph className="w-fit truncate text-xs text-white dark:text-white lg:mx-auto xl:mx-0">
+                      Hello 👋
+                    </Paragraph>
+                    <Paragraph className="w-fit truncate text-white dark:text-white lg:mx-auto xl:mx-0">
+                      {`${profileInfo.firstName && profileInfo.firstName} ${profileInfo.lastName && profileInfo.lastName[0]}.`}
+                    </Paragraph>
+                  </div>
+                ) : (
+                  <div className="">
+                    <Paragraph className="w-fit truncate text-xs text-white dark:text-white lg:mx-auto xl:mx-0">
+                      Hello 👋
+                    </Paragraph>
+                    {username ? (
+                      <Paragraph className="w-fit truncate text-white dark:text-white lg:mx-auto xl:mx-0">
+                        @{username}
+                      </Paragraph>
+                    ) : (
+                      <div className="my-1.5 h-2 w-16 rounded bg-lighterGray/30"></div>
+                    )}
+                  </div>
+                )}
               </div>
+            </div>
+            {navItems.map((item, index) => (
+              <NavItem
+                key={index}
+                isLink={!!item.link}
+                navItem={item}
+                onClick={() => setShowNavigation(false)}
+              />
+            ))}{" "}
+            {/* <div className="mt-10 h-40 w-full rounded-xl border border-white"></div> */}
+            <div className="sticky bottom-4 mt-20 self-end">
+              <div className="px- mt-4 w-full space-y-4 rounded-xl border-t border-lightestGray/10 px-4 py-4 2xl:mt-32">
+                <ThemeSelector isDropdown={false} />
 
-              <div className=""></div>
+                <Button
+                  icon={TbLogout}
+                  variant="ghost"
+                  onClick={() => setShowLogoutConfirmation(true)}
+                  className="group justify-start gap-2 truncate border border-transparent px-4 text-white hover:border-red hover:bg-transparent hover:text-red"
+                  iconClassName="text-white text-2xl group-hover:text-red"
+                >
+                  Logout
+                </Button>
+              </div>
             </div>
           </div>
-        )}
+        </ScrollArea>
       </div>
-
-      {/* overlay */}
-      <div
-        className={cn(
-          "fixed left-0 top-0 z-30 h-screen w-full bg-veryLightBlue/50 transition duration-1000 dark:bg-darkGray/70",
-          showNavigation ? "translate-x-0" : "translate-x-full",
-        )}
-        onClick={() => setShowNavigation(false)}
-      />
 
       {LogoutConfirmation}
     </>

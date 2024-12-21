@@ -13,6 +13,7 @@ const Reveal = ({
   className,
   variants,
   delay = 0.2,
+  once = true,
 }: RevealProps) => {
   let revealVariants;
 
@@ -46,7 +47,7 @@ const Reveal = ({
       initial={"hidden"}
       whileInView="visible"
       transition={{ duration: 0.5, delay }}
-      viewport={{ amount: 0.2, once: true }}
+      viewport={{ amount: 0.2, once: once }}
     >
       {children}
     </motion.div>

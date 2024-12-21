@@ -9,6 +9,7 @@ import PreviewLinksAndProfile from "@/components/preview/PreviewLinksAndProfile"
 interface PublicProfileData {
   profileInfo: ProfileDetails;
   links: LinkType[];
+  publicUsername: string;
 }
 
 const UserProfileAndLinks = () => {
@@ -19,6 +20,7 @@ const UserProfileAndLinks = () => {
       lastName: "",
     },
     links: [],
+    publicUsername: "",
   });
   const [userId, setUserId] = useState("");
   const params = useParams();
@@ -33,7 +35,7 @@ const UserProfileAndLinks = () => {
           if (originalUIDData) {
             const { profileInfo, links, uid } = originalUIDData;
 
-            setProfileData({ links: links, profileInfo: profileInfo });
+            setProfileData({ links: links, profileInfo: profileInfo, publicUsername:username[0] });
             setUserId(uid);
           }
         } catch (error) {
@@ -45,7 +47,7 @@ const UserProfileAndLinks = () => {
     fetchProfileAndLinks();
   }, [username]);
 
-  const { profileInfo, links } = profileData;
+  const { profileInfo, links} = profileData;
 
   return (
     <PreviewLinksAndProfile
@@ -54,6 +56,7 @@ const UserProfileAndLinks = () => {
       profileInfo={profileInfo}
       links={links}
       loading={!profileInfo}
+      publicUsername={username}
     />
   );
 };
