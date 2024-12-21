@@ -44,7 +44,7 @@ const SelectIconModal = ({
     >
       <div className="cursor-default rounded-xl bg-white pb-8 dark:bg-lighterNavy">
         {/* search input */}
-        <div className="sticky top-0 rounded-xl bg-white p-4 dark:bg-darkGray">
+        <div className="sticky top-0 rounded-xl bg-white p-4 dark:bg-lighterNavy">
           <FaMagnifyingGlassArrowRight className="text-gray-white absolute left-7 top-1/2 -translate-y-1/2" />
           <input
             type="text"

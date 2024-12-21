@@ -81,7 +81,7 @@ const Dashboard = () => {
 
   const handleUndoChanges = () => {
     setLinks(linksFromDb);
-    setShowUndoConfirmation(false)
+    setShowUndoConfirmation(false);
   };
 
   // Show a loading state if the user data is loading or user is not authenticated
@@ -97,7 +97,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen px-4 lg:p-0" ref={containerRef}>
-      <div className="lg:min-h-screen rounded-t-xl border border-transparent bg-white p-6 dark:border-lightestGray/50 dark:bg-transparent lg:rounded-none lg:border-none lg:pt-14">
+      <div className="rounded-t-xl border border-transparent bg-white p-6 dark:border-lightestGray/50 dark:bg-transparent lg:min-h-screen lg:rounded-none lg:border-none lg:pt-14">
         {/* Header */}
         <div className="space-y-2">
           <Heading variant="h1">Customize your links</Heading>
@@ -131,29 +131,27 @@ const Dashboard = () => {
       </div>
 
       {/* footer */}
-      {linksFromDb?.length !== 0 && links?.length !== 0 && (
-        <div className="sticky bottom-0 border-t bg-lightestGray pb-4 dark:bg-deepNavy lg:border-none lg:bg-white lg:pb-0">
-          <div className="mt-1 flex w-full flex-col gap-2 rounded-b-xl border border-transparent bg-white p-6 dark:border-lighterGray/30 dark:bg-deepNavy sm:flex-row sm:items-center sm:justify-between sm:gap-4 lg:rounded-none lg:border-x-0 lg:border-b-0">
-            {!areLinksEqual(links, linksFromDb) && linksFromDb && (
+          <div className="sticky bottom-0 border-t bg-lightestGray pb-4 dark:bg-deepNavy lg:border-none lg:bg-white lg:pb-0">
+            <div className="mt-1 flex w-full flex-col gap-2 rounded-b-xl border border-transparent bg-white p-6 dark:border-lighterGray/30 dark:bg-deepNavy sm:flex-row sm:items-center sm:justify-between sm:gap-4 lg:rounded-none lg:border-x-0 lg:border-b-0">
+              {!areLinksEqual(links, linksFromDb) && linksFromDb && (
+                <Button
+                  variant="secondary"
+                  className="sm:w-fit"
+                  onClick={() => setShowUndoConfirmation(true)}
+                >
+                  Undo changes
+                </Button>
+              )}
               <Button
-                variant="secondary"
-                className="sm:w-fit"
-                onClick={() => setShowUndoConfirmation(true)}
+                className="ml-auto mr-0 sm:w-fit"
+                disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}
+                onClick={handleSaveLinks}
+                loading={isLinksSaving}
               >
-                Undo changes
+                Save links
               </Button>
-            )}
-            <Button
-              className="ml-auto mr-0 sm:w-fit"
-              disabled={areLinksEqual(links, linksFromDb) && !isLinksSaving}
-              onClick={handleSaveLinks}
-              loading={isLinksSaving}
-            >
-              Save links
-            </Button>
+            </div>
           </div>
-        </div>
-      )}
       <Confirm
         variant="serious"
         isOpen={showUndoConfirmation}
