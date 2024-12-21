@@ -37,11 +37,11 @@ const DeviceTypeDistributionChart = ({
   return (
     <Card
       className={cn(
-        "rounded-xl border-none bg-white pb-0 dark:bg-gray",
+        "dark:bg-lighterNavy rounded-xl border-none bg-white py-0 pb-0",
         className,
       )}
     >
-      <CardHeader>
+      <CardHeader className="pt-2">
         <Heading
           variant="h2"
           className="text-base font-semibold sm:text-xl md:text-xl xl:text-xl"
@@ -50,18 +50,18 @@ const DeviceTypeDistributionChart = ({
         </Heading>
       </CardHeader>
 
-      <CardContent>
-        <ResponsiveContainer width="100%" height={150}>
+      <CardContent className="">
+        <ResponsiveContainer width="100%" height={170}>
           <PieChart>
             <Pie
               data={deviceData}
-              dataKey="value"
+              dataKey={"value"}
               nameKey="name"
               cx="50%"
               cy="50%"
-              outerRadius={60}
+              outerRadius={80}
+              innerRadius={40}
               fill="#4B5563" // Default fill for the pie slices
-              label
             >
               {/* Optional: Customize colors for each device type */}
               {deviceData.map((entry, index) => (
@@ -76,26 +76,22 @@ const DeviceTypeDistributionChart = ({
         </ResponsiveContainer>
       </CardContent>
 
-      <CardFooter className="w-full flex-col space-y-2 px-4">
-        <div className="grid w-full grid-cols-[20px,1fr,40px] gap-4 rounded-lg bg-[#3B82F6] p-4 py-2">
+      <CardFooter className="flex-co space-y- w-full justify-center gap-4 px-4 pb-4 pt-0">
+        <div className="flex gap-4 rounded-lg bg-[#3B82F6] p-2">
           <div className="">
             <CgLaptop className="text-xl text-white" />
           </div>
-          <Paragraph className="text-white">
-            Clicks from desktop devices
-          </Paragraph>
+          <Paragraph className="text-white">Desktop</Paragraph>
           <Paragraph className="justify-self-end text-white dark:text-white">
             {desktopPercentage}%
           </Paragraph>
         </div>
 
-        <div className="grid w-full grid-cols-[20px,1fr,40px] gap-4 rounded-lg bg-[#10B981] px-4 py-2">
+        <div className="flex gap-4 rounded-lg bg-[#10B981] px-4 py-2">
           <div className="">
             <PiDeviceMobile className="text-xl text-white" />
           </div>
-          <Paragraph className="text-white">
-            Clicks from mobile devices
-          </Paragraph>
+          <Paragraph className="text-white">Mobile</Paragraph>
           <Paragraph className="justify-self-end text-white dark:text-white">
             {mobilePercentage}%
           </Paragraph>

@@ -29,7 +29,7 @@ const MockPreviewCard = ({
     <div
       onClick={onClick}
       className={cn(
-        "flex w-full cursor-pointer items-center gap-2 rounded-md bg-darkGray p-4",
+        "flex w-full cursor-pointer items-center gap-2 rounded-md bg-darkGray dark:bg-lightNavy p-4",
         className,
       )}
     >

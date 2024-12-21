@@ -25,7 +25,7 @@ const TooltipComponent = ({
       <Tooltip>
         <TooltipTrigger
           className={cn(
-            "grid aspect-square w-8 place-content-center rounded-xl hover:bg-lighterGray dark:hover:bg-black",
+            "grid aspect-square w-8 place-content-center rounded-xl hover:bg-lighterGray dark:hover:bg-lighterGray/30",
             className,
           )}
           onClick={onClick}

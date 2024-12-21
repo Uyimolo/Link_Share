@@ -96,7 +96,7 @@ const FormGroup = <TFormValues extends FieldValues>({
 
         {/* Optional icon on the left of the input */}
         {Icon && (
-          <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-gray" />
+          <Icon className="absolute left-2 top-1/2 -translate-y-1/2 text-xl text-gray" />
         )}
 
         {/* Password visibility toggle */}

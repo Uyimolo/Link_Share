@@ -71,7 +71,6 @@ type LinkCardFieldTypes = {
   required: boolean;
   placeholder: string;
   icon: IconType;
-  autoFocus?: boolean;
 };
 
 // Array of form input fields
@@ -83,7 +82,6 @@ const linkCardFields: LinkCardFieldTypes[] = [
     required: true,
     placeholder: "Enter the title",
     icon: FaEarthOceania,
-    autoFocus: true,
   },
   {
     label: "Address",
@@ -103,7 +101,12 @@ const linkCardFields: LinkCardFieldTypes[] = [
   },
 ];
 
-const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
+const LinkCard = ({
+  index,
+  deleteLink,
+  updateLink,
+  link,
+}: LinkCardProps) => {
   const {
     register,
     getValues,
@@ -207,23 +210,24 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
       dragControls={controls}
       // animations for entry and exit of links (mounting/unmounting)
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -200 }}
-      transition={{ delay: 0.2 }}
+      animate={{ opacity: 1, x: 0, transition: { dalay: 0.2 } }}
+      exit={{ opacity: 0, x: -200, transition: { delay: 0.5 } }}
     >
       <>
         <div
           className={cn(
-            "relative cursor-grabbing rounded-xl border border-lightestGray p-5 hover:border-blue dark:border-transparent",
-            link.isVisible ? "bg-lightestGray dark:bg-darkGray" : "",
+            "relative rounded-xl border bg-lightestGray px-4 py-4 hover:border-blue dark:bg-lighterNavy",
+            link.isVisible
+              ? "border-transparent"
+              : "opacity-20 hover:opacity-70 dark:bg-darkGray dark:hover:bg-transparent",
           )}
         >
           {/* Header: Controls for drag, delete, visibility toggle, and icon selection */}
-          <div className="flex items-center justify-between pb-2">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {/* Drag handle for re-arranging the linkcard */}
               <div
-                className="reorder-handle"
+                className="reorder-handle cursor-grab"
                 onPointerDown={(e) => controls.start(e)}
               >
                 <FaGripLines className="" />
@@ -271,26 +275,29 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
                   <div
                     role="checkbox"
                     aria-checked={link.isVisible}
-                    className="flex h-4 w-7 cursor-pointer items-center rounded-xl border border-gray p-[1px] focus:ring-2"
+                    className={cn(
+                      "flex h-4 w-7 cursor-pointer items-center rounded-xl border border-gray p-[1px] transition duration-300 focus:ring-2",
+                      link.isVisible && "border-blue bg-blue",
+                    )}
                     tabIndex={0}
                   >
                     <div
                       className={cn(
                         "aspect-square h-3 rounded-full transition duration-500",
                         link.isVisible
-                          ? "translate-x-3 bg-green-600 dark:bg-white"
+                          ? "translate-x-3 bg-white"
                           : "bg-gray/60 dark:bg-gray",
                       )}
                     ></div>
                   </div>
                 }
-                content={<Paragraph>Toggle link visibility</Paragraph>}
+                content="Toggle link visibility"
               />
             </div>
           </div>
 
           {/* Text inputs for title and URL fields */}
-          <div className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
+          <div className="md:grid md:grid-cols-2 md:gap-4">
             {linkCardFields
               .filter((field) => field.name !== "isVisible")
               .map((field) => (
@@ -303,19 +310,22 @@ const LinkCard = ({ index, deleteLink, updateLink, link }: LinkCardProps) => {
                   }}
                   formField={field}
                   error={errors[field.name]?.message}
+                  // inputClassName="dark:bg-transparent bg-transparent border-none placeholder:dark:text-white dark:text-white focs:outline-none focus:border-none focus:ring-0 py-0 w-fit md:w-full pr-0 "
+                  // labelClassName="sr-only"
+                  // responsive
                 />
               ))}
           </div>
-
-          {/* Confirmation modal for link deletion */}
-          <Confirm
-            isOpen={showDeleteConfirmation}
-            acceptAction={handleDeleteLink}
-            rejectAction={() => setShowDeleteConfirmation(false)}
-            header="Delete Link"
-            content="Deleting this link will also remove all associated analytics data. Are you sure you want to proceed? You can undo this action before saving."
-          />
         </div>
+
+        {/* Confirmation modal for link deletion */}
+        <Confirm
+          isOpen={showDeleteConfirmation}
+          acceptAction={handleDeleteLink}
+          rejectAction={() => setShowDeleteConfirmation(false)}
+          header="Delete Link"
+          content="Deleting this link will also remove all associated analytics data. Are you sure you want to proceed? You can undo this action before saving."
+        />
 
         {/* Modal for searching and selecting icons */}
         <SelectIconModal

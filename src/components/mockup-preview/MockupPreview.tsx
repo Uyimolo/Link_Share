@@ -7,6 +7,7 @@ import { RxAvatar } from "react-icons/rx";
 import { useAuthContext } from "@/context/AuthContext";
 import { useLinkContext } from "@/context/LinkContext";
 import { usePathname } from "next/navigation";
+import { ScrollArea } from "../ui/scroll-area";
 
 const MockupPreview = () => {
   const { links, loading } = useLinkContext();
@@ -38,7 +39,7 @@ const MockupPreview = () => {
     <>
       <div
         className={cn(
-          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[500px] w-[calc(100vw-32px)] max-w-[260px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 dark:from-deepBlue dark:to-blue lg:sticky lg:top-20 lg:max-w-[240px] lg:bg-gradient-to-tr lg:shadow-black/70 xl:max-h-[550px] xl:max-w-[260px] 2xl:max-w-[280px]",
+          "top-24 z-30 mx-auto aspect-[9/18] h-[80vh] max-h-[500px] w-[calc(100vw-32px)] max-w-[260px] rounded-[30px] from-black to-black/70 p-1 shadow-xl shadow-black/40 dark:from-deepBlue dark:to-blue md:max-h-[600px] md:max-w-[320px] lg:sticky lg:top-20 lg:max-h-[460px] lg:max-w-[240px] lg:bg-gradient-to-tr lg:shadow-black/70 xl:max-h-[550px] xl:max-w-[260px] 2xl:max-w-[280px]",
         )}
       >
         {/* bezels */}
@@ -98,13 +99,15 @@ const MockupPreview = () => {
           {/* links */}
           <div className="pt-5">
             {links && links.length > 0 ? (
-              <div className="custom-scrollbar h-[40vh] max-h-[500px] space-y-2 overflow-y-auto">
-                {links
-                  .filter((link) => link.isVisible && link.title && link.url)
-                  .map((link) => (
-                    <MockPreviewCard key={link.id} link={link} />
-                  ))}
-              </div>
+              <ScrollArea className="h-[40vh] max-h-[285px]">
+                <div className="space-y-2">
+                  {links
+                    .filter((link) => link.isVisible && link.title && link.url)
+                    .map((link) => (
+                      <MockPreviewCard key={link.id} link={link} />
+                    ))}
+                </div>
+              </ScrollArea>
             ) : (
               <div className="space-y-2 pt-5">
                 {[1, 2, 3, 4].map((_, index) => (

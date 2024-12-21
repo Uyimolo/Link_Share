@@ -27,7 +27,7 @@ const TopLinksByClicksChart = ({
   const { theme } = useThemeContext();
 
   return (
-    <Card className="rounded-xl space-y-0 border-none bg-white dark:bg-darkGray">
+    <Card className="rounded-xl space-y-0 border-none bg-white dark:bg-lighterNavy">
       <CardHeader className="px-4 py-3">
         <Heading
           variant="h2"

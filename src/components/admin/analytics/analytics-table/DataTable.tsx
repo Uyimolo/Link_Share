@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-xl bg-white dark:bg-darkGray">
+    <div className="rounded-xl bg-white dark:bg-lighterNavy">
       <Heading
         variant="h2"
         className="py-4 pl-4 text-base font-semibold sm:text-xl md:text-xl xl:text-xl"

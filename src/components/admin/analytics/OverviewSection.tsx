@@ -19,7 +19,7 @@ const OverviewSection = ({
   const desktopPercentage = Math.round((desktop / totalClicks) * 100);
 
   const overviewContentClassName =
-    " grid items-start gap-2 rounded-xl bg-white p-2 md:items-center xl:p-4 dark:bg-darkGray";
+    " grid items-start gap-2 rounded-xl bg-white p-2 md:items-center xl:p-4 dark:bg-lighterNavy";
 
   const headerText = "dark:text-white text-white";
 

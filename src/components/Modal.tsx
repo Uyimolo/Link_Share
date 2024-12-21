@@ -3,6 +3,7 @@ import { FaTimesCircle } from "react-icons/fa";
 import { AnimatePresence, motion } from "motion/react";
 import cn from "@/utilities/cn";
 import TooltipComponent from "./TooltipComponent";
+import { ScrollArea } from "./ui/scroll-area";
 
 const animationVariants = {
   fade: {
@@ -60,7 +61,7 @@ const Modal = ({
     <AnimatePresence mode="wait">
       {visible && (
         <motion.div
-          className="fixed left-0 top-0 z-50 grid h-screen w-screen place-content-center bg-black/70 py-10 dark:bg-black/80"
+          className="fixed left-0 top-0 z-20 grid h-screen w-screen place-content-center bg-black/70 py-10 dark:bg-black/80"
           key="modal-container"
           onClick={closeModal && handleCloseModal}
           variants={selectedVariant}
@@ -71,7 +72,7 @@ const Modal = ({
         >
           {closeModal && (
             <TooltipComponent
-              className="group absolute right-6 top-5 z-10 cursor-pointer dark:hover:bg-lighterGray"
+              className="group absolute right-3 top-4 z-40 cursor-pointer dark:hover:bg-lighterGray"
               onClick={closeModal}
               triggerChildren={
                 <FaTimesCircle className="text-2xl text-white group-hover:text-black" />
@@ -80,15 +81,17 @@ const Modal = ({
             />
           )}
 
-          <div
-            className={cn(
-              "relative mx-auto w-[90%] overflow-y-auto overflow-x-hidden md:w-full",
-              className,
-            )}
-            onClick={handleContentClick}
-          >
-            {children}
-          </div>
+          <ScrollArea className="">
+            <div
+              className={cn(
+                "relative mx-auto px-4 overflow-x-hidden md:w-full",
+                className,
+              )}
+              onClick={handleContentClick}
+            >
+              {children}
+            </div>
+          </ScrollArea>
         </motion.div>
       )}
     </AnimatePresence>

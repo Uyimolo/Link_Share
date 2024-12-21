@@ -1,7 +1,7 @@
 "use client";
 import Logo from "../brand/Logo";
 import { FaLink } from "react-icons/fa";
-import { IoEyeOutline } from "react-icons/io5";
+import { IoEyeOutline, IoSettings } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { useRouter } from "next/navigation";
 import { FaChartBar } from "react-icons/fa6";
@@ -37,13 +37,13 @@ const AdminRoutesSidebar = () => {
     },
     {
       label: "Settings",
-      icon: CgProfile,
+      icon: IoSettings,
       link: "/admin/settings",
     },
   ];
 
   return (
-    <div className="relative z-50 mb-4 flex items-center justify-between bg-white p-4 border-b dark:border-lightestGray/50 border-transparent dark:bg-black md:m-4 md:rounded-xl md:border lg:fixed lg:top-0 lg:h-screen lg:w-[20%] lg:flex-col lg:items-start lg:justify-normal lg:rounded-none lg:border-r lg:border-none lg:bg-deepBlue lg:m-0 lg:px-0">
+    <div className="dark:bg-deepNavy relative z-10 mb-4 flex items-center justify-between border-b border-transparent bg-white p-4 dark:border-lightestGray/10 md:m-4 md:rounded-xl md:border lg:fixed lg:top-0 lg:m-0 lg:h-screen lg:w-[20%] lg:flex-col lg:items-start lg:justify-normal lg:rounded-none lg:bg-deepBlue lg:border-l-0 lg:border-t-0 lg:border-transparent lg:px-0 lg:dark:border-r lg:dark:border-lighterGray/10">
       <>
         <Logo
           showFullLogo
@@ -66,7 +66,7 @@ const AdminRoutesSidebar = () => {
 
       <RxHamburgerMenu
         className={cn(
-          "z-40 text-xl lg:hidden",
+          "text-xl lg:hidden",
           showNavigation ? "text-white" : "text-darkGray dark:text-white",
         )}
         onClick={() => setShowNavigation(!showNavigation)}

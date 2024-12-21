@@ -122,9 +122,9 @@ const Footer = () => {
   };
 
   return (
-    <footer className="border-t dark:bg-black bg-blue px-4 py-10 md:px-12 lg:px-[5vw]">
+    <footer className="bg-blue dark:bg-deepNavy dark:border-t dark:border-white px-4 py-10  md:px-12 lg:px-[5vw]">
       <div className="space-y-10 border-t border-white py-10">
-          <Logo showFullLogo variant="white" />
+        <Logo showFullLogo variant="white" />
 
         <div className="grid gap-10 md:flex md:justify-between">
           {/* footer links and news letter */}
@@ -166,7 +166,10 @@ const Footer = () => {
               <div className="items-end space-y-6">
                 <div className="">
                   <label
-                    className={cn("text-xs sr-only text-gray", error && "text-red")}
+                    className={cn(
+                      "sr-only text-xs text-gray",
+                      error && "text-red",
+                    )}
                     htmlFor={emailSubscriptionField[0].name}
                   >
                     {emailSubscriptionField[0].label}

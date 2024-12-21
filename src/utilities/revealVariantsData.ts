@@ -6,74 +6,116 @@ export const slideUpVariants = {
   visible: {
     y: 0,
     opacity: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.6,
+    },
   },
 };
 
 export const fadeInVariants = {
   hidden: {
     opacity: 0,
+    scale: 1,
   },
   visible: {
     opacity: 1,
+    scale: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.5,
+    },
   },
-}
+};
 
 export const slideDownVariants = {
   hidden: {
-    y: -100,
+    y: -40,
     opacity: 0,
   },
-
   visible: {
     y: 0,
     opacity: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.6,
+    },
   },
 };
 
 export const slideLeftVariants = {
   hidden: {
-    x: 100,
+    x: 40,
     opacity: 0,
   },
   visible: {
     x: 0,
     opacity: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.6,
+    },
   },
 };
 
 export const slideRightVariants = {
   hidden: {
-    x: -100,
+    x: -40,
     opacity: 0,
   },
   visible: {
     x: 0,
     opacity: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.6,
+    },
   },
 };
 
 export const scaleUpVariants = {
   hidden: {
-    scale: 0.5,
+    scale: 0.9,
     opacity: 0,
   },
   visible: {
     scale: 1,
     opacity: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.6,
+    },
   },
 };
 
 export const rotateVariants = {
   hidden: {
-    rotate: 0,
+    rotate: -15,
+    opacity: 0,
+    scale: 0.95,
   },
   visible: {
-    rotate: 360,
+    rotate: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: "tween",
+      ease: [0.4, 0, 0.2, 1],
+      duration: 0.7,
+    },
   },
 };
 
 export const staggerVariants = {
-  hidden: { opacity: 1 },
+  hidden: {
+    opacity: 0,
+  },
   visible: {
     opacity: 1,
     transition: {

@@ -27,21 +27,6 @@ type CountryInfo = {
   clicks: number;
 }[];
 
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
 export const useAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState<
     AnalyticsData[] | null | undefined
@@ -105,6 +90,7 @@ export const useAnalytics = () => {
     }
   }, [links, user]);
 
+  // Generate click trends data and total clicks
   useEffect(() => {
     if (analyticsData) {
       const aggregateClicks = (analyticsData: AnalyticsData[] | null) => {
@@ -118,8 +104,8 @@ export const useAnalytics = () => {
 
             // Use date-fns to format and extract date components
             const year = Number(format(clickDate, "yyyy"));
-            const month = format(clickDate, "MMMM");
-            const day = Number(format(clickDate, "d"));
+            const month = format(clickDate, "MMM,");
+            const day = format(clickDate, "do");
 
             const monthKey = `${year}-${month}`;
             const dayKey = `${year}-${month}-${day}`;
@@ -183,8 +169,8 @@ export const useAnalytics = () => {
 
           // Use date-fns to format and extract date components
           const year = Number(format(clickDate, "yyyy"));
-          const month = format(clickDate, "MMMM");
-          const day = Number(format(clickDate, "d"));
+          const month = format(clickDate, "MMM,");
+          const day = format(clickDate, "do");
 
           const monthKey = `${year}-${month}`;
           const dayKey = `${year}-${month}-${day}`;

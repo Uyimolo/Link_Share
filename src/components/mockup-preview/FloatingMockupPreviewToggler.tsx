@@ -19,9 +19,9 @@ const FloatingMockupPreviewToggler = ({
         <></>
       ) : (
         <div
-          className="fixed bottom-16 right-1 z-50 cursor-pointer items-center rounded-full bg-deepBlue p-2 shadow-md shadow-black/30 transition duration-500 lg:hidden"
+          className="fixed bottom-16 right-1 cursor-pointer items-center rounded-full bg-deepBlue p-2 shadow-md shadow-black/30 transition duration-500 lg:hidden"
           onClick={() => setShowPreview(!showPreview)}
-        >
+        > 
           {showPreview ? (
             <div className="flex items-center gap-2">
               <FaTimes className="text-lg text-white" />

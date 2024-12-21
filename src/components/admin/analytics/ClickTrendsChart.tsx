@@ -79,7 +79,7 @@ const ClickTrendsChart = ({
   // Utility to determine grid stroke color
 
   return (
-    <Card className="w-full rounded-xl border-none dark:bg-darkGray">
+    <Card className="w-full rounded-xl border-none dark:bg-lighterNavy">
       <CardHeader className="grid w-full grid-cols-1 items-start justify-between px-4 py-3 sm:grid-cols-2">
         <Heading
           variant="h2"

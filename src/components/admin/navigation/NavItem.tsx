@@ -58,8 +58,10 @@ const NavItem = ({
         <Link
           href={link}
           className={cn(
-            "group flex items-center gap-2 rounded-lg border border-transparent px-3 py-3 text-nowrap hover:border-white dark:hover:border-transparent dark:hover:bg-gray md:w-full md:pr-7",
-            isActive(link) ? "bg-white dark:bg-darkGray" : "",
+            "group flex items-center gap-2 transition duration-300 text-nowra border border-transparent px-3 py-3 md:w-full md:pr-7",
+            isActive(link)
+              ? "bg-black/30 dark:bg-lightNavy"
+              : "hover:bg-black/20 dark:hover:bg-lighterNavy/70",
 
             // label === "Preview" && "border border-blue",
           )}
@@ -68,12 +70,12 @@ const NavItem = ({
           <Icon
             className={cn(
               "text-lg",
-              isActive(link) ? "text-blue" : "text-white",
+              isActive(link) ? "text-white" : "text-white",
               // label === "Preview" && "text-blue",
             )}
           />
           <Paragraph
-            className={cn("", isActive(link) ? "text-blue" : "text-white")}
+            className={cn("", isActive(link) ? "text-white" : "text-white")}
           >
             {label}
           </Paragraph>

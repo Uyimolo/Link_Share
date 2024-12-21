@@ -4,6 +4,7 @@ import { LinkType } from "@/types/types";
 
 type LinkCardContainerType = {
   links: LinkType[];
+  linksFromDb: LinkType[] | null;
   setLinks: React.Dispatch<React.SetStateAction<LinkType[] | null>>;
   deleteLink: (id: string) => void;
   updateLink: (link: LinkType) => void;
@@ -14,6 +15,7 @@ const LinkCardContainer = ({
   setLinks,
   deleteLink,
   updateLink,
+  linksFromDb,
 }: LinkCardContainerType) => {
   const handleReorder = (newOrder: LinkType[]) => {
     setLinks(newOrder);
@@ -38,6 +40,7 @@ const LinkCardContainer = ({
             updateLink={updateLink}
             setLinks={setLinks}
             links={links}
+            linksFromDb={linksFromDb}
           />
         ))}
       </AnimatePresence>

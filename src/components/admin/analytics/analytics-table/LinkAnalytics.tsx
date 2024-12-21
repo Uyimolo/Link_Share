@@ -33,7 +33,7 @@ const LinkAnalytics = ({ link }: { link: LinkWithAnalytics }) => {
   }));
 
   return (
-    <div className="grid w-full gap-4 lg:max-w-screen-xl">
+    <div className="grid w-[90%] mx-auto md:w-full w-ful gap-4 lg:max-w-screen-xl">
       <OverviewSection
         totalClicks={clickCount}
         mobile={deviceType.mobile}

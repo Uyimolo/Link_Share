@@ -28,7 +28,7 @@ export default function RootLayout({
       <ThemeProvider>
         <AuthProvider>
           <body
-            className={` ${montserrat.className} mx-auto bg-[#eeeeee] dark:bg-black antialiased`}
+            className={` ${montserrat.className} mx-auto bg-[#eeeeee] dark:bg-deepNavy antialiased`}
           >
             {children}
           </body>
