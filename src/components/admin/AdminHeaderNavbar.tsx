@@ -29,6 +29,11 @@ const AdminHeaderNavbar = ({
   const { username, logout } = useAuthContext();
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
+  const handleLogout = () => {
+    logout();
+    setShowLogoutConfirmation(false);
+  };
+
   const LogoutConfirmation = (
     <Confirm
       isOpen={showLogoutConfirmation}
@@ -36,7 +41,7 @@ const AdminHeaderNavbar = ({
       content="This action will log you out of your
           account."
       rejectAction={() => setShowLogoutConfirmation(false)}
-      acceptAction={logout}
+      acceptAction={handleLogout}
     />
   );
 

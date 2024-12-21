@@ -6,7 +6,7 @@ import Heading from '@/components/text/Heading';
 // Component contains instructions on how to create, reorder, delete and edit links
 const Intro = () => {
   return (
-    <div className='bg-lightestGray dark:bg-darkGray px-5 py-8 rounded-xl space-y-6'>
+    <div className='bg-lightestGray dark:bg-lighterNavy px-5 py-8 rounded-xl space-y-6'>
       <Image
         priority
         src={introImage}
